@@ -1,0 +1,17 @@
+<configure 
+    xmlns:meta="http://namespaces.zope.org/meta"
+    xmlns="http://namespaces.zope.org/zope">
+  
+  <meta:directive 
+       namespace="http://www.w20e.com/forms"
+       name="submission" 
+       schema=".metadirectives.ISubmissionDirective"
+       handler=".metadirectives.register_submission" />
+
+  <meta:directive 
+       namespace="http://www.w20e.com/forms"
+       name="control" 
+       schema=".metadirectives.IControlDirective"
+       handler=".metadirectives.register_control" />
+
+</configure>

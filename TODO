@@ -1,0 +1,10 @@
+* Make renderer separate class, so that you can actually have a renderer for
+  html, PDF, XML, etc.
+* Add wf capabilities.
+* Describe use case to simply create a standalone form
+* Move type checking to model
+* find generic solution for type checking
+* We should really consider making the datatype part of the field itself:
+    there can be only one!
+* Maybe fieldproperties settings like constraint should be a tuple, not 
+  only holding the expression, but also an error message and message id

@@ -1,0 +1,20 @@
+<html
+   xmlns="http://www.w3.org/1999/xhtml" 
+   xmlns:metal="http://xml.zope.org/namespaces/metal"
+   xmlns:tal="http://xml.zope.org/namespaces/tal">
+   
+  <!-- Control definition -->
+  <metal:define-macro define-macro="control">
+    <div id="${control.id}" 
+         class="control ${control.type} ${extra_classes}">
+      <label class="control-label" for="input-${control.id}">${control.label}</label>
+      <div class="alert">${control.alert}</div>
+      <div tal:condition="control.hint" class="hint">${control.hint}</div>
+      <div tal:condition="control.help" class="help">${control.help}</div>
+      
+      <metal:define-slot define-slot="input"/>
+      
+    </div>
+  </metal:define-macro>
+
+</html>

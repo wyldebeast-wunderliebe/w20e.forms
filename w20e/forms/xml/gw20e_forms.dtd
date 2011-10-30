@@ -1,0 +1,69 @@
+<!-- The form element is the main container for a view, data and a model -->
+<!ELEMENT form (data, model, view, submission)>
+<!ATTLIST form id ID #REQUIRED>
+
+<!-- The data container contains any tag or groups thereof -->
+<!-- Sadly this cannot be expressed using DTD... -->
+<!ELEMENT data ANY>
+
+<!-- The model contais properties-->
+<!ELEMENT model (properties*)>
+
+<!ELEMENT properties (bind+,required?,relevant?,readonly?,constraint?,calculate?,datatype?)>
+<!ATTLIST properties id CDATA #REQUIRED>
+
+<!ELEMENT required (#PCDATA)>
+<!ELEMENT relevant (#PCDATA)>
+<!ELEMENT readonly (#PCDATA)>
+<!ELEMENT constraint (#PCDATA)>
+<!ELEMENT calculate (#PCDATA)>
+<!ELEMENT datatype (#PCDATA)>
+
+<!ELEMENT bind (#PCDATA)>
+
+<!ENTITY % controls "select|group|input|file|text|submit|checkbox">
+
+<!-- The view holds the renderables -->
+<!ELEMENT view (%controls;)*>
+
+<!ELEMENT group (property*,label?,hint?,(%controls;)*)>
+<!ATTLIST group id ID #IMPLIED>
+<!ATTLIST group type CDATA #IMPLIED>
+<!ATTLIST group layout CDATA #IMPLIED>
+
+<!-- control parts -->
+<!ENTITY % control_base "label,hint,help?,alert?">
+<!ENTITY % control_attrs "id ID #REQUIRED bind CDATA #IMPLIED">
+
+<!ELEMENT label ANY>
+<!ELEMENT hint ANY>
+<!ELEMENT help ANY>
+<!ELEMENT alert ANY>
+
+<!ELEMENT submit (label)>
+<!ATTLIST submit id CDATA #REQUIRED>
+
+<!ELEMENT select (%control_base; ,option*)>
+<!ATTLIST select %control_attrs; >
+
+<!ELEMENT option EMPTY>
+<!ATTLIST option hint CDATA #IMPLIED>
+<!ATTLIST option label CDATA #IMPLIED>
+<!ATTLIST option value CDATA #IMPLIED>
+
+<!ELEMENT input (%control_base;)>
+<!ATTLIST input %control_attrs; >
+
+<!ELEMENT checkbox (%control_base;)>
+<!ATTLIST checkbox %control_attrs; >
+
+<!ELEMENT file (%control_base;)>
+<!ATTLIST file %control_attrs; >
+
+<!ELEMENT text (#PCDATA)>
+
+<!ELEMENT property (#PCDATA)>
+<!ATTLIST property name CDATA #REQUIRED>
+
+<!ELEMENT submission (property*)>
+<!ATTLIST submission type CDATA #IMPLIED>

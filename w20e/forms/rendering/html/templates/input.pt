@@ -1,0 +1,15 @@
+<html
+   xmlns="http://www.w3.org/1999/xhtml" 
+   xmlns:metal="http://xml.zope.org/namespaces/metal"
+   xmlns:tal="http://xml.zope.org/namespaces/tal"
+   >
+
+  <div metal:use-macro="load: control.pt">
+
+    <input
+           metal:fill-slot="input"
+           id="input-${control.id}" type="text" name="${control.id}" 
+           value="${value}" size="${control.cols}"/>
+  </div>
+  
+</html>

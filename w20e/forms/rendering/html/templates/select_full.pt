@@ -1,0 +1,27 @@
+<html
+   xmlns="http://www.w3.org/1999/xhtml" 
+   xml:lang="en" 
+   xmlns:metal="http://xml.zope.org/namespaces/metal"
+   xmlns:tal="http://xml.zope.org/namespaces/tal"
+   >
+
+  <div metal:use-macro="load: control.pt">
+    <metal:fill-slot fill-slot="input">
+      <tal:repeat repeat="opt options">
+        <input type="radio" 
+               tal:condition="value == opt.value"
+               checked="true"
+               id="input-${control.id}-${opt.value}" value="${opt.value}"
+               name="${control.id}"/>
+        <input type="radio" 
+               tal:condition="value != opt.value"
+               id="input-${control.id}-${opt.value}" value="${opt.value}"
+               name="${control.id}"/>
+        <label class="after"
+               for="input-${control.id}-${control.value}">${opt.label}</label>
+      </tal:repeat>
+    </metal:fill-slot>
+ 
+  </div>
+  
+</html>
