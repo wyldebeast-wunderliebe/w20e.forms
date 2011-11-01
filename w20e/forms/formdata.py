@@ -12,9 +12,7 @@ class FormData(object):
 
         object.__init__(self)
         self._fields = OrderedDict()
-
-        for key, val in data.items():
-            self[key] = val
+        self.from_dict(data)
 
 
     def __repr__(self):
@@ -89,3 +87,12 @@ class FormData(object):
             res[field_id] = self._fields[field_id].value
 
         return res
+
+
+    def from_dict(self, data={}):
+
+        """ Set the form fields and values from a dict """
+
+        for key, val in data.items():
+            self[key] = val
+

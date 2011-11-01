@@ -1,11 +1,13 @@
 from submission import SubmissionBase
+from w20e.forms.formdata import FormData
 
 DATA_ATTR_NAME = "_w20e_forms_data"
 
 
 class AttrStorage(SubmissionBase):
 
-    """ Submission handler that submits data to content type.
+    """ Submission handler that submits data to content type. The data
+    will be set as dict onto the given attribute name.
     """
 
     type = "attr"
@@ -29,7 +31,7 @@ class AttrStorage(SubmissionBase):
         """
 
         try:
-            setattr(context, self.attr_name, form.data)            
+            setattr(context, self.attr_name, form.data.as_dict())
         except:
             pass
 
@@ -40,4 +42,8 @@ class AttrStorage(SubmissionBase):
 
         if not hasattr(context, self.attr_name):
             raise AttributeError(self.attr_name)
-        return getattr(context, self.attr_name)
+
+        data = FormData()
+        data.from_dict(getattr(context, self.attr_name))
+
+        return data
