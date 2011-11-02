@@ -12,24 +12,21 @@ class PyramidSessionStorage(SubmissionBase):
 
     def __init__(self, **props):
 
-        """ AttrStorage uses simple attribute storage to store the
-        whole data container on the context.
+        """ PyramidSessionStorage stores the data container in the session
         """
 
         SubmissionBase.__init__(self, **props)
 
         self.attr_name = props.get("attr_name", DATA_ATTR_NAME)
 
-
     def submit(self, form, context, request, *args):
 
-        """ Submit data. This involves storing it onto the content
-        type. The submit call should provide the context as first
+        """ Submit data. This involves storing it in the session
+        The submit call should provide the context as first
         param.
         """
 
         request.session[self.attr_name] = form.data
-
 
     def retrieve(self, form, context, request, *args):
 
