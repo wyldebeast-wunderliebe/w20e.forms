@@ -129,12 +129,14 @@ class Form:
         value. If lexical is something true-ish, return lexical space
         value."""
         
-        val = val or self.model.getCalculate(name, self.data)
+        try:
+            val = val or self.model.getCalculate(name, self.data)
+            val = val or self.data.getField(name).value
+        except:
+            pass
 
         if not lexical:
             try:
-                val = val or self.data.getField(name).value
-
                 return self.model.convert(name, val)
             except:
                 return None
@@ -143,8 +145,6 @@ class Form:
             default = default or ''
 
             try:
-                val = val or self.data.getField(name).value
-
                 if val is None:
                     val = default
 
@@ -152,4 +152,6 @@ class Form:
                 
                 return self.view.getRenderableByBind(name).lexVal(val)
             except:
-                return default
+                return val
+
+            return default
