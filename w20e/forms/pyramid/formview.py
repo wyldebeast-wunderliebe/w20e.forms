@@ -9,11 +9,12 @@ import sys
 
 
 class formview(object):
-    
+
     """ Pyramid form view """
-    
-    def __init__(self, context, request, form, retrieve_data=True, defaults={}):
-    
+
+    def __init__(self, context, request, form, retrieve_data=True,
+            defaults={}):
+
         """ Initiate the form view. If retrieve_data is True(ish), the
         submission handler will be asked for the data. If defaults is
         given, any fields available in the defaults will be preloaded.
@@ -29,7 +30,6 @@ class formview(object):
             if getattr(method[1], "__vocab__", False):
 
                 Registry.register_vocab(method[0], method[1])
-            
 
         if retrieve_data:
             try:
@@ -42,14 +42,13 @@ class formview(object):
             for key in defaults.keys():
                 self.form.data.getField(key).value = defaults[key]
 
-
     def renderform(self, errors={}):
-        
+
         """ Render the form.
         """
 
-        return unicode(self.form.view.render(self.form, errors=errors), "utf-8")
-
+        return unicode(self.form.view.render(self.form, errors=errors),
+                "utf-8")
 
     def handle_form(self):
 
@@ -64,17 +63,16 @@ class formview(object):
             form.validate()
             form.submission.submit(form, self.context, self.request)
             status = 'stored'
-            
+
         except FormValidationError, fve:
             errors = fve.errors
             status = 'error'
 
         return (status, errors)
 
-
     def __call__(self):
 
-        """ The form posts to itself, so the call method handles the form, 
+        """ The form posts to itself, so the call method handles the form,
         if need be. """
 
         errors = {}
@@ -90,9 +88,8 @@ class formview(object):
 
         return {'errors': errors, 'status': status}
 
-
     def _process_data(self, form, view, data={}):
-        
+
         """ Get data form request and see what we can post...
         """
 
@@ -109,11 +106,9 @@ class formview(object):
             if renderable.getRenderables:
                 self._process_data(form, renderable, data)
 
-
     def retrieve_efferent_fields(self, format="json"):
 
         return self.form.model.collectEfferentFields()
-
 
     def ajax_validate(self, format="xml"):
 
@@ -131,7 +126,8 @@ class formview(object):
         effected = []
         efferent = model.collectEfferentFields()
 
-        ctls = [form.view.getRenderable(key) for key in self.request.params.keys()]
+        ctls = [form.view.getRenderable(key) for key in \
+                self.request.params.keys()]
         ctls = [c for c in ctls if c]
 
         for ctl in ctls:
@@ -145,31 +141,31 @@ class formview(object):
         for field in effected:
 
             ctrl = form.view.getRenderableByBind(field)
-            
-            state[ctrl.id] = {}
-            state[ctrl.id]['readonly']= model.isReadonly(field, data)
-            state[ctrl.id]['relevant']= model.isRelevant(field, data)
-            state[ctrl.id]['required']= model.isRequired(field, data)
+
+            if ctrl:
+                state[ctrl.id] = {}
+                state[ctrl.id]['readonly'] = model.isReadonly(field, data)
+                state[ctrl.id]['relevant'] = model.isRelevant(field, data)
+                state[ctrl.id]['required'] = model.isRequired(field, data)
 
         errors = []
         error = None
-        
+
         # Do actual validation
-        try:                
+        try:
             fields = [control.bind for control in ctls]
-            
+
             form.validate(fields=fields)
         except FormValidationError:
 
             error = sys.exc_info()[1]
-            
+
         for control in ctls:
 
-            if error and error.errors.has_key(control.bind):
+            if error and control.bind in error.errors:
                 errors.append((control.id, control.alert or "Invalid value"))
             else:
                 errors.append((control.id, ""))
-
 
         # Create the minidom document
         doc = Document()
@@ -188,16 +184,15 @@ class formview(object):
                 root.appendChild(command)
 
         for field, message in errors:
-            
+
             command = doc.createElement("command")
             command.setAttribute("selector", "#%s" % field)
             command.setAttribute("name", "alert")
             command.setAttribute("value", "%s" % message)
             root.appendChild(command)
-        
+
         # Print our newly created XML
         return doc.toprettyxml(indent="  ")
-
 
 
 class xmlformview(formview):
@@ -206,7 +201,7 @@ class xmlformview(formview):
 
     def __init__(self, context, request, formfile, retrieve_data=True,
                  defaults={}):
-        
+
         if hasattr(formfile, 'filename'):
             xmlff = XMLFormFactory(formfile.filename)
         else:
@@ -214,5 +209,5 @@ class xmlformview(formview):
 
         form = xmlff.create_form(action="")
 
-        formview.__init__(self, context, request, form, 
+        formview.__init__(self, context, request, form,
                           retrieve_data=retrieve_data, defaults=defaults)
