@@ -46,4 +46,4 @@ class HTMLRenderer(BaseRenderer):
             renderer.render(self, form, renderable, out, errors=field_errors, **kwargs)
         except:
 
-            print >> out, "<blink>No renderer found for %s!</blink>" % rtype
+            print >> out, "<!-- No renderer found for %s! -->" % rtype
