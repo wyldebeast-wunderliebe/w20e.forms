@@ -97,6 +97,10 @@ class formview(object):
 
             try:
                 fld = form.data.getField(renderable.bind)
+
+                if not form.model.isRelevant(fld.id, form.data):
+                    continue
+
                 val = renderable.processInput(data)
                 fld.value = form.model.convert(renderable.bind, val)
 

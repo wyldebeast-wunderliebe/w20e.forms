@@ -26,15 +26,13 @@ class XMLFormFactory:
 
     implements(IFormFactory)
 
-    # Define specific element/class mappings here 
+    # Define specific element/class mappings here
     controlClasses = {}
-
 
     def __init__(self, xml, **kwargs):
 
         self.xml = xml
         self.opts = kwargs
-
 
     def create_form(self, **opts):
 
@@ -52,9 +50,9 @@ class XMLFormFactory:
             tree = etree.parse(self.xml)
             root = tree.getroot()
 
-        data = self.create_data(root.find("data"))
-
         model = self.create_model(root.find("model"))
+
+        data = self.create_data(root.find("data"), model)
 
         view = self.create_view(root.find("view"))
 
@@ -62,8 +60,7 @@ class XMLFormFactory:
 
         return Form(root.get("id"), data, model, view, submission)
 
-
-    def create_data(self, root):
+    def create_data(self, root, model):
 
         """ Create FormData instance """
 
@@ -71,12 +68,20 @@ class XMLFormFactory:
 
         for child in root.getchildren():
 
-            field = Field(child.tag, child.get("value"))
-            
+            val = None
+
+            if child.get("value"):
+
+                try:
+                    val = model.convert(child.tag, child.get("value"))
+                except:
+                    pass
+
+            field = Field(child.tag, val)
+
             data.addField(field)
 
         return data
-
 
     def create_model(self, root):
 
@@ -93,7 +98,7 @@ class XMLFormFactory:
 
             kwargs = {}
 
-            for elt in ["required", "relevant", "readonly", 
+            for elt in ["required", "relevant", "readonly",
                         "calculate", "datatype", "constraint"]:
                 if child.xpath("./%s" % elt):
                     kwargs[elt] = child.xpath("./%s" % elt)[0].text
@@ -103,7 +108,6 @@ class XMLFormFactory:
 
         return model
 
-
     def create_view(self, root):
 
         """ Create renderable part """
@@ -111,18 +115,17 @@ class XMLFormFactory:
         view = FormView()
 
         for child in root.getchildren():
-            
+
             if child.__class__.__name__ == "_Element":
                 self._create_renderables(child, view)
 
         return view
 
-
     def _create_renderables(self, child, view):
 
         cls = ""
 
-        if XMLFormFactory.controlClasses.has_key(child.tag):
+        if child.tag in XMLFormFactory.controlClasses:
             cls = XMLFormFactory.controlClasses[child.tag]
         elif Registry.get_renderable(child.tag):
             cls = Registry.get_renderable(child.tag)
@@ -181,14 +184,15 @@ class XMLFormFactory:
         if hasattr(ctrl, "addOption"):
 
             for subchild in child.xpath("option"):
-                ctrl.addOption(Option(subchild.get("value"), subchild.text or ''))
+                ctrl.addOption(Option(subchild.get("value"),
+                                      subchild.text or ''))
 
-        for subchild in child.xpath("|".join(Registry.get_registered_renderables())):
+        for subchild in child.xpath("|".join(
+            Registry.get_registered_renderables())):
 
             self._create_renderables(subchild, ctrl)
 
         view.addRenderable(ctrl)
-
 
     def create_submission(self, root):
 
@@ -198,7 +202,7 @@ class XMLFormFactory:
             return None
 
         kwargs = {}
-        
+
         for prop in root.xpath("./property"):
             kwargs[prop.get("name")] = prop.text
 

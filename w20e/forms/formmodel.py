@@ -10,43 +10,38 @@ class FormModel:
     def __init__(self):
 
         self._props = {}
-        self._bindings= {}
-
+        self._bindings = {}
 
     def __repr__(self):
 
         reprlist = ["FormModel:", ""]
-        
+
         for prop in self._props.keys():
             reprlist.append(self._props[prop].__repr__())
 
         return "\n".join(reprlist)
-
 
     def addFieldProperties(self, prop):
 
         self._props[prop.id] = prop
         for binding in prop.bind:
 
-            if not self._bindings.has_key(binding):
+            if not binding in self._bindings:
                 self._bindings[binding] = []
-                
+
             self._bindings[binding].append(prop)
-        
 
     def getAllFieldProperties(self):
 
         return self._props.values()
-
 
     def getFieldProperties(self, binding):
 
         """ Get the properties for the given id, or return default
         properties
         """
-      
+
         return self._bindings.get(binding, [FieldProperties("default", [])])
-        
 
     def isGroupRelevant(self, group, data):
 
@@ -64,7 +59,6 @@ class FormModel:
 
         return False
 
-
     def isRelevant(self, field_id, data):
 
         """ Check whether the field id is relevant. This checks all
@@ -75,27 +69,27 @@ class FormModel:
         for props in self.getFieldProperties(field_id):
 
             try:
-                if not eval(props.getRelevant(), {"data": data}, Registry.funcs):
+                if not eval(props.getRelevant(), {"data": data},
+                            Registry.funcs):
                     return False
             except:
                 return True
 
         return True
 
-
     def isRequired(self, field_id, data):
 
         for props in self.getFieldProperties(field_id):
 
             try:
-                if eval(props.getRequired(), {"data": data}, Registry.funcs):
+                if eval(props.getRequired(), {"data": data},
+                        Registry.funcs):
 
                     return True
             except:
                 return False
 
         return False
-
 
     def isReadonly(self, field_id, data):
 
@@ -110,7 +104,6 @@ class FormModel:
 
         return False
 
-
     def getCalculate(self, field_id, data):
 
         val = None
@@ -118,7 +111,8 @@ class FormModel:
         for props in self.getFieldProperties(field_id):
 
             try:
-                val = eval(props.getCalculate(), {"data": data}, Registry.funcs)
+                val = eval(props.getCalculate(), {"data": data},
+                           Registry.funcs)
             except:
                 pass
 
@@ -127,7 +121,6 @@ class FormModel:
 
         return val
 
-
     def meetsConstraint(self, field_id, data):
 
         meets = True
@@ -135,7 +128,7 @@ class FormModel:
         for props in self.getFieldProperties(field_id):
 
             try:
-                if not eval(props.getConstraint(), {"data": data}, 
+                if not eval(props.getConstraint(), {"data": data},
                             Registry.funcs):
 
                     meets = False
@@ -143,7 +136,6 @@ class FormModel:
                 pass
 
         return meets
-
 
     def checkDatatype(self, field_id, value):
 
@@ -156,23 +148,22 @@ class FormModel:
             if datatype:
 
                 """ if hasattr(value, "__iter__"):
-                
+
                 newvalue = []
-                
+
                 for val in value:
-                
-                newvalue.append(eval("%s(val)" % datatype), 
+
+                newvalue.append(eval("%s(val)" % datatype),
                 {'val': val}, Registry.funcs)
-                
+
                 return newvalue
-                
+
                 else: """
 
-                return eval("%s(val)" % datatype, 
+                return eval("%s(val)" % datatype,
                             {'val': value}, Registry.funcs)
 
         return value
-
 
     def convert(self, field_id, value):
 
@@ -191,7 +182,6 @@ class FormModel:
 
         return value
 
-
     def collectEfferentFields(self):
 
         """ Find all fields in the properties that actually have an effect
@@ -206,20 +196,20 @@ class FormModel:
 
             def __getitem__(self, name):
 
-                if not fields.has_key(name):
+                if not name in fields:
                     fields[name] = []
 
                 fields[name] += self._bind
 
-
         for prop in self._props.values():
 
-            for rule in ["_constraint", "_relevant", "_required", "_readonly", 
+            for rule in ["_constraint", "_relevant", "_required", "_readonly",
                          "_calculate"]:
-                
+
                 try:
-                    eval(getattr(prop, rule, ""), {"data": Collector(prop.bind)})
+                    eval(getattr(prop, rule, ""),
+                         {"data": Collector(prop.bind)})
                 except:
                     pass
-                    
+
         return fields
