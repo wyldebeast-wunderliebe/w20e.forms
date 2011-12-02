@@ -82,14 +82,14 @@ class BaseRenderer:
             pass
 
         if extras.get("errors", None) and \
-               extras['errors'].get(renderable.id, None):
+               extras['errors'].get(renderable.bind, None):
 
             extra_classes['error'] = True
 
             if getattr(renderable, 'alert', ''):
                 fmtmap['alert'] = renderable.alert
             else:
-                fmtmap['alert'] = "; ".join(extras['errors'][renderable.id])
+                fmtmap['alert'] = "; ".join(extras['errors'][renderable.bind])
 
         else:
 
@@ -102,5 +102,4 @@ class BaseRenderer:
             fmtmap['extra_classes'] = " ".join([key for key in extra_classes.keys() if extra_classes[key]])
 
         fmtmap['type'] = self.getType(renderable)
-
         return fmtmap

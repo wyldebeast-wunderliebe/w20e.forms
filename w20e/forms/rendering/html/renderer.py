@@ -10,20 +10,20 @@ class HTMLRenderer(BaseRenderer):
     stream, that can be used to append to. This can obviously be
     sys.stdout, but also a stringIO instance.
     """
-    
+
     implements(IRenderer)
 
 
     def __init__(self, **kwargs):
 
         BaseRenderer.__init__(self, **kwargs)
-        
+
 
     def renderFrontMatter(self, form, out):
 
         """ Render whatever needs to be rendered before the actual form
         components """
-        
+
         print >> out, """<form class="w20e-form" method="post" action="%s" enctype="multipart/form-data">""" % getattr(form.submission, 'action', '')
         print >> out, """<input type="hidden" name="formprocess" value="1"/>"""
         print >> out, """<div class="alert"></div>"""
@@ -36,7 +36,7 @@ class HTMLRenderer(BaseRenderer):
 
     def render(self, form, renderable, out, errors={}, **kwargs):
 
-        try:            
+        try:
             rtype = renderable.type
             renderer = self.getRendererForType(rtype, "html")()
             renderer.render(self, form, renderable, out, errors=errors, **kwargs)

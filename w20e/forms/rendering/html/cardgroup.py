@@ -20,6 +20,6 @@ class CardGroupRenderer:
         
         for item in renderable.getRenderables():        
 
-            renderer.render(form, item, out, extra_classes="card")
+            renderer.render(form, item, out, extra_classes="card", **kwargs)
 
         print >> out, TEMPLATES['CARDGROUP_TPL_FTR']

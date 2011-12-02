@@ -26,6 +26,6 @@ class StepGroupRenderer:
 
         for item in renderable.getRenderables():
 
-            renderer.render(form, item, out, extra_classes="step")
+            renderer.render(form, item, out, extra_classes="step", **kwargs)
 
         print >> out, TEMPLATES['STEPGROUP_TPL_FTR']

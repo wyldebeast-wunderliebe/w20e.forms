@@ -71,6 +71,7 @@ setup(name='w20e.forms',
         'lxml',
         'zope.interface',
         'ordereddict',
+        'Chameleon',
       ],
       entry_points="""
       # -*- Entry points: -*-
