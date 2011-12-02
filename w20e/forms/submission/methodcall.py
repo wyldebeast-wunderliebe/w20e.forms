@@ -11,7 +11,8 @@ class MethodCall(SubmissionBase):
     def __init__(self, **props):
 
         """ Method call submission enables calling a method of the
-        form context.
+        form context, or attributes thereof. To call methods on
+        subparts, do something like 'subattribute.method'.
         """
 
         SubmissionBase.__init__(self, **props)
@@ -23,16 +24,29 @@ class MethodCall(SubmissionBase):
     def submit(self, form, context, *args):
 
         if self.submit_method:
-            func = getattr(context, self.submit_method)
+            func = None
+            ctx = context
+
+            for part in self.submit_method.split("."):
+                func = getattr(ctx, part)
+                ctx = func
+                
             if callable(func):
-                func(form, context, args)
+                func(form, *args)
 
 
     def retrieve(self, form, context, *args):
 
         if self.submit_method:
-            func = getattr(context, self.retrieve_method)
+
+            func = None
+            ctx = context
+
+            for part in self.submit_method.split("."):
+                func = getattr(ctx, part)
+                ctx = func
+
             if callable(func):
-                return func(form, context, args)
+                return func(form, *args)
 
         return None

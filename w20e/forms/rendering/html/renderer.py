@@ -39,11 +39,7 @@ class HTMLRenderer(BaseRenderer):
         try:            
             rtype = renderable.type
             renderer = self.getRendererForType(rtype, "html")()
-            try:
-                field_errors = errors.get(renderable.bind, [])
-            except:
-                field_errors = []
-            renderer.render(self, form, renderable, out, errors=field_errors, **kwargs)
+            renderer.render(self, form, renderable, out, errors=errors, **kwargs)
         except:
 
             print >> out, "<!-- No renderer found for %s! -->" % rtype
