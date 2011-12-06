@@ -16,10 +16,10 @@ class CheckboxRenderer:
 
         fmtmap['checked'] = ""
         fmtmap['value'] = "1"
-            
+
         if value:
             fmtmap['checked'] = 'checked="yes"'
-            
+
         print >> out, TEMPLATES['CONTROL_HDR'] % fmtmap
-        print >> out, TEMPLATES['CHECK_TPL'] % fmtmap                   
+        print >> out, TEMPLATES['CHECK_TPL'] % fmtmap
         print >> out, TEMPLATES['CONTROL_FTR'] % fmtmap

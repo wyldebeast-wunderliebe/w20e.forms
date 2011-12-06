@@ -57,7 +57,7 @@ TEMPLATES['SELECT_HDR_TPL'] = """<select id="input-%(id)s" name="%(id)s" %(multi
 
 TEMPLATES['SELECT_FTR_TPL'] = """</select>"""
 
-TEMPLATES['CHECK_TPL'] = """<input type="checkbox" id="input-%(id)s" value="%(value)s"
+TEMPLATES['CHECK_TPL'] = """<input type="hidden" value="" name="%(id)s"/><input type="checkbox" id="input-%(id)s" value="%(value)s"
   %(checked)s
   name="%(id)s"/><label class="after"
   for="input-%(id)s">%(label)s</label><br/>"""

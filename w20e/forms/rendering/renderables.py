@@ -34,7 +34,6 @@ class Renderable(object):
 
         self.__dict__.update(defaults)
 
-
     def __getattr__(self, attr_name):
 
         try:
@@ -60,7 +59,7 @@ class Text(Renderable):
 
         Renderable.__init__(self, id, **props)
         self.text = text
-    
+
 
 class Button(Renderable):
     """ Do we really need this? """
@@ -81,7 +80,6 @@ class Submit(Renderable):
 class Cancel(Renderable):
 
     implements(IRenderable)
-
 
     def __init__(self, id, label, **props):
 

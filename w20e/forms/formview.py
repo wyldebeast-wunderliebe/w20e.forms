@@ -13,7 +13,6 @@ class RenderableContainer:
         self._componentmap = {}
         self._bindmap = {}
 
-
     def addRenderable(self, renderable):
 
         self._components.append(renderable)
@@ -28,9 +27,8 @@ class RenderableContainer:
         except:
             pass
 
-            
     def _recurseAddRenderable(self, renderable):
-        
+
         self._componentmap[renderable.id] = renderable
         if hasattr(renderable, 'bind'):
             self._bindmap[renderable.bind] = renderable
@@ -41,7 +39,6 @@ class RenderableContainer:
         except:
             pass
 
-
     def getRenderables(self, recursive=False):
 
         if recursive:
@@ -49,11 +46,9 @@ class RenderableContainer:
         else:
             return self._components
 
-
     def getRenderable(self, id):
 
         return self._componentmap.get(id, None)
-
 
     def getRenderableByBind(self, bind):
 
@@ -67,12 +62,10 @@ class FormView(RenderableContainer):
 
     implements(IFormView)
 
-
     def __init__(self, renderer=HTMLRenderer, renderOpts={}):
 
         RenderableContainer.__init__(self)
         self.renderer = renderer(**renderOpts)
-
 
     def renderFrontMatter(self, form):
 
@@ -80,11 +73,10 @@ class FormView(RenderableContainer):
 
         str_out = StringIO()
         out = codecs.getwriter('utf-8')(str_out)
-        
+
         self.renderer.renderFrontMatter(form, out)
 
         return out.getvalue()
-
 
     def renderBackMatter(self, form):
 
@@ -92,11 +84,10 @@ class FormView(RenderableContainer):
 
         str_out = StringIO()
         out = codecs.getwriter('utf-8')(str_out)
-        
+
         self.renderer.renderBackMatter(form, out)
 
         return out.getvalue()
-
 
     def renderForm(self, form):
 
@@ -104,13 +95,12 @@ class FormView(RenderableContainer):
 
         str_out = StringIO()
         out = codecs.getwriter('utf-8')(str_out)
-        
+
         for item in self.getRenderables():
 
             self.renderer.render(form, item, out)
 
         return out.getvalue()
-
 
     def render(self, form, errors={}):
 
@@ -118,7 +108,7 @@ class FormView(RenderableContainer):
 
         str_out = StringIO()
         out = codecs.getwriter('utf-8')(str_out)
-        
+
         self.renderer.renderFrontMatter(form, out)
 
         for item in self.getRenderables():
@@ -128,4 +118,3 @@ class FormView(RenderableContainer):
         self.renderer.renderBackMatter(form, out)
 
         return out.getvalue()
-

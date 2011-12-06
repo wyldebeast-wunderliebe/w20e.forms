@@ -8,7 +8,6 @@ VAREXP = re.compile('\$\{[^\}]+\}')
 
 class BaseRenderer:
 
-
     def __init__(self, **kwargs):
 
         """ Initialize renderer, given global options """
@@ -16,11 +15,9 @@ class BaseRenderer:
         self.opts = {}
         self.opts.update(kwargs)
 
-
     def getRendererForType(self, renderableType, rendererType):
 
         return Registry.get_renderer(renderableType, rendererType)
-
 
     def getType(self, renderable):
 
@@ -31,7 +28,6 @@ class BaseRenderer:
             return renderable.type
 
         return renderable.__class__.__name__
-
 
     def createFormatMap(self, form, renderable, **extras):
 
@@ -50,21 +46,22 @@ class BaseRenderer:
                 return match.group()
 
         # process labels and hints
-        if fmtmap.has_key('label'):
+        if 'label' in fmtmap:
             fmtmap['label'] = VAREXP.sub(replaceVars, fmtmap['label'])
-        if fmtmap.has_key('hint'):
+        if 'hint' in fmtmap:
             fmtmap['hint'] = VAREXP.sub(replaceVars, fmtmap['hint'])
 
         # defaults
-        extra_classes = {'relevant':True, 'required': False, 'readonly': False, 'error': False}
+        extra_classes = {'relevant': True, 'required': False,
+                'readonly': False, 'error': False}
 
         # Let's see whether we got properties here...
         try:
-            if hasattr(renderable, 'bind'):
+            if hasattr(renderable, 'bind') and renderable.bind:
                 # Requiredness
                 if form.model.isRequired(renderable.bind, form.data):
                     extra_classes["required"] = True
-                    
+
                 if not form.model.isRelevant(renderable.bind, form.data):
                     extra_classes["relevant"] = False
 
@@ -72,12 +69,13 @@ class BaseRenderer:
                 if form.model.isReadonly(renderable.bind, form.data):
                     extra_classes["readonly"] = True
 
-            elif hasattr(renderable, 'getRenderables'):
-                
+            elif hasattr(renderable, 'getRenderables') and \
+                    callable(renderable.getRenderables):
+
                 # Group relevance
                 if not form.model.isGroupRelevant(renderable, form.data):
                     extra_classes["relevant"] = False
-            
+
         except:
             pass
 
@@ -95,11 +93,13 @@ class BaseRenderer:
 
             fmtmap['alert'] = ''
 
-
-        if fmtmap.has_key("extra_classes"):
-            fmtmap['extra_classes'] = " ".join([fmtmap['extra_classes']] + [key for key in extra_classes.keys() if extra_classes[key]])
+        if "extra_classes" in fmtmap:
+            fmtmap['extra_classes'] = " ".join([fmtmap['extra_classes']] + \
+                    [key for key in extra_classes.keys()
+                        if extra_classes[key]])
         else:
-            fmtmap['extra_classes'] = " ".join([key for key in extra_classes.keys() if extra_classes[key]])
+            fmtmap['extra_classes'] = " ".join([key for key in
+                extra_classes.keys() if extra_classes[key]])
 
         fmtmap['type'] = self.getType(renderable)
         return fmtmap

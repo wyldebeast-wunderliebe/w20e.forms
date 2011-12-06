@@ -13,33 +13,31 @@ class HTMLRenderer(BaseRenderer):
 
     implements(IRenderer)
 
-
     def __init__(self, **kwargs):
 
         BaseRenderer.__init__(self, **kwargs)
 
-
     def renderFrontMatter(self, form, out):
-
         """ Render whatever needs to be rendered before the actual form
         components """
 
-        print >> out, """<form class="w20e-form" method="post" action="%s" enctype="multipart/form-data">""" % getattr(form.submission, 'action', '')
+        print >> out, """<form class="w20e-form" method="post" action="%s" \
+                enctype="multipart/form-data">""" % \
+                getattr(form.submission, 'action', '')
         print >> out, """<input type="hidden" name="formprocess" value="1"/>"""
         print >> out, """<div class="alert"></div>"""
-
 
     def renderBackMatter(self, form, out):
 
         print >> out, "</form>"
-
 
     def render(self, form, renderable, out, errors={}, **kwargs):
 
         try:
             rtype = renderable.type
             renderer = self.getRendererForType(rtype, "html")()
-            renderer.render(self, form, renderable, out, errors=errors, **kwargs)
+            renderer.render(self, form, renderable, out, errors=errors,
+                    **kwargs)
         except:
 
             print >> out, "<!-- No renderer found for %s! -->" % rtype

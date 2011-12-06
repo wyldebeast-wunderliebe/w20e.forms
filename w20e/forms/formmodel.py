@@ -3,7 +3,7 @@ from model.converters import *
 from registry import Registry
 
 
-class FormModel:
+class FormModel(object):
 
     """ Hold properties for form """
 
@@ -50,7 +50,7 @@ class FormModel:
 
         for sub in group.getRenderables():
 
-            if hasattr(sub, 'getRenderables'):
+            if hasattr(sub, 'getRenderables') and callable(sub.getRenderables):
                 if self.isGroupRelevant(sub, data):
                     return True
             else:
