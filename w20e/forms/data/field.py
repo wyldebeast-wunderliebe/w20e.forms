@@ -11,11 +11,9 @@ class Field(object):
         self._id = id
         self.value = value
 
-
     def __call__(self):
 
         return self.value
-
 
     @property
     def id(self):

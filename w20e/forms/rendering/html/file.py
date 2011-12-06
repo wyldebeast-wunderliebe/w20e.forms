@@ -14,7 +14,6 @@ EDIT_FILE_TPL = """
 """
 
 
-
 class FileRenderer:
 
     implements(IControlRenderer)
@@ -22,7 +21,7 @@ class FileRenderer:
     def render(self, renderer, form, renderable, out, **kwargs):
 
         """ render File to HTML """
-    
+
         tpl = FILE_TPL
 
         fmtmap = renderer.createFormatMap(form, renderable, **kwargs)

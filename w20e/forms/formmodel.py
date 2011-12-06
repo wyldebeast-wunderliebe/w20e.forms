@@ -145,7 +145,8 @@ class FormModel:
 
             datatype = props.getDatatype()
 
-            if datatype:
+            #TODO do a proper validation for file
+            if datatype and datatype != 'file':
 
                 """ if hasattr(value, "__iter__"):
 
@@ -173,7 +174,7 @@ class FormModel:
 
             datatype = props.getDatatype()
 
-            if datatype:
+            if datatype and datatype != 'file':
 
                 try:
                     return eval("%s('%s')" % (datatype, value))
