@@ -73,7 +73,7 @@ TEMPLATES['COLORPICKER_TPL'] = """<input id="input-%(id)s" type="text"
   name="%(id)s" value="%(value)s"/><div class="colorpicker"></div>"""
 
 TEMPLATES['SUBMIT_TPL'] = """<div id="%(id)s" class="control %(type)s %(extra_classes)s">
-<input type="submit" name="submit" value="%(label)s"/>
+<input type="submit" name="%(name)s" value="%(label)s"/>
 </div>"""
 
 TEMPLATES['CANCEL_TPL'] = """<div id="%(id)s" class="control %(type)s %(extra_classes)s">

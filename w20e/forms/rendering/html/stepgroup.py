@@ -12,7 +12,7 @@ class StepGroupRenderer:
 
         print >> out, TEMPLATES['STEPGROUP_TPL_HDR'] % renderer.createFormatMap(form, renderable, **kwargs)
 
-        print >> out, "<ul>"
+        print >> out, "<ul class='stepsnav'>"
         print >> out, TEMPLATES['STEPGROUP_NAV_PREV']
 
         steps = renderable.getRenderables()

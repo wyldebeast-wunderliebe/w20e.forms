@@ -9,4 +9,8 @@ class SubmitRenderer:
 
     def render(self, renderer, form, renderable, out, **kwargs):
 
-        print >> out, TEMPLATES['SUBMIT_TPL'] % renderer.createFormatMap(form, renderable)
+        fmtmap = renderer.createFormatMap(form, renderable, **kwargs)
+        if 'name' not in fmtmap:
+            fmtmap['name'] = 'submit'  # default name
+
+        print >> out, TEMPLATES['SUBMIT_TPL'] % fmtmap
