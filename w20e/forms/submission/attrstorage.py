@@ -93,7 +93,6 @@ class AttrStorage(SubmissionBase):
                 data.addField(Field(field_id, self._retrieve_blob(storage,
                     field_id)))
             else:
-                data.addField(Field(field_id, getattr(storage, field_id,
-                    None)))
+                data.addField(Field(field_id, storage.get(field_id, None)))
 
         return data

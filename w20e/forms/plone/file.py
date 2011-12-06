@@ -16,10 +16,16 @@ class PloneFile(File):
 
         _file = None
 
-        if data[self.id] == '1' and data.get("%s-new" % self.id, None) is None:
+        new_input = data.get("%s-new" % self.id, None)
+        new_data = None
+        if new_input:
+            new_data = new_input.read()
+            new_input.seek(0)
+
+        if data[self.id] == '1' and not new_data:
             raise "Skip this!"
 
-        if data.get("%s-new" % self.id, None) is not None:
+        if new_data:
             _file = data["%s-new" % self.id]
         else:
             _file = data[self.id]
