@@ -30,7 +30,6 @@ class XMLSerializer:
 
         return etree.tostring(root, pretty_print=True)
 
-
     def create_data(self, data, root):
 
         """ Serialize data part """
@@ -41,7 +40,6 @@ class XMLSerializer:
 
             if not field.value is None:
                 self._set_value(sub, field.value)
-
 
     def create_model(self, model, root):
 
@@ -79,7 +77,6 @@ class XMLSerializer:
                 subsub = etree.SubElement(sub, "datatype")
                 subsub.text = prop.getDatatype()
 
-
     def create_view(self, view, root):
 
         """ Serialize  view """
@@ -90,7 +87,7 @@ class XMLSerializer:
 
             if hasattr(renderable, 'bind'):
                 kwargs['bind'] = renderable.bind
-            
+
             elt = etree.SubElement(root, self._determine_tag(renderable),
                                    **kwargs)
 
@@ -100,7 +97,8 @@ class XMLSerializer:
                     prop_elt.text = getattr(renderable, p)
 
             for p in getattr(renderable, '_custom_props', []):
-                if getattr(renderable, p, None) != DEFAULTS.get(renderable.type, {}).get(p, None):
+                if getattr(renderable, p, None) != \
+                        DEFAULTS.get(renderable.type, {}).get(p, None):
                     prop_elt = etree.SubElement(elt, "property", name=p)
                     prop_elt.text = str(getattr(renderable, p))
 
@@ -109,9 +107,8 @@ class XMLSerializer:
                 opt_elt.text = opt.label
 
             if hasattr(renderable, "getRenderables"):
-            
-                self.create_view(renderable, elt)
 
+                self.create_view(renderable, elt)
 
     def create_submission(self, submission, root):
 
@@ -123,8 +120,6 @@ class XMLSerializer:
             if getattr(submission, p, None):
                 prop_elt = etree.SubElement(root, "property", name=p)
                 prop_elt.text = str(getattr(submission, p))
-        
-
 
     def _set_value(self, field, value):
 
@@ -132,7 +127,6 @@ class XMLSerializer:
             field.set("value", str(value))
         except:
             field.set("value", base64.b64encode(str(value)))
-
 
     def _determine_tag(self, renderable):
 
@@ -143,4 +137,3 @@ class XMLSerializer:
             return renderable.type
 
         return renderable.__class__.__name__.lower()
-

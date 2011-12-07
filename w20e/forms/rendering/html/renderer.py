@@ -31,7 +31,7 @@ class HTMLRenderer(BaseRenderer):
 
         print >> out, "</form>"
 
-    def render(self, form, renderable, out, errors={}, **kwargs):
+    def render(self, form, renderable, out, errors=None, **kwargs):
 
         try:
             rtype = renderable.type

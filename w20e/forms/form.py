@@ -4,39 +4,37 @@ from interfaces import IForm
 
 class FormValidationError(Exception):
 
-    def __init__(self, errors={}):
-        Exception.__init__(self)
-        self._errors = errors
+    def __init__(self, errors=None):
+        super(FormValidationError, self).__init__()
 
+        if not errors:
+            errors = {}
+        self._errors = errors
 
     def __repr__(self):
 
         print "FormValidationError: %s" % self._errors
 
-
     @property
     def errors(self):
 
         return self._errors
-    
 
     def addError(self, fieldId, error):
 
-        if not self._errors.has_key():
+        if fieldId in self._errors:
             self._errors[fieldId] = []
-            
+
         self._errors[fieldId].append(error)
 
 
-
 class Form:
- 
+
     """ Basic form implementation class. This class basically holds a
     data object, a model and a view.
     """
 
     implements(IForm)
-
 
     def __init__(self, id, data, model, view, submission):
 
@@ -49,11 +47,9 @@ class Form:
         self.view = view
         self.submission = submission
 
-
     def render(self):
 
         return self.view.render(self)
-
 
     def validate(self, fields=None):
 
@@ -66,27 +62,25 @@ class Form:
            not set, this is an error
          * check for constraints on the field. If any are failed to meet,
            this is an error
-        
+
         """
-        
+
         errors = {}
         value = None
-
 
         if not fields:
 
             fields = self.data.getFields()
-            
 
         for field in fields:
 
             field_errors = []
 
-            try:           
+            try:
                 value = self.data[field]
             except:
                 pass
-                
+
             # Requiredness
             if self.isEmpty(value) and self.model.isRequired(field, self.data):
 
@@ -111,24 +105,22 @@ class Form:
         else:
             return True
 
-
     def isEmpty(self, value):
-        
+
         """ Check whether value is empty """
-        
+
         if value is None or value == "":
-            
+
             return True
-        
+
         return False
 
-
     def getFieldValue(self, name, default=None, val=None, lexical=False):
-        
+
         """ Get the data field value or default or calculated
         value. If lexical is something true-ish, return lexical space
         value."""
-        
+
         try:
             val = val or self.model.getCalculate(name, self.data)
             val = val or self.data.getField(name).value
@@ -149,7 +141,7 @@ class Form:
                     val = default
 
                 val = self.model.convert(name, val)
-                
+
                 return self.view.getRenderableByBind(name).lexVal(val)
             except:
                 return val

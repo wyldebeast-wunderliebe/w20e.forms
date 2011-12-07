@@ -51,7 +51,7 @@ Would you wish to use w20e.forms, then:
       >>> class Context:
       ...  """ nothing needed here, but we'll store the data in here """
       >>> class Request:
-      ...   def __init__(self, params={}):
+      ...   def __init__(self, params=None):
       ...     self.params = params
       >>> ctx = Context()
       >>> req = Request()

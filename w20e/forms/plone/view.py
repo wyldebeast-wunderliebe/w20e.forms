@@ -23,7 +23,7 @@ class FormView(BrowserView):
                 except:
                     pass
 
-    def render_form(self, errors={}):
+    def render_form(self, errors=None):
 
         """ Render the view, using the context's form """
 
@@ -68,7 +68,7 @@ class FormView(BrowserView):
 
         return {'errors': errors, 'status': status}
 
-    def _process_data(self, form, view, data={}):
+    def _process_data(self, form, view, data=None):
 
         """ Get data form request and see what we can post...
         """

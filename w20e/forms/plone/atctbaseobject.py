@@ -6,10 +6,10 @@ class ATCTBaseObject:
     TODO: maybe we should cache the form?
     """
 
-    def __init__(self, attr_name="_DATA", defaults={}):
+    def __init__(self, attr_name="_DATA", defaults=None):
 
         self.attr_name = attr_name
-        self.formdefaults = defaults
+        self.formdefaults = defaults or {}
 
     def Title(self):
         """ Return title or id """

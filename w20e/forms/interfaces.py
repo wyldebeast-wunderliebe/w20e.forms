@@ -141,7 +141,7 @@ class IControl(IRenderable):
     value, to transform it into something less lexical, say a date.
     """
 
-    def processInput(data={}):
+    def processInput(data=None):
 
         """ Process user given input into the value to be used
         for the instance.

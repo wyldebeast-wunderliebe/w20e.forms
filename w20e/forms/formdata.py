@@ -8,12 +8,13 @@ class FormData(object):
 
     implements(IFormData)
 
-    def __init__(self, data={}):
+    def __init__(self, data=None):
 
-        object.__init__(self)
+        if not data:
+            data = {}
+        super(FormData, self).__init__()
         self._fields = OrderedDict()
         self.from_dict(data)
-
 
     def __repr__(self):
 
@@ -24,7 +25,6 @@ class FormData(object):
             reprlist.append("%s: %s\n" % (field, self._fields[field].value))
 
         return "\n".join(reprlist)
-
 
     def __getitem__(self, fieldId):
 
@@ -38,32 +38,27 @@ class FormData(object):
         except:
             return None
 
-
     def __setitem__(self, fieldId, val):
 
         """ Item assignment on formdata. Setting the value of a non existing
         field is NOT an error... """
 
-        if not self._fields.has_key(fieldId):
+        if not fieldId in self._fields:
             self._fields[fieldId] = Field(fieldId, val)
         else:
             self._fields[fieldId].value = val
-
 
     def getField(self, fieldId):
 
         return self._fields.get(fieldId, None)
 
-
     def addField(self, field):
 
         self._fields[field.id] = field
 
-
     def getFields(self):
 
         return self._fields.keys()
-
 
     def update(self, data, ignore_missing=True):
 
@@ -77,7 +72,6 @@ class FormData(object):
                 if not ignore_missing:
                     self.addField(Field(field.id, field.value))
 
-
     def as_dict(self):
 
         res = {}
@@ -88,11 +82,9 @@ class FormData(object):
 
         return res
 
-
-    def from_dict(self, data={}):
+    def from_dict(self, data=None):
 
         """ Set the form fields and values from a dict """
-
-        for key, val in data.items():
-            self[key] = val
-
+        if data:
+            for key, val in data.items():
+                self[key] = val

@@ -10,9 +10,12 @@ class PloneFile(File):
         File.__init__(self, *args, **kwargs)
         self.type = "file"
 
-    def processInput(self, data={}):
+    def processInput(self, data=None):
 
         """ File data is stored in value field """
+
+        if not data:
+            data = {}
 
         _file = None
 

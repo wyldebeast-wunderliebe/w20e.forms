@@ -13,12 +13,15 @@ class formview(object):
     """ Pyramid form view """
 
     def __init__(self, context, request, form, retrieve_data=True,
-            defaults={}):
+            defaults=None):
 
         """ Initiate the form view. If retrieve_data is True(ish), the
         submission handler will be asked for the data. If defaults is
         given, any fields available in the defaults will be preloaded.
         """
+
+        if not defaults:
+            defaults = {}
 
         self.context = context
         self.request = request
@@ -42,7 +45,7 @@ class formview(object):
             for key in defaults.keys():
                 self.form.data.getField(key).value = defaults[key]
 
-    def renderform(self, errors={}):
+    def renderform(self, errors=None):
 
         """ Render the form.
         """
@@ -88,10 +91,13 @@ class formview(object):
 
         return {'errors': errors, 'status': status}
 
-    def _process_data(self, form, view, data={}):
+    def _process_data(self, form, view, data=None):
 
         """ Get data form request and see what we can post...
         """
+
+        if not data:
+            data = {}
 
         for renderable in view.getRenderables():
 
@@ -204,7 +210,7 @@ class xmlformview(formview):
     """ View class taking an XML path as argument to create the form """
 
     def __init__(self, context, request, formfile, retrieve_data=True,
-                 defaults={}):
+                 defaults=None):
 
         if hasattr(formfile, 'filename'):
             xmlff = XMLFormFactory(formfile.filename)

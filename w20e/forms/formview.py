@@ -62,7 +62,10 @@ class FormView(RenderableContainer):
 
     implements(IFormView)
 
-    def __init__(self, renderer=HTMLRenderer, renderOpts={}):
+    def __init__(self, renderer=HTMLRenderer, renderOpts=None):
+
+        if not renderOpts:
+            renderOpts = {}
 
         RenderableContainer.__init__(self)
         self.renderer = renderer(**renderOpts)
@@ -102,7 +105,7 @@ class FormView(RenderableContainer):
 
         return out.getvalue()
 
-    def render(self, form, errors={}):
+    def render(self, form, errors=None):
 
         """ Render all (front, content and back) """
 

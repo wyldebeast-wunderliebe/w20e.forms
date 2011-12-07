@@ -32,11 +32,11 @@ class Control(Renderable):
 
         return REPR % self.__dict__
 
-    def processInput(self, data={}):
-
+    def processInput(self, data=None):
         """ Base implementation """
 
-        return data.get(self.id, None)
+        if data:
+            return data.get(self.id, None)
 
     def lexVal(self, value):
 
@@ -156,9 +156,12 @@ class Table(Input):
 
     """ Table input with fixed columns, but free number of rows """
 
-    def processInput(self, data={}):
+    def processInput(self, data=None):
 
         """ Base implementation """
+
+        if not data:
+            data = {}
 
         res = []
 
