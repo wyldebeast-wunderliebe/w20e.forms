@@ -43,11 +43,11 @@ TEMPLATES['STEPGROUP_NAV_SAVE'] ="""<li class="stepsnav save">
 </li>"""
 
 TEMPLATES['FLOWGROUP_TPL_HDR'] = """<fieldset id="%(id)s"
-  class="flow %(orientation)s %(extra_classes)s">
+  class="flow %(orientation)s %(extra_classes)s %(stepgroup_classes)s">
 <div class="legend">%(label)s</div>"""
 TEMPLATES['FLOWGROUP_TPL_FTR'] ="""</fieldset>"""
 
-TEMPLATES['TEXT_TPL'] = """<p class="text" id="%(id)s">%(text)s</p>"""
+TEMPLATES['TEXT_TPL'] = """<div class="text" id="%(id)s">%(text)s</div>"""
 
 TEMPLATES['SELECT_ALL_HDR_TPL'] = """"""
 TEMPLATES['SELECT_ALL_FTR_TPL'] = """<input class="all" type="checkbox"

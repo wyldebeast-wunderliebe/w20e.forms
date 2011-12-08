@@ -34,15 +34,22 @@ class AttrStorage(SubmissionBase):
         return getattr(context, self.attr_name)
 
     def _store_blob(self, storage, field):
-        container = storage.get(field.id, {'name': None, 'data': Blob()})
-        container['name'] = field.value['name']
-        f = container['data'].open('w')
-        f.write(field.value['data'])
-        f.close()
-        storage[field.id] = container
+        """ store in blob storage """
+
+        # handle null data, don't use blob storage..
+        if not field.value:
+            storage[field.id] = None
+        else:
+            # we have data, store as blob
+            container = storage.get(field.id) or {'name': None, 'data': Blob()}
+            container['name'] = field.value['name']
+            f = container['data'].open('w')
+            f.write(field.value['data'])
+            f.close()
+            storage[field.id] = container
 
     def _retrieve_blob(self, storage, field_id):
-        data = storage.get(field_id, None)
+        data = storage.get(field_id)
         if data:
             container = {}
             container['name'] = data['name']
@@ -93,6 +100,6 @@ class AttrStorage(SubmissionBase):
                 data.addField(Field(field_id, self._retrieve_blob(storage,
                     field_id)))
             else:
-                data.addField(Field(field_id, storage.get(field_id, None)))
+                data.addField(Field(field_id, storage.get(field_id)))
 
         return data

@@ -28,7 +28,7 @@ class FormValidationError(Exception):
         self._errors[fieldId].append(error)
 
 
-class Form:
+class Form(object):
 
     """ Basic form implementation class. This class basically holds a
     data object, a model and a view.

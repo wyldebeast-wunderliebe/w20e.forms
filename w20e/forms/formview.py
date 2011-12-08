@@ -70,54 +70,114 @@ class FormView(RenderableContainer):
         RenderableContainer.__init__(self)
         self.renderer = renderer(**renderOpts)
 
-    def renderFrontMatter(self, form):
+#    def renderFrontMatter(self, form):
+#
+#        """ Render form front matter """
+#
+#        str_out = StringIO()
+#        out = codecs.getwriter('utf-8')(str_out)
+#
+#        self.renderer.renderFrontMatter(form, out)
+#
+#        return out.getvalue()
 
-        """ Render form front matter """
+#    def renderBackMatter(self, form):
+#
+#        """ Render form back matter... """
+#
+#        str_out = StringIO()
+#        out = codecs.getwriter('utf-8')(str_out)
+#
+#        self.renderer.renderBackMatter(form, out)
+#
+#        return out.getvalue()
 
-        str_out = StringIO()
-        out = codecs.getwriter('utf-8')(str_out)
+#    def renderForm(self, form):
+#
+#        """ Render form content only """
+#
+#        str_out = StringIO()
+#        out = codecs.getwriter('utf-8')(str_out)
+#
+#        for item in self.getRenderables():
+#
+#            self.renderer.render(form, item, out)
+#
+#        return out.getvalue()
 
-        self.renderer.renderFrontMatter(form, out)
+    def getNextPage(self, request, form, errors):
+        """ find the next active page """
+        forward = request.get('submit.next', None)
+        backward = request.get('submit.previous', None)
+        currentpage = request.get('w20e.forms.currentpage', None)
+        groups = [s for s in self.getRenderables() if s.type == 'stepgroup']
+        for stepgroup in groups:
+            # TODO: can we have other groups than flowgroups here?
+            steps = [s for s in stepgroup.getRenderables() if \
+                    s.type == 'flowgroup']
 
-        return out.getvalue()
+            firstpage = steps and steps[0].id or ''
 
-    def renderBackMatter(self, form):
+            if not currentpage and steps:
+                # TODO should we check for the first relevant page instead?
+                return firstpage
 
-        """ Render form back matter... """
+            # what direction are we going?
+            if forward:
+                pass  # default action
+            elif backward:
+                # clone the steps, and reverse them
+                steps = steps[:] # clone so we don't change the original order
+                steps.reverse()
+            else:
+                return currentpage
 
-        str_out = StringIO()
-        out = codecs.getwriter('utf-8')(str_out)
+            # find current  + next step
+            found = False
+            for s in steps:
+                if found:
+                    # check if this step is relevant
+                    if form.model.isGroupRelevant(s, form.data):
+                        # show the next or previous requested step
+                        # first clear the erros from this step (no alerts)
+                        if errors:
+                            children = [child.id for child in s.getRenderables()]
+                            error_list = errors.keys()
+                            error = set(children).intersection(set(error_list))
+                            for e in error:
+                                del errors[e]
+                        return s.id
+                    continue
+                if s.id == currentpage:
+                    found = True
+                    # only allow to go forward if current page has no errors
+                    if forward:
+                        children = [child.id for child in s.getRenderables()]
+                        error_list = errors and errors.keys() or []
+                        error = set(children).intersection(set(error_list))
+                        if error:
+                            return currentpage
 
-        self.renderer.renderBackMatter(form, out)
+            return currentpage
 
-        return out.getvalue()
 
-    def renderForm(self, form):
-
-        """ Render form content only """
-
-        str_out = StringIO()
-        out = codecs.getwriter('utf-8')(str_out)
-
-        for item in self.getRenderables():
-
-            self.renderer.render(form, item, out)
-
-        return out.getvalue()
-
-    def render(self, form, errors=None):
+    def render(self, form, errors=None, request=None):
 
         """ Render all (front, content and back) """
 
         str_out = StringIO()
         out = codecs.getwriter('utf-8')(str_out)
 
-        self.renderer.renderFrontMatter(form, out)
+        # find current page in case we have a multi-page form
+        currentpage = self.getNextPage(request, form, errors)
+
+        self.renderer.renderFrontMatter(form, out, errors, currentpage=currentpage)
 
         for item in self.getRenderables():
 
-            self.renderer.render(form, item, out, errors=errors)
+            self.renderer.render(form, item, out, errors=errors,
+                    request=request, currentpage=currentpage)
 
-        self.renderer.renderBackMatter(form, out)
+        self.renderer.renderBackMatter(form, out, errors, request)
 
         return out.getvalue()

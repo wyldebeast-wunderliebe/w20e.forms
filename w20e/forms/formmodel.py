@@ -46,7 +46,7 @@ class FormModel(object):
     def isGroupRelevant(self, group, data):
 
         """ Determine relevance of group. This is relevant if any nested
-        control is relevant """
+        controlled bind is relevant """
 
         for sub in group.getRenderables():
 
@@ -54,7 +54,7 @@ class FormModel(object):
                 if self.isGroupRelevant(sub, data):
                     return True
             else:
-                if self.isRelevant(sub.id, data):
+                if sub.bind and self.isRelevant(sub.bind, data):
                     return True
 
         return False

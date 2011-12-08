@@ -12,10 +12,7 @@ from w20e.forms.rendering.group import *
 from w20e.forms.rendering.renderables import *
 from w20e.forms.interfaces import IFormFactory
 from w20e.forms.registry import Registry
-import w20e.forms.submission
-from formfile import FormFile
 from zope.interface import implements
-import os
 
 
 class XMLFormFactory:
@@ -144,6 +141,7 @@ class XMLFormFactory:
         if cls == Text:
             ctrl = cls(child.get("id"),
                        child.text,
+                       bind=child.get("bind"),
                        **kwargs)
 
         elif cls.__name__ == "Hidden":

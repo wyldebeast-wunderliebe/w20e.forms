@@ -17,7 +17,7 @@ class HTMLRenderer(BaseRenderer):
 
         BaseRenderer.__init__(self, **kwargs)
 
-    def renderFrontMatter(self, form, out):
+    def renderFrontMatter(self, form, out, errors=None, **kwargs):
         """ Render whatever needs to be rendered before the actual form
         components """
 
@@ -25,9 +25,15 @@ class HTMLRenderer(BaseRenderer):
                 enctype="multipart/form-data">""" % \
                 getattr(form.submission, 'action', '')
         print >> out, """<input type="hidden" name="formprocess" value="1"/>"""
+
+        if 'currentpage' in kwargs:
+            currentpage = kwargs['currentpage']
+            print >> out, """<input type="hidden" name=\
+                    "w20e.forms.currentpage" value="%s"/>""" % currentpage
+
         print >> out, """<div class="alert"></div>"""
 
-    def renderBackMatter(self, form, out):
+    def renderBackMatter(self, form, out, errors=None, request=None):
 
         print >> out, "</form>"
 

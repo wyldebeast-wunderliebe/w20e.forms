@@ -7,7 +7,6 @@ from pyramidsession import PyramidSessionStorage
 from methodcall import MethodCall
 from none import NoSubmission
 
-
 Registry.register_submission('attr', AttrStorage)
 Registry.register_submission('attrs', AttrsStorage)
 Registry.register_submission('methodcall', MethodCall)

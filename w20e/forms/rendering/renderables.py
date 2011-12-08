@@ -55,10 +55,13 @@ class Hidden(Renderable):
 
 class Text(Renderable):
 
-    def __init__(self, id, text, **props):
+    def __init__(self, id, text, bind=None, **props):
 
         Renderable.__init__(self, id, **props)
         self.text = text
+        # it can sometime be usefull to have relevance for a text field
+        # so we need to set the bind here
+        self.bind = bind
 
 
 class Button(Renderable):
