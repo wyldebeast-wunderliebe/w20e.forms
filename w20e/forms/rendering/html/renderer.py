@@ -28,8 +28,9 @@ class HTMLRenderer(BaseRenderer):
 
         if 'currentpage' in kwargs:
             currentpage = kwargs['currentpage']
-            print >> out, """<input type="hidden" name=\
-                    "w20e.forms.currentpage" value="%s"/>""" % currentpage
+            output = """<input type="hidden" name=""" \
+                    """'w20e.forms.currentpage' value="%s"/>""" % currentpage
+            print >> out, output
 
         print >> out, """<div class="alert"></div>"""
 
