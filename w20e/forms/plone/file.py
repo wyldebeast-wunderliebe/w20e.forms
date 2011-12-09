@@ -23,7 +23,7 @@ class PloneFile(File):
         new_data = None
         if new_input:
             new_data = new_input.read()
-            new_input.seek(0)
+            new_input.seek(0)  # reset the pointer
 
         if data[self.id] == '1' and not new_data:
             raise "Skip this!"
@@ -33,7 +33,14 @@ class PloneFile(File):
         else:
             _file = data[self.id]
 
-        return {'data': _file.read(), 'name': _file.filename}
+        # if we don't have file data, return None
+        value = None
+
+        file_data = _file.read()
+        if file_data:
+            value = {'data': file_data, 'name': _file.filename}
+
+        return value
 
     def lexVal(self, value):
 

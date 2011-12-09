@@ -37,7 +37,7 @@ class AttrStorage(SubmissionBase):
         """ store in blob storage """
 
         # handle null data, don't use blob storage..
-        if not field.value:
+        if not field.value or not field.value['data']:
             storage[field.id] = None
         else:
             # we have data, store as blob
@@ -63,6 +63,7 @@ class AttrStorage(SubmissionBase):
                 datatype = props.getDatatype()
                 if datatype and datatype == 'file':
                     store_blob = True
+                    break
         return store_blob
 
     def submit(self, form, context, *args):
