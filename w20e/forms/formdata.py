@@ -22,7 +22,14 @@ class FormData(object):
 
         for field in self._fields.keys():
 
-            reprlist.append("%s: %s\n" % (field, self._fields[field].value))
+            value = self._fields[field].value
+
+            # small hack for fields that have a dict as value (files)
+            if isinstance(value, dict):
+                if 'name' in value:
+                    value = value['name']
+
+            reprlist.append("%s: %s\n" % (field, value))
 
         return "\n".join(reprlist)
 

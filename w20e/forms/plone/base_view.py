@@ -1,5 +1,3 @@
-from Globals import package_home
-from Acquisition import aq_inner
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.Five.browser import BrowserView
 
@@ -143,4 +141,4 @@ class FormBaseView(BrowserView):
 
     def store_form_context(self, form_context):
 
-        """ Override this function to store form context from an own source  """
+        """ Override this function to store form context from an own source """
