@@ -368,4 +368,62 @@ this, since most people have very specific needs, like a specific
 widget, a custom version of an input field, etc. The API facilitates
 in this by using a global registry to register extensions.
 
+The global registry is available like so:
+
+  >>> from w20e.forms.registry import Registry
+
+and offers a number of class methods to register stuff. 
+
 Let's for exampe register a new renderer for an input:
+
+
+Vocabularies
+------------
+
+w20e.forms enables use of vocabularies to limit possible answers to a
+given list. This is a feature that is generally used with select
+widgets. A vocabulary is a 'named' factory that creates a list of
+options. 
+
+Register like so:
+
+>>> def make_vocab():
+...   return [Option('0', 'Opt 0'), Option('1', 'Opt 1')]
+... Registry.register_vocab('foovocab', make_vocab)
+... sel = Select("select0", "Select me!", vocab=make_vocab,
+...   bind="field2", with_empty=True))
+
+
+Required, Relevant, Readonly
+----------------------------
+
+In a form you'll usually want to say things like: this control need
+only be shown whan the answer to that question is 'x', or that
+question is required whenever the answer to somethind else is 'y'.
+
+w20e.forms enables this using expressions. The epxressions are set as
+properties in variables, by their 'bind' attribute. So in the form
+model you may have a property set named 'req', that makes
+variable 'foo' required like so:
+
+  model.addFieldProperties(FieldProperties("req", ["foo"], required="True"))
+
+Obviously in general you want something a bit more flexible than that,
+like checking for other data that has been entered. All form data is
+made available to the expression within the 'data' variable, that is a
+dict. So checking upon some other variable, goes like this:
+
+  model.addFieldProperties(FieldProperties("req", ["foo"],
+    required="data['bar'] == 42"))
+
+So only if the answer to 'bar' is 42, 'foo' is required. Relevance,
+requiredness and readonly-ness all work like this.
+
+You may even add your own expression context to the engine, to call
+methods on objects, etc.
+
+Go like this, assuming your object is obj:
+
+>>> registry.register_expr_context('mycontext', obj)
+... model.addFieldProperties(FieldProperties("req", ["foo"],
+...   relevant="mycontext.some_method())

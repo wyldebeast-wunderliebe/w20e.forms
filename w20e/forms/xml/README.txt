@@ -53,6 +53,10 @@ Now let us create a factory class
       ...       <option value="3">Three</option>
       ...       <option value="4">Four</option>
       ...     </select>
+      ...     <select bind="bar" id="barctl3">
+      ...       <property name="vocab">some_vocab</property>
+      ...       <label>Bar3</label>
+      ...     </select>
       ...     <group layout="flow" id="groupie">
       ...       <label>GruppoSportivo</label>
       ...       <text id="txt">Moi</text>
@@ -64,6 +68,12 @@ Now let us create a factory class
       ...   </submission>
       ...
       ... </form>"""
+
+      We are using a vocab in the xml, so register it...
+      >>> from w20e.forms.registry import Registry
+      ... def some_vocab():
+      ...   return [Option(0, 0), Option(1, 1)]
+      ... Registry.register_vocab('some_vocab', some_vocab)
 
       >>> xmlff = XMLFormFactory(xml)
       >>> form = xmlff.create_form()
