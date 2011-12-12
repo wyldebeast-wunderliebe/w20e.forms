@@ -50,8 +50,9 @@ class formview(object):
         """ Render the form.
         """
 
-        return unicode(self.form.view.render(self.form, errors=errors),
-                "utf-8")
+        rendered = self.form.view.render(
+                self.form, errors=errors, request=self.request.params)
+        return unicode(rendered, "utf-8")
 
     def handle_form(self):
 
