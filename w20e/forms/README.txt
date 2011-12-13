@@ -67,8 +67,8 @@ so in the properties bound to foo:
 In general, all expressions are eval-ed to something true or
 false. The model offers the following properties:
 
-* requiredness: is a variable required or not?
-* relevance: is the variable relevant? Like maiden name would be irrelevant
+* required: is a variable required or not?
+* relevant: is the variable relevant? Like maiden name would be irrelevant
   when gender is male. In general, the related control/widget for irrelevant 
   variables would not be shown.
 * readonly: can a person change the value of a variable?

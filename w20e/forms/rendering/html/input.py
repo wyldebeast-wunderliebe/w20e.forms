@@ -16,18 +16,18 @@ class InputRenderer:
         try:
             value = form.getFieldValue(renderable.bind, lexical=True)
         except:
-            value = ''        
+            value = ''
 
         if renderable.rows > 1:
 
             print >> out, TEMPLATES['TEXTAREA'](
-                control=renderable, 
+                control=renderable,
                 value=value,
                 extra_classes=fmtmap['extra_classes']
                 )
         else:
             print >> out, TEMPLATES['INPUT'](
-                control=renderable, 
+                control=renderable,
                 value=value,
                 extra_classes=fmtmap['extra_classes']
                 )
