@@ -27,16 +27,10 @@ class FormContext(object):
         return data.get(name, default)
 
 
-class FormBaseView(BrowserView):
+class FormView(BrowserView):
     """ Base form for w20e.forms """
 
-    template = ViewPageTemplateFile('base_view.pt')
-
-    def __init__(self, context, request):
-        super(FormBaseView, self).__init__(context, request)
-
-        self.form = self.get_form()
-        self.form_context = self.get_form_context()
+    template = ViewPageTemplateFile('form.pt')
 
     def __call__(self):
 
@@ -56,6 +50,14 @@ class FormBaseView(BrowserView):
 
         return self.template(errors=errors, status=status)
 
+    @property
+    def form(self):
+        return self.get_form()
+
+    @property
+    def form_context(self):
+        return self.get_form_context()
+
     def render_form(self, errors=None):
 
         """ Render the view, using the context's form """
@@ -63,8 +65,7 @@ class FormBaseView(BrowserView):
         if not errors:
             errors = {}
 
-        rendered = self.form.view.render(
-                self.form, errors=errors, request=self.request)
+        rendered = self.form.view.render(self.form, errors=errors, request=self.request)
         return unicode(rendered, "utf-8")
 
     def handle_form(self):
@@ -73,6 +74,7 @@ class FormBaseView(BrowserView):
 
         form = self.form
         form_context = self.form_context
+
         self._process_data(form, form.view, self.request.form)
         status = 'processed'
         errors = {}
@@ -118,7 +120,7 @@ class FormBaseView(BrowserView):
         form_file = FormFile(self.form_xml)
         xml_ff = XMLFormFactory(form_file.filename)
         form = xml_ff.create_form(action="")
-        form_context = self.get_form_context()
+        form_context = self.form_context
 
         # We may have data already...
         try:
