@@ -30,7 +30,7 @@ class FormContext(object):
 class FormView(BrowserView):
     """ Base form for w20e.forms """
 
-    template = ViewPageTemplateFile('base_view.pt')
+    template = ViewPageTemplateFile('form.pt')
 
     def __call__(self):
 
