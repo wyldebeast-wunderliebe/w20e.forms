@@ -50,24 +50,30 @@ class FormBaseView(BrowserView):
 
         return self.template(errors=errors, status=status)
 
+    @property
+    def form(self):
+        return self.get_form()
+
+    @property
+    def form_context(self):
+        return self.get_form_context()
+
     def render_form(self, errors=None):
 
         """ Render the view, using the context's form """
 
-        form = self.get_form()
-
         if not errors:
             errors = {}
 
-        rendered = form.view.render(form, errors=errors, request=self.request)
+        rendered = self.form.view.render(self.form, errors=errors, request=self.request)
         return unicode(rendered, "utf-8")
 
     def handle_form(self):
 
         """ Handle the form. Override this method if you wish... """
 
-        form = self.get_form()
-        form_context = self.get_form_context()
+        form = self.form
+        form_context = self.form_context
 
         self._process_data(form, form.view, self.request.form)
         status = 'processed'
@@ -114,7 +120,7 @@ class FormBaseView(BrowserView):
         form_file = FormFile(self.form_xml)
         xml_ff = XMLFormFactory(form_file.filename)
         form = xml_ff.create_form(action="")
-        form_context = self.get_form_context()
+        form_context = self.form_context
 
         # We may have data already...
         try:
