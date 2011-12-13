@@ -27,7 +27,7 @@ class FormContext(object):
         return data.get(name, default)
 
 
-class FormBaseView(BrowserView):
+class FormView(BrowserView):
     """ Base form for w20e.forms """
 
     template = ViewPageTemplateFile('base_view.pt')

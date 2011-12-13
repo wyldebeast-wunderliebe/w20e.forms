@@ -1,3 +1,14 @@
+w20e.forms for Plone
+====================
+
+Basic forms
+-----------
+
+Needs more documentation, examples and tests... 
+
+
+Archetypes
+----------
 This directory contains classes needed to enable ATCT content to use the
 w20e.forms stuff. This is basically only a base class and a submission
 implementation.
