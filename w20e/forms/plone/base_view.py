@@ -32,12 +32,6 @@ class FormBaseView(BrowserView):
 
     template = ViewPageTemplateFile('base_view.pt')
 
-    def __init__(self, context, request):
-        super(FormBaseView, self).__init__(context, request)
-
-        self.form = self.get_form()
-        self.form_context = self.get_form_context()
-
     def __call__(self):
 
         """ The form posts to itself, so the call method handles the form,
@@ -60,19 +54,21 @@ class FormBaseView(BrowserView):
 
         """ Render the view, using the context's form """
 
+        form = self.get_form()
+
         if not errors:
             errors = {}
 
-        rendered = self.form.view.render(
-                self.form, errors=errors, request=self.request)
+        rendered = form.view.render(form, errors=errors, request=self.request)
         return unicode(rendered, "utf-8")
 
     def handle_form(self):
 
         """ Handle the form. Override this method if you wish... """
 
-        form = self.form
-        form_context = self.form_context
+        form = self.get_form()
+        form_context = self.get_form_context()
+
         self._process_data(form, form.view, self.request.form)
         status = 'processed'
         errors = {}
