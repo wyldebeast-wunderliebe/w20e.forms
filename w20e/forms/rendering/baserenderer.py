@@ -40,8 +40,8 @@ class BaseRenderer:
 
             try:
                 var = match.group()[2:-1]
-                renderable = form.view.getRenderableByBind(var)
-                return renderable.lexVal(form.data[var])
+                value = form.getFieldValue(var) or ''
+                return str(value) # TODO: propably utf-8 issues here..
             except:
                 return match.group()
 

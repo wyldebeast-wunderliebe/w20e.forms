@@ -43,7 +43,7 @@ TEMPLATES['STEPGROUP_NAV_SAVE'] ="""<li class="stepsnav save">
 </li>"""
 
 TEMPLATES['FLOWGROUP_TPL_HDR'] = """<fieldset id="%(id)s"
-  class="flow %(orientation)s %(extra_classes)s">
+  class="flow %(orientation)s %(extra_classes)s %(stepgroup_classes)s">
 <div class="legend">%(label)s</div>"""
 TEMPLATES['FLOWGROUP_TPL_FTR'] ="""</fieldset>"""
 

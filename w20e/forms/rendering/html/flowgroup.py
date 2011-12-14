@@ -12,7 +12,11 @@ class FlowGroupRenderer:
 
         """ Render flow group that flows horizontally or vertically """
 
-        print >> out, TEMPLATES['FLOWGROUP_TPL_HDR'] % renderer.createFormatMap(form, renderable, **kwargs)
+        params = renderer.createFormatMap(form, renderable, **kwargs)
+        if 'stepgroup_classes' not in params:
+            params['stepgroup_classes'] = ''
+
+        print >> out, TEMPLATES['FLOWGROUP_TPL_HDR'] % params
 
         for item in renderable.getRenderables():
 

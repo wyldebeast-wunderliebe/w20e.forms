@@ -121,9 +121,12 @@ class Form(object):
         value. If lexical is something true-ish, return lexical space
         value."""
 
+        calculate_found = False
+
         try:
-            val = val or self.model.getCalculate(name, self.data)
-            val = val or self.data.getField(name).value
+            (val, calculate_found) = self.model.getCalculate(name, self.data)
+            if not calculate_found:
+                val = self.data.getField(name).value
         except:
             pass
 
@@ -137,7 +140,7 @@ class Form(object):
             default = default or ''
 
             try:
-                if val is None:
+                if not calculate_found and val is None:
                     val = default
 
                 val = self.model.convert(name, val)

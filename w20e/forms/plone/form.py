@@ -6,14 +6,14 @@ from w20e.forms.xml.factory import XMLFormFactory
 from w20e.forms.form import FormValidationError
 
 
-class FormContext(object):
+class FormContext:
 
     """ An object that holds form data """
 
-    def __init__(self, attr_name="_DATA", defaults={}):
+    def __init__(self, attr_name="_DATA", defaults=None):
 
         self.attr_name = attr_name
-        self.formdefaults = defaults
+        self.formdefaults = defaults or {}
 
     def getFieldValue(self, name, default=None):
 

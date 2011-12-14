@@ -43,6 +43,22 @@ class FormModel(object):
 
         return self._bindings.get(binding, [FieldProperties("default", [])])
 
+    def getFieldValue(self, name, data):
+
+        """ Get the data field value calculated value."""
+
+        try:
+            (val, found) = self.getCalculate(name, data)
+            if not found:
+                val = data.getField(name).value
+        except:
+            pass
+
+        try:
+            return self.convert(name, val)
+        except:
+            return None
+
     def isGroupRelevant(self, group, data):
 
         """ Determine relevance of group. This is relevant if any nested
@@ -105,21 +121,21 @@ class FormModel(object):
         return False
 
     def getCalculate(self, field_id, data):
-
-        val = None
+        """ return a tuple with first param the calculated value
+        and the second param indicates whether a calculation has been found
+        """
 
         for props in self.getFieldProperties(field_id):
 
             try:
-                val = eval(props.getCalculate(), {"data": data},
+                val = eval(props.getCalculate(), {"data": data, "model": self},
                            Registry.funcs)
+                return (val, True)
+
             except:
                 pass
 
-            if val:
-                break
-
-        return val
+        return (None, False)
 
     def meetsConstraint(self, field_id, data):
 
@@ -177,7 +193,7 @@ class FormModel(object):
             if datatype and datatype != 'file':
 
                 try:
-                    return eval("%s('%s')" % (datatype, value))
+                    return eval("%s(%s)" % (datatype, value))
                 except:
                     return value
 
