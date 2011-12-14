@@ -20,6 +20,9 @@ class FlowGroupRenderer:
 
         for item in renderable.getRenderables():
 
+            params = kwargs
+            params['extra_classes'] = ""
+
             renderer.render(form, item, out, **kwargs)
 
         print >> out, TEMPLATES['FLOWGROUP_TPL_FTR']
