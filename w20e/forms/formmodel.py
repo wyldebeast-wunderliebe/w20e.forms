@@ -193,7 +193,7 @@ class FormModel(object):
             if datatype and datatype != 'file':
 
                 try:
-                    return eval("%s(%s)" % (datatype, value))
+                    return eval("%s(arg)" % datatype, {'arg': value})
                 except:
                     return value
 
