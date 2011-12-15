@@ -50,6 +50,8 @@ class BaseRenderer:
             fmtmap['label'] = VAREXP.sub(replaceVars, fmtmap['label'])
         if 'hint' in fmtmap:
             fmtmap['hint'] = VAREXP.sub(replaceVars, fmtmap['hint'])
+        if 'text' in fmtmap:
+            fmtmap['text'] = VAREXP.sub(replaceVars, fmtmap['text'])
 
         # defaults
         extra_classes = {'relevant': True, 'required': False,
