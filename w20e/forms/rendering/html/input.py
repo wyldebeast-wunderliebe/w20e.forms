@@ -22,12 +22,12 @@ class InputRenderer:
 
             print >> out, TEMPLATES['TEXTAREA'](
                 control=renderable,
-                value=value,
+                value=value.decode('utf-8'),
                 extra_classes=fmtmap['extra_classes']
                 )
         else:
             print >> out, TEMPLATES['INPUT'](
                 control=renderable,
-                value=value,
+                value=value.decode('utf-8'),
                 extra_classes=fmtmap['extra_classes']
                 )

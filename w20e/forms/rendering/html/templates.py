@@ -47,7 +47,7 @@ TEMPLATES['FLOWGROUP_TPL_HDR'] = """<fieldset id="%(id)s"
 <div class="legend">%(label)s</div>"""
 TEMPLATES['FLOWGROUP_TPL_FTR'] ="""</fieldset>"""
 
-TEMPLATES['TEXT_TPL'] = """<div class="text" id="%(id)s">%(text)s</div>"""
+TEMPLATES['TEXT_TPL'] = """<div class="text %(extra_classes)s" id="%(id)s">%(text)s</div>"""
 
 TEMPLATES['SELECT_ALL_HDR_TPL'] = """"""
 TEMPLATES['SELECT_ALL_FTR_TPL'] = """<input class="all" type="checkbox"
