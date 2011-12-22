@@ -21,11 +21,15 @@ TEMPLATES['HIDDEN'] = PageTemplateFile(
     find_file("templates/hidden.pt", __file__))
 
 TEMPLATES['CONTROL_HDR'] ="""<div id="%(id)s" class="control %(type)s %(extra_classes)s">
+<div class="control-info">
 <label class="control-label" for="input-%(id)s">%(label)s</label>
 <div class="alert">%(alert)s</div>
-<div class="hint">%(hint)s</div>"""
+<div class="hint">%(hint)s</div>
+</div><div class="control-widget">"""
+TEMPLATES['CONTROL_FTR'] ="""</div></div>"""
+
 TEMPLATES['CONTROL_HDR_PLAIN'] ="""<div id="%(id)s" class="control %(type)s %(extra_classes)s">"""
-TEMPLATES['CONTROL_FTR'] ="""</div>"""
+TEMPLATES['CONTROL_FTR_PLAIN'] ="""</div>"""
 
 TEMPLATES['CARDGROUP_TPL_HDR'] = """<fieldset id="%(id)s" class="cards %(extra_classes)s">
 <div class="legend">%(label)s</div>"""
