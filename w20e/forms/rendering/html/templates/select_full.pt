@@ -17,7 +17,6 @@
         <div class="clearer"></div>
       </div>
     </tal:repeat>
-    <div class="clearer"></div>
   </metal:fill-slot>
 
 </div>
