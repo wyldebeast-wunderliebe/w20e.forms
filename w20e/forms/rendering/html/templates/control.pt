@@ -2,12 +2,17 @@
 <metal:define-macro define-macro="control">
   <div id="${control.id}"
         class="control ${control.type} ${extra_classes}">
-    <label class="control-label" for="input-${control.id}">${control.label}</label>
-    <div class="alert">${control.alert}</div>
-    <div tal:condition="control.hint" class="hint">${control.hint}</div>
-    <div tal:condition="control.help" class="help">${control.help}</div>
 
-    <metal:define-slot define-slot="input"/>
+    <div class="control-info">
+      <label class="control-label" for="input-${control.id}">${control.label}</label>
+      <div class="alert">${control.alert}</div>
+      <div tal:condition="control.hint" class="hint">${control.hint}</div>
+      <div tal:condition="control.help" class="help">${control.help}</div>
+    </div>
+
+    <div class="control-widget">
+        <metal:define-slot define-slot="input"/>
+    </div>
 
   </div>
 </metal:define-macro>
