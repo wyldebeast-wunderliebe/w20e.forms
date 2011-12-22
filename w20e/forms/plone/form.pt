@@ -11,7 +11,7 @@
     <metal:main fill-slot="main">
       <tal:main-macro metal:define-macro="main">
 
-        <div tal:replace="structure python: view.render_form(errors=options['errors'])"/>
+        <form tal:replace="structure python: view.render_form(errors=options['errors'])"/>
 
       </tal:main-macro>
     </metal:main>
