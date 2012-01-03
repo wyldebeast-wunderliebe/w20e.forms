@@ -15,6 +15,9 @@ class InputRenderer:
 
         try:
             value = form.getFieldValue(renderable.bind, lexical=True)
+            # TODO: not sure about this string conversion..
+            if not isinstance(value, str):
+                value = str(value)
         except:
             value = ''
 
