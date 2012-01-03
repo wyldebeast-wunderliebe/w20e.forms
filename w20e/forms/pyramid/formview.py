@@ -203,7 +203,9 @@ class formview(object):
             root.appendChild(command)
 
         # Print our newly created XML
-        return doc.toprettyxml(indent="  ")
+        results = doc.toprettyxml(indent="  ")
+        # can't return unicode to the XML renderer apparently..
+        return results.encode('utf-8')
 
 
 class xmlformview(formview):
