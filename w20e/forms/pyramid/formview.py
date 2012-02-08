@@ -28,11 +28,15 @@ class formview(object):
         self.form = form
 
         # vocabs
-        for method in getmembers(context, ismethod):
+        # TODO: Now really...
+        #for method in getmembers(context, ismethod):
 
-            if getattr(method[1], "__vocab__", False):
+        #    try:
+        #        if getattr(method[1], "__vocab__", False):
 
-                Registry.register_vocab(method[0], method[1])
+        #            Registry.register_vocab(method[0], method[1])
+        #    except:
+        #        pass
 
         if retrieve_data:
             try:
