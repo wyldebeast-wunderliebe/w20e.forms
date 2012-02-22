@@ -48,8 +48,15 @@ class AttrStorage(SubmissionBase):
             f.close()
             storage[field.id] = container
 
-    def _retrieve_blob(self, storage, field_id):
+    def _retrieve_blob(self, context, storage, field_id):
         data = storage.get(field_id)
+
+        # check for non-blob storage file, and migrate on-the-fly if necessary
+        if isinstance(data['data'], str):
+            self._migrate_blob(storage, field_id)
+            context._p_changed = 1  # trigger update
+            data = storage.get(field_id)
+
         if data:
             container = {}
             container['name'] = data['name']
@@ -88,6 +95,16 @@ class AttrStorage(SubmissionBase):
 
             context._p_changed = 1
 
+    def _migrate_blob(self, storage, field_id):
+        """ migrate simple attrstorage files to blobstorage """
+        field = Field(field_id, storage.get(field_id))
+        container = {'name': None, 'data': Blob()}
+        container['name'] = field.value['name']
+        f = container['data'].open('w')
+        f.write(field.value['data'])
+        f.close()
+        storage[field.id] = container
+
     def retrieve(self, form, context, *args):
         """ Restore data. """
 
@@ -98,7 +115,7 @@ class AttrStorage(SubmissionBase):
         for field_id in form.data.getFields():
             store_blob = self._use_blobstorage(form, field_id)
             if store_blob:
-                data.addField(Field(field_id, self._retrieve_blob(storage,
+                data.addField(Field(field_id, self._retrieve_blob(context, storage,
                     field_id)))
             else:
                 data.addField(Field(field_id, storage.get(field_id)))
