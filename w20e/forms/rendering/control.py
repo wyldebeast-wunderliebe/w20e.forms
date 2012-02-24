@@ -68,6 +68,11 @@ class RichText(Control):
     """ Base input """
 
 
+class PloneRichText(Control):
+
+    """ Richt Text for Plone """
+
+
 class ColorPicker(Input):
 
     """ Whatever... """
@@ -106,7 +111,6 @@ class Select(Control):
 
         self._options = self._options + options[:]
 
-
     def lexVal(self, value):
 
         """ Lexical value of select should return the label of the
@@ -139,8 +143,9 @@ class Range(Select):
     def __init__(self, control_id, label, bind=None, start=0,
                  end=0, step=1, reverse=False, **properties):
 
-        opts = [Option(i, str(i)) for i in range(int(start), int(end), int(step))]
-	if reverse:
+        opts = [Option(i, str(i)) for i in range(int(start),
+            int(end), int(step))]
+        if reverse:
             opts.reverse()
 
         Select.__init__(self, control_id, label, options=opts,
