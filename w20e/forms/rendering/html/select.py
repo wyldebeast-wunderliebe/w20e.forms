@@ -25,7 +25,6 @@ class SelectRenderer:
             opts = renderable.options
 
         value = form.data[renderable.bind]
-
         if renderable.format == "full":
 
             print >> out, TEMPLATES['SELECT_FULL'](
@@ -41,6 +40,7 @@ class SelectRenderer:
                 control=renderable, 
                 value=value,
                 options=opts,
+                multiple=fmtmap['multiple'],
                 extra_classes=fmtmap['extra_classes']
                 )
 
