@@ -60,7 +60,7 @@ class AttrStorage(SubmissionBase):
         if data:
             container = {}
             container['name'] = data['name']
-            container['data'] = data['data'].open('r').read()
+            container['data'] = data['data']
             return container
 
     def _use_blobstorage(self, form, field_id):
