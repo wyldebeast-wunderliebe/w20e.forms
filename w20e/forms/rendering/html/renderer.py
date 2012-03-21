@@ -23,7 +23,7 @@ class HTMLRenderer(BaseRenderer):
 
         print >> out, """<form class="w20e-form" method="post" action="%s" \
                 enctype="multipart/form-data">""" % \
-                getattr(form.submission, 'action', '')
+                getattr(form.submission, 'action', kwargs.get('action', ''))
         print >> out, """<input type="hidden" name="formprocess" value="1"/>"""
 
         if 'currentpage' in kwargs:
@@ -34,7 +34,7 @@ class HTMLRenderer(BaseRenderer):
 
         print >> out, """<div class="alert"></div>"""
 
-    def renderBackMatter(self, form, out, errors=None, request=None):
+    def renderBackMatter(self, form, out, errors=None, request=None, **opts):
 
         print >> out, "</form>"
 

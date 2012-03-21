@@ -70,43 +70,12 @@ class FormView(RenderableContainer):
         RenderableContainer.__init__(self)
         self.renderer = renderer(**renderOpts)
 
-#    def renderFrontMatter(self, form):
-#
-#        """ Render form front matter """
-#
-#        str_out = StringIO()
-#        out = codecs.getwriter('utf-8')(str_out)
-#
-#        self.renderer.renderFrontMatter(form, out)
-#
-#        return out.getvalue()
-
-#    def renderBackMatter(self, form):
-#
-#        """ Render form back matter... """
-#
-#        str_out = StringIO()
-#        out = codecs.getwriter('utf-8')(str_out)
-#
-#        self.renderer.renderBackMatter(form, out)
-#
-#        return out.getvalue()
-
-#    def renderForm(self, form):
-#
-#        """ Render form content only """
-#
-#        str_out = StringIO()
-#        out = codecs.getwriter('utf-8')(str_out)
-#
-#        for item in self.getRenderables():
-#
-#            self.renderer.render(form, item, out)
-#
-#        return out.getvalue()
-
     def getNextPage(self, request, form, errors):
         """ find the next active page """
+
+        if not request:
+            return None
+
         forward = request.get('submit.next', None)
         backward = request.get('submit.previous', None)
         currentpage = request.get('w20e.forms.currentpage', None)
@@ -161,7 +130,7 @@ class FormView(RenderableContainer):
             return currentpage
 
 
-    def render(self, form, errors=None, request=None):
+    def render(self, form, errors=None, request=None, **opts):
 
         """ Render all (front, content and back) """
 
@@ -171,13 +140,14 @@ class FormView(RenderableContainer):
         # find current page in case we have a multi-page form
         currentpage = self.getNextPage(request, form, errors)
 
-        self.renderer.renderFrontMatter(form, out, errors, currentpage=currentpage)
+        self.renderer.renderFrontMatter(form, out, errors,
+                                        currentpage=currentpage, **opts)
 
         for item in self.getRenderables():
 
             self.renderer.render(form, item, out, errors=errors,
                     request=request, currentpage=currentpage)
 
-        self.renderer.renderBackMatter(form, out, errors, request)
+        self.renderer.renderBackMatter(form, out, errors, request, **opts)
 
         return out.getvalue()

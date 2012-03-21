@@ -47,17 +47,17 @@ class XMLFormFactory:
             tree = etree.parse(self.xml)
             root = tree.getroot()
 
-        model = self.create_model(root.find("model"))
+        model = self.create_model(root.find("model"), **opts)
 
-        data = self.create_data(root.find("data"), model)
+        data = self.create_data(root.find("data"), model, **opts)
 
-        view = self.create_view(root.find("view"))
+        view = self.create_view(root.find("view"), **opts)
 
         submission = self.create_submission(root.find("submission"))
 
         return Form(root.get("id"), data, model, view, submission)
 
-    def create_data(self, root, model):
+    def create_data(self, root, model, **opts):
 
         """ Create FormData instance """
 
@@ -80,7 +80,7 @@ class XMLFormFactory:
 
         return data
 
-    def create_model(self, root):
+    def create_model(self, root, **opts):
 
         """ Create the form model. """
 
@@ -105,7 +105,7 @@ class XMLFormFactory:
 
         return model
 
-    def create_view(self, root):
+    def create_view(self, root, **opts):
 
         """ Create renderable part """
 
