@@ -85,8 +85,8 @@ class FormModel(object):
         for props in self.getFieldProperties(field_id):
 
             try:
-                if not eval(props.getRelevant(), {"data": data},
-                            Registry.funcs):
+                if not eval(props.getRelevant(), {"data": data, "model": self},
+                        Registry.funcs):
                     return False
             except:
                 return True
@@ -98,7 +98,7 @@ class FormModel(object):
         for props in self.getFieldProperties(field_id):
 
             try:
-                if eval(props.getRequired(), {"data": data},
+                if eval(props.getRequired(), {"data": data, "model": self},
                         Registry.funcs):
 
                     return True
@@ -112,7 +112,8 @@ class FormModel(object):
         for props in self.getFieldProperties(field_id):
 
             try:
-                if eval(props.getReadonly(), {"data": data}, Registry.funcs):
+                if eval(props.getReadonly(), {"data": data, "model": self},
+                        Registry.funcs):
 
                     return True
             except:
@@ -144,8 +145,8 @@ class FormModel(object):
         for props in self.getFieldProperties(field_id):
 
             try:
-                if not eval(props.getConstraint(), {"data": data},
-                            Registry.funcs):
+                if not eval(props.getConstraint(), {"data": data,
+                    "model": self}, Registry.funcs):
 
                     meets = False
             except:

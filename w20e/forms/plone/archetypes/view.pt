@@ -15,7 +15,7 @@
     <metal:main fill-slot="main">
       <tal:main-macro metal:define-macro="main">
 
-        <div tal:replace="structure context/render"/>
+        <form tal:replace="structure context/render"/>
 
       </tal:main-macro>
     </metal:main>

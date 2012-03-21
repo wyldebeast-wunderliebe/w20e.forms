@@ -104,4 +104,5 @@ class BaseRenderer:
                 extra_classes.keys() if extra_classes[key]])
 
         fmtmap['type'] = self.getType(renderable)
+
         return fmtmap

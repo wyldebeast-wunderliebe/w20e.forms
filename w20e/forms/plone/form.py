@@ -65,7 +65,8 @@ class FormView(BrowserView):
         if not errors:
             errors = {}
 
-        rendered = self.form.view.render(self.form, errors=errors, request=self.request)
+        rendered = self.form.view.render(self.form, errors=errors,
+                request=self.request, context=self.context)
         return unicode(rendered, "utf-8")
 
     def handle_form(self):

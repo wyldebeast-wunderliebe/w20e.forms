@@ -96,7 +96,7 @@ class FormView(RenderableContainer):
                 pass  # default action
             elif backward:
                 # clone the steps, and reverse them
-                steps = steps[:] # clone so we don't change the original order
+                steps = steps[:]  # clone so we don't change the original order
                 steps.reverse()
             else:
                 return currentpage
@@ -110,7 +110,8 @@ class FormView(RenderableContainer):
                         # show the next or previous requested step
                         # first clear the erros from this step (no alerts)
                         if errors:
-                            children = [child.id for child in s.getRenderables()]
+                            children = [
+                                    child.id for child in s.getRenderables()]
                             error_list = errors.keys()
                             error = set(children).intersection(set(error_list))
                             for e in error:
@@ -129,8 +130,7 @@ class FormView(RenderableContainer):
 
             return currentpage
 
-
-    def render(self, form, errors=None, request=None, **opts):
+    def render(self, form, errors=None, request=None, context=None, **opts):
 
         """ Render all (front, content and back) """
 
@@ -146,7 +146,7 @@ class FormView(RenderableContainer):
         for item in self.getRenderables():
 
             self.renderer.render(form, item, out, errors=errors,
-                    request=request, currentpage=currentpage)
+                    request=request, currentpage=currentpage, context=context)
 
         self.renderer.renderBackMatter(form, out, errors, request, **opts)
 

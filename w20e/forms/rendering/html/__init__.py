@@ -14,6 +14,7 @@ from stepgroup import StepGroupRenderer
 from submit import SubmitRenderer
 from cancel import CancelRenderer
 from richtext import RichTextRenderer
+
 from file import FileRenderer
 from table import TableRenderer
 
@@ -27,6 +28,12 @@ Registry.register_renderer("table", "html", TableRenderer)
 Registry.register_renderer("file", "html", FileRenderer)
 Registry.register_renderer("checkbox", "html", CheckboxRenderer)
 Registry.register_renderer("richtext", "html", RichTextRenderer)
+try:
+    from plonerichtext import PloneRichTextRenderer
+    Registry.register_renderer("plonerichtext", "html", PloneRichTextRenderer)
+except:
+    ##No Plone available!
+    pass
 Registry.register_renderer("select", "html", SelectRenderer)
 Registry.register_renderer("range", "html", SelectRenderer)
 Registry.register_renderer("flowgroup", "html", FlowGroupRenderer)

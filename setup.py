@@ -11,7 +11,7 @@ def read(f):
 
 version = read(os.path.join('w20e', 'forms', 'version.txt')).strip()
 long_descr = ".. contents:: Table of Contents\n\n" + \
-    read(os.path.join('w20e', 'forms', 'README.txt')) + '\n\n' + \
+    read(os.path.join('README.txt')) + '\n\n' + \
     read(os.path.join('w20e', 'forms', 'xml', 'README.txt')) + '\n\n' + \
     read(os.path.join('w20e', 'forms', 'pyramid', 'README.txt'))
 
