@@ -48,7 +48,7 @@ class EmailSubmission(SubmissionBase):
                 text.append("%s: %s" % (field,
                                         form.getFieldValue(field,
                                                            default=data[field],
-                                                           lexical=True))
+                                                           lexical=True)))
 
             else:
 
