@@ -49,13 +49,14 @@ class formview(object):
             for key in defaults.keys():
                 self.form.data.getField(key).value = defaults[key]
 
-    def renderform(self, errors=None):
+    def renderform(self, errors=None, status=None):
 
         """ Render the form.
         """
 
         rendered = self.form.view.render(
-                self.form, errors=errors, request=self.request.params)
+            self.form, errors=errors, status=status,
+            request=self.request.params)
         return unicode(rendered, "utf-8")
 
     def handle_form(self):

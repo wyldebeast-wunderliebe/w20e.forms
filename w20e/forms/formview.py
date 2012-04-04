@@ -130,7 +130,7 @@ class FormView(RenderableContainer):
 
             return currentpage
 
-    def render(self, form, errors=None, request=None, context=None, **opts):
+    def render(self, form, errors=None, status=None, request=None, context=None, **opts):
 
         """ Render all (front, content and back) """
 

@@ -45,7 +45,10 @@ class EmailSubmission(SubmissionBase):
             
             if not self.isFile(field, model):
 
-                text.append("%s: %s" % (field, data[field]))
+                text.append("%s: %s" % (field,
+                                        form.getFieldValue(field,
+                                                           default=data[field],
+                                                           lexical=True))
 
             else:
 
