@@ -40,13 +40,16 @@ class AttrStorage(SubmissionBase):
         if not field.value or not field.value['data']:
             storage[field.id] = None
         else:
-            # we have data, store as blob
-            container = storage.get(field.id) or {'name': None, 'data': Blob()}
-            container['name'] = field.value['name']
-            f = container['data'].open('w')
-            f.write(field.value['data'])
-            f.close()
-            storage[field.id] = container
+            # only if we get raw filedata store it in a blob..
+            #if it's already a blob,it hasn't changed, so no need to store
+            if isinstance(field.value['data'], str):
+                # we have data, store as Blob
+                container = storage.get(field.id) or {'name': None, 'data': Blob()}
+                container['name'] = field.value['name']
+                f = container['data'].open('w')
+                f.write(field.value['data'])
+                f.close()
+                storage[field.id] = container
 
     def _retrieve_blob(self, context, storage, field_id):
         data = storage.get(field_id)
@@ -85,7 +88,6 @@ class AttrStorage(SubmissionBase):
         # store fields, and check for blobs
         for field_id in form.data.getFields():
             field = form.data.getField(field_id)
-
             store_blob = self._use_blobstorage(form, field_id)
 
             if store_blob:
