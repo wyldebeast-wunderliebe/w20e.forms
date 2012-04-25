@@ -55,7 +55,7 @@ class AttrStorage(SubmissionBase):
         data = storage.get(field_id)
 
         # check for non-blob storage file, and migrate on-the-fly if necessary
-        if isinstance(data['data'], str):
+        if data and isinstance(data['data'], str):
             self._migrate_blob(storage, field_id)
             context._p_changed = 1  # trigger update
             data = storage.get(field_id)
