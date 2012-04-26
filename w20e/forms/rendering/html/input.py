@@ -16,21 +16,21 @@ class InputRenderer:
         try:
             value = form.getFieldValue(renderable.bind, lexical=True)
             # TODO: not sure about this string conversion..
-            if not isinstance(value, str):
-                value = str(value)
+            if not isinstance(value, unicode):
+                value = value.decode('utf-8')
         except:
-            value = ''
+            value = u''
 
         if renderable.rows > 1:
 
             print >> out, TEMPLATES['TEXTAREA'](
                 control=renderable,
-                value=value.decode('utf-8'),
+                value=value,
                 extra_classes=fmtmap['extra_classes']
                 )
         else:
             print >> out, TEMPLATES['INPUT'](
                 control=renderable,
-                value=value.decode('utf-8'),
+                value=value,
                 extra_classes=fmtmap['extra_classes']
                 )
