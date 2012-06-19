@@ -26,6 +26,7 @@ TEMPLATES['CONTROL_HDR'] ="""<div id="%(id)s" class="control %(type)s %(extra_cl
 <div class="alert">%(alert)s</div>
 <div class="hint">%(hint)s</div>
 </div><div class="control-widget">"""
+
 TEMPLATES['CONTROL_FTR'] ="""</div></div>"""
 
 TEMPLATES['CONTROL_HDR_PLAIN'] ="""<div id="%(id)s" class="control %(type)s %(extra_classes)s">"""
@@ -47,7 +48,7 @@ TEMPLATES['STEPGROUP_NAV_SAVE'] ="""<li class="stepsnav save">
 </li>"""
 
 TEMPLATES['FLOWGROUP_TPL_HDR'] = """<fieldset id="%(id)s"
-  class="flow %(orientation)s %(extra_classes)s %(stepgroup_classes)s">
+class="flow %(orientation)s %(extra_classes)s %(stepgroup_classes)s">
 <div class="legend">%(label)s</div>"""
 TEMPLATES['FLOWGROUP_TPL_FTR'] ="""</fieldset>"""
 
@@ -62,27 +63,23 @@ TEMPLATES['SELECT_HDR_TPL'] = """<select id="input-%(id)s" name="%(id)s" %(multi
 TEMPLATES['SELECT_FTR_TPL'] = """</select>"""
 
 TEMPLATES['CHECK_TPL'] = """<input type="hidden" value="" name="%(id)s"/><input type="checkbox" id="input-%(id)s" value="%(value)s"
-  %(checked)s
-  name="%(id)s"/><label class="after"
-  for="input-%(id)s">%(label)s</label><br/>"""
+%(checked)s
+name="%(id)s"/><label class="after"
+for="input-%(id)s">%(label)s</label><br/>"""
 
 TEMPLATES['RADIO_TPL'] = """<input type="radio" id="input-%(id)s-%(value)s" value="%(value)s"
-  %(checked)s
-  name="%(id)s"/><label class="after"
-  for="input-%(id)s-%(value)s">%(label)s</label>"""
+%(checked)s
+name="%(id)s"/><label class="after"
+for="input-%(id)s-%(value)s">%(label)s</label>"""
 
 TEMPLATES['OPTION_TPL'] = """<option value="%(value)s" %(selected)s>%(label)s</option>"""
 
 TEMPLATES['COLORPICKER_TPL'] = """<input id="input-%(id)s" type="text"
-  name="%(id)s" value="%(value)s"/><div class="colorpicker"></div>"""
+name="%(id)s" value="%(value)s"/><div class="colorpicker"></div>"""
 
-TEMPLATES['SUBMIT_TPL'] = """<div id="%(id)s" class="control %(type)s %(extra_classes)s">
-<input type="submit" name="%(name)s" value="%(label)s"/>
-</div>"""
+TEMPLATES['SUBMIT_TPL'] = PageTemplateFile(find_file("templates/submit.pt", __file__))
 
-TEMPLATES['CANCEL_TPL'] = """<div id="%(id)s" class="control %(type)s %(extra_classes)s">
-<input type="submit" name="cancel" id="%(id)s" value="%(label)s"/>
-</div>"""
+TEMPLATES['CANCEL_TPL'] = PageTemplateFile(find_file("templates/cancel.pt", __file__))
 
 TEMPLATES['RICHTEXT_TPL'] = """<textarea id="input-%(id)s"
   cols="%(cols)s"

@@ -1,0 +1,3 @@
+<div id="${control.id}" class="control ${control.type} ${extra_classes}">
+  <input type="submit" name="submit" value="${control.label}"/>
+</div>

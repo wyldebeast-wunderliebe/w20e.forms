@@ -13,4 +13,7 @@ class SubmitRenderer:
         if 'name' not in fmtmap:
             fmtmap['name'] = 'submit'  # default name
 
-        print >> out, TEMPLATES['SUBMIT_TPL'] % fmtmap
+        print >> out, TEMPLATES['SUBMIT_TPL'](
+            control=renderable,
+            extra_classes=fmtmap['extra_classes']
+            )
