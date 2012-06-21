@@ -1,4 +1,4 @@
-from templates import TEMPLATES
+from templates import get_template
 from w20e.forms.rendering.interfaces import IControlRenderer
 from zope.interface import implements
 

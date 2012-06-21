@@ -1,9 +1,7 @@
-from templates import TEMPLATES
+from templates import get_template
 from w20e.forms.rendering.interfaces import IControlRenderer
 from zope.interface import implements
 
-
-PWD_TPL = """<input id="input-%(id)s" type="password" name="%(id)s" value="%(value)s" size="%(cols)s"/>"""
 
 class PasswordRenderer:
 
@@ -16,7 +14,9 @@ class PasswordRenderer:
         fmtmap = renderer.createFormatMap(form, renderable, **kwargs)
 
         fmtmap['value'] = "*****"
+
+        print >> out, get_template('password')(
+            control=renderable,
+            **fmtmap
+            )
             
-        print >> out, TEMPLATES['CONTROL_HDR'] % fmtmap
-        print >> out, PWD_TPL % fmtmap
-        print >> out, TEMPLATES['CONTROL_FTR'] % fmtmap

@@ -1,0 +1,19 @@
+<fieldset id="${group.id}"
+          class="steps ${group.orientation} ${extra_classes}">
+  <legend tal:condition="group.label">${group.label}</legend>
+
+  <ul class="stepsnav">
+    <li class="stepsnav previous disabled"></li>
+
+    <tal:repeat repeat="step steps">
+      <li class="${step.class}" id="step-${step.id}">${step.label}</li>
+    </tal:repeat>
+
+    <li class="stepsnav next"></li>
+    <li class="stepsnav save">
+      <input type="submit" value=""/>
+    </li>
+  </ul>
+
+  <tal:replace replace="structure: content" />
+</fieldset>

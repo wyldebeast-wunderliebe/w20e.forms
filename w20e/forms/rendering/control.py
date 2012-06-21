@@ -68,11 +68,6 @@ class RichText(Control):
     """ Base input """
 
 
-class PloneRichText(Control):
-
-    """ Richt Text for Plone """
-
-
 class Option:
 
     def __init__(self, value, label):
@@ -146,72 +141,3 @@ class Range(Select):
         Select.__init__(self, control_id, label, options=opts,
                         bind=bind, **properties)
 
-
-class SelectAll(Select):
-
-    """ Select including 'all' option """
-
-
-class Table(Input):
-
-    """ Table input with fixed columns, but free number of rows """
-
-    def processInput(self, data=None):
-
-        """ Base implementation """
-
-        if not data:
-            data = {}
-
-        res = []
-
-        keys = sorted([key for key in data.keys() if key.startswith(self.id)])
-
-        table = {}
-
-        for key in keys:
-
-            try:
-                row = int(key[-3:-2])
-                col = int(key[-1])
-
-                table[(row, col)] = data[key]
-            except:
-                pass
-
-        return table
-
-    def lexVal(self, value):
-
-        val = ["<table><thead><th>Description</th>\
-                <th>Amount</th></thead><tbody>"]
-
-        for row in range(int(self.rows)):
-
-            val.append("<tr>")
-
-            for col in range(int(self.cols)):
-
-                cell_value = ''
-
-                try:
-                    cell_value = value.get((row, col), '')
-                except:
-                    pass
-
-                val.append("<td>%s</td>" % cell_value)
-
-            val.append("<tr>")
-        val.append("</tbody></table>")
-
-        return "".join(val)
-
-
-class Date(Input):
-    """ Date input. probably needs javascript to make it usefull """
-
-    def __init__(self, id, label, **props):
-
-        defaults = {'rows': 1, 'cols': 10}
-        defaults.update(props)
-        Input.__init__(self, id, label, **defaults)
