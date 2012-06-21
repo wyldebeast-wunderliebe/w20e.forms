@@ -1,4 +1,6 @@
-from templates import TEMPLATES
+from StringIO import StringIO
+import codecs
+from templates import get_template
 from w20e.forms.rendering.interfaces import IControlRenderer
 from zope.interface import implements
 
@@ -9,21 +11,18 @@ class FlowGroupRenderer:
 
     def render(self, renderer, form, renderable, out, **kwargs):
 
-
         """ Render flow group that flows horizontally or vertically """
 
-        params = renderer.createFormatMap(form, renderable, **kwargs)
-        if 'stepgroup_classes' not in params:
-            params['stepgroup_classes'] = ''
+        fmtmap = renderer.createFormatMap(form, renderable, **kwargs)
 
-        print >> out, TEMPLATES['FLOWGROUP_TPL_HDR'] % params
+        str_out = StringIO()
+        sub_out = codecs.getwriter('utf-8')(str_out)
 
-        for item in renderable.getRenderables():
+        for sub_renderable in renderable.getRenderables():
+            renderer.render(form, sub_renderable, sub_out, **kwargs)
 
-            params = kwargs.copy()
-            if 'extra_classes' in params:
-                del params['extra_classes']
-
-            renderer.render(form, item, out, **params)
-
-        print >> out, TEMPLATES['FLOWGROUP_TPL_FTR']
+        print >> out, get_template('flowgroup')(
+            group=renderable,
+            content=sub_out.getvalue(),
+            extra_classes=fmtmap['extra_classes']
+            )

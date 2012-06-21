@@ -150,6 +150,7 @@ class XMLFormFactory:
                        **kwargs)
 
         elif cls == Submit:
+
             ctrl = cls(child.get("id"),
                        child.find("label").text,
                        **kwargs)

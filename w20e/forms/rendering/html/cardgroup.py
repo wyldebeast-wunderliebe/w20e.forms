@@ -9,17 +9,18 @@ class CardGroupRenderer:
 
     def render(self, renderer, form, renderable, out, **kwargs):
 
-        print >> out, TEMPLATES['CARDGROUP_TPL_HDR'] % renderer.createFormatMap(form, renderable, **kwargs)
+        fmtmap = renderer.createFormatMap(form, renderable, **kwargs)
 
-        print >> out, """<div class="tabs">"""
+        str_out = StringIO()
+        sub_out = codecs.getwriter('utf-8')(str_out)
 
-        for item in renderable.getRenderables():
-            print >> out, """<div class="tab" id="tab-%s">%s</div>""" % (item.id, item.label)
+        for sub_renderable in renderable.getRenderables():
+            print >> sub_out, """<div class="tab" id="tab-%s">%s</div>""" % (sub_renderable.id, sub_renderable.label)
+            renderer.render(form, sub_renderable, sub_out, **kwargs)
+            print >> sub_out, "</div>"
 
-        print >> out, "</div>"
-        
-        for item in renderable.getRenderables():        
-
-            renderer.render(form, item, out, extra_classes="card", **kwargs)
-
-        print >> out, TEMPLATES['CARDGROUP_TPL_FTR']
+        print >> out, get_template('cardgroup')(
+            group=renderable,
+            content=sub_out.getvalue(),
+            extra_classes=fmtmap['extra_classes']
+            )

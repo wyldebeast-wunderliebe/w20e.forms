@@ -1,7 +1,6 @@
-from templates import TEMPLATES
+from templates import get_template
 from w20e.forms.rendering.interfaces import IControlRenderer
 from zope.interface import implements
-
 
 
 class RichTextRenderer:
@@ -24,6 +23,6 @@ class RichTextRenderer:
         if not 'cols' in fmtmap:
             fmtmap['cols'] = '30'
 
-        print >> out, TEMPLATES['CONTROL_HDR'] % fmtmap    
-        print >> out, TEMPLATES['RICHTEXT_TPL'] % fmtmap
-        print >> out, TEMPLATES['CONTROL_FTR'] % fmtmap
+        print >> out, get_template('richtext')(
+            control=renderable,
+            **fmtmap)

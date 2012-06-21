@@ -1,6 +1,6 @@
 from w20e.forms.rendering.interfaces import IControlRenderer
 from zope.interface import implements
-from templates import TEMPLATES
+from templates import get_template
 
 
 class HiddenRenderer:
@@ -18,8 +18,7 @@ class HiddenRenderer:
         except:
             value = ""
     
-        print >> out, TEMPLATES['HIDDEN'](control=renderable, 
-                                          value=value,
-                                          extra_classes=fmtmap['extra_classes']
-                                          )
-
+        print >> out, get_template('hidden')(
+            control=renderable, 
+            value=value,
+            extra_classes=fmtmap['extra_classes'])

@@ -1,0 +1,5 @@
+<div metal:use-macro="load: control.pt">
+
+  <input type="checkbox" id="input-${control.id}" value="${value}"
+         ${checked} name="${control.id}" />
+</div>

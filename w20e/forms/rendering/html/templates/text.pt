@@ -1,0 +1,4 @@
+<div class="text %(extra_classes)s" id="${control.id}">
+  <tal:replace replace="structure control.text" />
+</div>
+

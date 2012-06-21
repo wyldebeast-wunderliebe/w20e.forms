@@ -1,6 +1,6 @@
 from w20e.forms.rendering.interfaces import IControlRenderer
 from zope.interface import implements
-from templates import TEMPLATES
+from templates import get_template
 
 
 class InputRenderer:
@@ -23,14 +23,12 @@ class InputRenderer:
 
         if renderable.rows > 1:
 
-            print >> out, TEMPLATES['TEXTAREA'](
-                control=renderable,
-                value=value,
-                extra_classes=fmtmap['extra_classes']
-                )
+            tpl = get_template("textarea")
         else:
-            print >> out, TEMPLATES['INPUT'](
-                control=renderable,
-                value=value,
-                extra_classes=fmtmap['extra_classes']
-                )
+            tpl = get_template("input")
+            
+        print >> out, tpl(
+            control=renderable,
+            value=value,
+            extra_classes=fmtmap['extra_classes']
+            )

@@ -1,4 +1,4 @@
-from templates import TEMPLATES
+from templates import get_template
 from w20e.forms.rendering.interfaces import IControlRenderer
 from zope.interface import implements
 from w20e.forms.registry import Registry
@@ -27,7 +27,7 @@ class SelectRenderer:
         value = form.data[renderable.bind]
         if renderable.format == "full":
 
-            print >> out, TEMPLATES['SELECT_FULL'](
+            print >> out, get_template('select_full')(
                 control=renderable, 
                 value=value,
                 options=opts,
@@ -36,11 +36,10 @@ class SelectRenderer:
 
         else:
 
-            print >> out, TEMPLATES['SELECT_COMPACT'](
+            print >> out, get_template('select_compact')(
                 control=renderable, 
                 value=value,
                 options=opts,
                 multiple=fmtmap['multiple'],
                 extra_classes=fmtmap['extra_classes']
                 )
-

@@ -1,0 +1,5 @@
+<fieldset id="${group.id}"
+          class="btn-group ${group.orientation} ${extra_classes}">
+  <legend tal:condition="group.label">${group.label}</legend>
+  <tal:replace replace="structure: content" />
+</fieldset>

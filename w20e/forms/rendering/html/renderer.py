@@ -32,7 +32,8 @@ class HTMLRenderer(BaseRenderer):
                     """'w20e.forms.currentpage' value="%s"/>""" % currentpage
             print >> out, output
 
-        print >> out, """<div class="alert"></div>"""
+        #if errors:
+        #    print >> out, """<div class="alert alert-warning"></div>"""
 
     def renderBackMatter(self, form, out, errors=None, request=None, **opts):
 
@@ -40,11 +41,11 @@ class HTMLRenderer(BaseRenderer):
 
     def render(self, form, renderable, out, errors=None, **kwargs):
 
-        try:
-            rtype = renderable.type
-            renderer = self.getRendererForType(rtype, "html")()
-            renderer.render(self, form, renderable, out, errors=errors,
-                    **kwargs)
-        except:
+        #try:
+        rtype = renderable.type
+        renderer = self.getRendererForType(rtype, "html")()
+        renderer.render(self, form, renderable, out, errors=errors,
+                        **kwargs)
+        #except:
 
-            print >> out, "<!-- No renderer found for %s! -->" % rtype
+        #    print >> out, "<!-- No renderer found for %s! -->" % rtype

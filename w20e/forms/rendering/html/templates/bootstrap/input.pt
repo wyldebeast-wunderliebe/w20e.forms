@@ -1,0 +1,7 @@
+<div metal:use-macro="load: control.pt">
+
+  <input
+     metal:fill-slot="input"
+     id="input-${control.id}" type="text" name="${control.id}" 
+     value="${value}" />
+</div>

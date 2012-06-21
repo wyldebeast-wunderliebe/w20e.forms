@@ -1,0 +1,2 @@
+<input id="input-${control.id}" type="hidden" 
+       name="${control.id}" value="${value}"/>

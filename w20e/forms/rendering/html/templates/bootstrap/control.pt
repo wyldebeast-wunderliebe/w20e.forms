@@ -1,0 +1,16 @@
+<!-- Control definition -->
+<metal:define-macro define-macro="control">
+  <div id="${control.id}"
+        class="control-group ${extra_classes}">
+
+    <label class="control-label" for="input-${control.id}">${control.label}</label>
+      <div class="controls">
+        <metal:define-slot define-slot="input"/>
+        <span class="help-inline">${control.alert}</span>
+
+        <p tal:condition="control.hint" class="help-block">${control.hint}</p>
+        <p tal:condition="control.help" class="help-block">${control.help}</p>
+      </div>
+
+  </div>
+</metal:define-macro>

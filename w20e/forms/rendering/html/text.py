@@ -9,4 +9,9 @@ class TextRenderer:
 
     def render(self, renderer, form, renderable, out, **kwargs):
 
-        print >> out, TEMPLATES['TEXT_TPL'] % renderer.createFormatMap(form, renderable, **kwargs)
+        fmtmap = renderer.createFormatMap(form, renderable, **kwargs)
+
+        print >> out, get_template("text")(
+            control=renderable,
+            extra_classes=fmtmap['extra_classes']
+            )

@@ -1,4 +1,4 @@
-from templates import TEMPLATES
+from templates import get_template
 from w20e.forms.rendering.interfaces import IControlRenderer
 from zope.interface import implements
 
@@ -11,7 +11,7 @@ class CancelRenderer:
 
         fmtmap = renderer.createFormatMap(form, renderable, **kwargs)
         
-        print >> out, TEMPLATES['CANCEL_TPL'](
+        print >> out, get_template('cancel')(
             control=renderable,
             extra_classes=fmtmap['extra_classes']
             )

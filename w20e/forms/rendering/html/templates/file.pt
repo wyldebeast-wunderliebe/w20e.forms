@@ -1,0 +1,15 @@
+<div metal:use-macro="load: control.pt">
+  
+  <tal:condition condition="value">
+    ${value}<br/>
+    <input name="${control.id}" type="hidden" value="1"/>
+    <input id="file-${control.id}" type="file" name="${control.id}-new"/>    
+  </tal:condition>
+
+  <tal:condition condition="not value">
+    <input id="input-${control.id}" type="file" name="${control.id}"/>
+  </tal:condition>
+
+</div>
+
+

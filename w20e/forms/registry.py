@@ -7,6 +7,17 @@ class Registry:
     renderers = {}
     vocabs = {}
     funcs = {}
+    html_tpl_path = ""
+
+    @staticmethod
+    def set_html_template_path(name):
+
+        Registry.html_tpl_path = name
+
+    @staticmethod
+    def get_html_template_path():
+
+        return Registry.html_tpl_path
 
     @staticmethod
     def register_submission(name, factory):

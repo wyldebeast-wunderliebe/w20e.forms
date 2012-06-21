@@ -1,0 +1,2 @@
+<input type="submit" name="cancel" id="${control.id}" value="${control.label}"
+       class="btn ${extra_classes}" />

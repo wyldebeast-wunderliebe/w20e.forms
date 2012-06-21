@@ -1,0 +1,6 @@
+<div metal:use-macro="load: control.pt">
+
+  <textarea
+            metal:fill-slot="input"
+            name="${control.id}">${value}</textarea>
+</div>

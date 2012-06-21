@@ -73,11 +73,6 @@ class PloneRichText(Control):
     """ Richt Text for Plone """
 
 
-class ColorPicker(Input):
-
-    """ Whatever... """
-
-
 class Option:
 
     def __init__(self, value, label):

@@ -1,0 +1,9 @@
+<div metal:use-macro="load: control.pt">
+
+<textarea id="input-${control.id}"
+          cols="${cols}"
+          rows="${rows}"
+          class="${richclass}"
+          title="${richconfig}"
+          name="${control.id}">${value}</textarea>
+</div>
