@@ -1,7 +1,7 @@
 <div metal:use-macro="load: control.pt">
   <metal:fill-slot fill-slot="input">
     <tal:repeat repeat="opt options">
-      <div class="option-wrapper">
+      <label class="radio">
         <input type="radio"
               tal:condition="value == opt.value"
               checked="true"
@@ -11,11 +11,8 @@
               tal:condition="value != opt.value"
               id="input-${control.id}-${opt.value}" value="${opt.value}"
               name="${control.id}"/>
-        <label class="after"
-          for="input-${control.id}-${opt.value}"
-          tal:content="structure opt.label"/>
-        <div class="clearer"></div>
-      </div>
+        <tal:replace replace="structure opt.label" />
+      </label>
     </tal:repeat>
   </metal:fill-slot>
 
