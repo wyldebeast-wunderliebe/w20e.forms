@@ -36,7 +36,7 @@ class SelectRenderer:
 
         else:
 
-            print >> out, get_template('select_compact')(
+            print >> out, get_template('select')(
                 control=renderable, 
                 value=value,
                 options=opts,

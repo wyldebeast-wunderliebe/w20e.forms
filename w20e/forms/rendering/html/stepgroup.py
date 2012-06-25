@@ -1,4 +1,6 @@
 from templates import get_template
+from StringIO import StringIO
+import codecs
 from w20e.forms.rendering.interfaces import IControlRenderer
 from zope.interface import implements
 
@@ -32,6 +34,6 @@ class StepGroupRenderer:
         print >> out, get_template('stepgroup')(
             group=renderable,
             steps=steps,
-            content=sub_out.getvalue(),
+            content=str_out.getvalue().decode("utf-8"),
             extra_classes=fmtmap['extra_classes']
             )

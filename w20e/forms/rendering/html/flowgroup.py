@@ -23,6 +23,6 @@ class FlowGroupRenderer:
 
         print >> out, get_template('flowgroup')(
             group=renderable,
-            content=sub_out.getvalue(),
+            content=str_out.getvalue().decode("utf-8"),
             extra_classes=fmtmap['extra_classes']
             )
