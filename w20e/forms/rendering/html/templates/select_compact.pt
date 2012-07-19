@@ -1,0 +1,22 @@
+<div metal:use-macro="load: control.pt">
+  <select metal:fill-slot="input"
+          id="input-${control.id}" 
+          name="${control.id}${multiple and ':list' or None}" size="${control.size}"
+	  multiple="${multiple and 'multiple' or None}"
+	> 
+    <option tal:condition="control.with_empty" value="">--</option>
+    <tal:repeat tal:condition="not: multiple" repeat="opt options">
+      <option tal:condition="str(value) == str(opt.value)" 
+              value="${opt.value}" selected>${opt.label}</option>
+      <option tal:condition="value != opt.value" 
+              value="${opt.value}">${opt.label}</option>
+    </tal:repeat>
+    <tal:repeat tal:condition="multiple" repeat="opt options">
+      <option tal:condition="value and opt.value in value"
+              value="${opt.value}" selected>${opt.label}</option>
+      <option tal:condition="not value or opt.value not in value"
+              value="${opt.value}">${opt.label}</option>
+    </tal:repeat>
+
+  </select>
+</div>
