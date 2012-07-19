@@ -33,10 +33,9 @@ class EmailSubmission(SubmissionBase):
             self.send_to = [self.send_to]
 
         msg = MIMEMultipart()
+
         # Special treatment for from... Check if it refers to a form field
-        #
-        import pdb; pdb.set_trace()
-        
+        #        
         if re.match("\$\{.+\}", self.send_from):
             try:
                 var = re.match("\$\{(.+)\}", self.send_from).groups()[0]
