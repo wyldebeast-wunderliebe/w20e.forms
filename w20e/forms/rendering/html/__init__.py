@@ -12,12 +12,14 @@ from flowgroup import FlowGroupRenderer
 from stepgroup import StepGroupRenderer
 from submit import SubmitRenderer
 from cancel import CancelRenderer
+from reset import ResetRenderer
 from richtext import RichTextRenderer
 from file import FileRenderer
 
 
 Registry.register_renderer("submit", "html", SubmitRenderer)
 Registry.register_renderer("cancel", "html", CancelRenderer)
+Registry.register_renderer("reset", "html", ResetRenderer)
 Registry.register_renderer("text", "html", TextRenderer)
 Registry.register_renderer("input", "html", InputRenderer)
 Registry.register_renderer("password", "html", PasswordRenderer)

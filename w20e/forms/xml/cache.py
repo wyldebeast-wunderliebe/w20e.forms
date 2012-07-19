@@ -6,5 +6,4 @@ class XMLFormCache:
 
     def getFormByPath(self, path):
 
-        
-        
+        pass
