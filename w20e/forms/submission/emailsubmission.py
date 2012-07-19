@@ -39,12 +39,11 @@ class EmailSubmission(SubmissionBase):
         if re.match("\$\{.+\}", self.send_from):
             try:
                 var = re.match("\$\{(.+)\}", self.send_from).groups()[0]
-                msg['From'] = form.getFieldValue(var)
+                self.send_from = form.getFieldValue(var)
             except:
                 pass
-        else:
-            msg['From'] = self.send_from                    
 
+        msg['From'] = self.send_from                    
         msg['To'] = COMMASPACE.join(self.send_to)
         msg['Date'] = formatdate(localtime=True)
         msg['Subject'] = self.subject
