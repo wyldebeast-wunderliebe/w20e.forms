@@ -29,6 +29,9 @@ class HTMLRenderer(BaseRenderer):
               (kwargs.get("form_class", ""),
                getattr(form.submission, 'action', kwargs.get('action', '')),
                form.id)
+        if kwargs.get("status_message", None):
+            print >> out, """<div class="status">%s</div>""" % \
+                  kwargs['status_message']
         print >> out, """<input type="hidden" name="formprocess" value="1"/>"""
 
         if 'currentpage' in kwargs:
