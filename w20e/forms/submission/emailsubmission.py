@@ -33,16 +33,18 @@ class EmailSubmission(SubmissionBase):
             self.send_to = [self.send_to]
 
         msg = MIMEMultipart()
-        msg['From'] = self.send_from
-
         # Special treatment for from... Check if it refers to a form field
         #
+        import pdb; pdb.set_trace()
+        
         if re.match("\$\{.+\}", self.send_from):
             try:
                 var = re.match("\$\{(.+)\}", self.send_from).groups()[0]
                 msg['From'] = form.getFieldValue(var)
             except:
                 pass
+        else:
+            msg['From'] = self.send_from                    
 
         msg['To'] = COMMASPACE.join(self.send_to)
         msg['Date'] = formatdate(localtime=True)
