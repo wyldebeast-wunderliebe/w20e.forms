@@ -1,6 +1,6 @@
 import smtplib
 import os
-
+import re
 from email.mime.multipart import MIMEMultipart
 from email.mime.base import MIMEBase
 from email.mime.text import MIMEText
@@ -34,6 +34,16 @@ class EmailSubmission(SubmissionBase):
 
         msg = MIMEMultipart()
         msg['From'] = self.send_from
+
+        # Special treatment for from... Check if it refers to a form field
+        #
+        if re.match("\$\{.+\}", self.send_from):
+            try:
+                var = re.match("\$\{(.+)\}", self.send_from).groups()[0]
+                msg['From'] = form.getFieldValue(var)
+            except:
+                pass
+
         msg['To'] = COMMASPACE.join(self.send_to)
         msg['Date'] = formatdate(localtime=True)
         msg['Subject'] = self.subject
