@@ -4,6 +4,10 @@ from w20e.forms.rendering.interfaces import IRenderer
 from w20e.forms.rendering.baserenderer import BaseRenderer
 
 
+FORM_HEADER = """<form class="w20e-form %s" method="post" action="%s"
+  id="%s" enctype="multipart/form-data">"""
+
+
 class HTMLRenderer(BaseRenderer):
 
     """ The HTML renderer expects to recive some kind of output
@@ -21,9 +25,10 @@ class HTMLRenderer(BaseRenderer):
         """ Render whatever needs to be rendered before the actual form
         components """
 
-        print >> out, """<form class="w20e-form" method="post" action="%s" \
-                enctype="multipart/form-data">""" % \
-                getattr(form.submission, 'action', kwargs.get('action', ''))
+        print >> out, FORM_HEADER % \
+              (kwargs.get("form_class", ""),
+               getattr(form.submission, 'action', kwargs.get('action', '')),
+               form.id)
         print >> out, """<input type="hidden" name="formprocess" value="1"/>"""
 
         if 'currentpage' in kwargs:
