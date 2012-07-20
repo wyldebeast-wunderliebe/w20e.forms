@@ -88,3 +88,13 @@ class Cancel(Renderable):
 
         Renderable.__init__(self, id, **props)
         self.label = label
+
+
+class Reset(Renderable):
+
+    implements(IRenderable)
+
+    def __init__(self, id, label, **props):
+
+        Renderable.__init__(self, id, **props)
+        self.label = label        
