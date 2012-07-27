@@ -13,7 +13,7 @@ class IForm(Interface):
      
     Data is an IFormData instance, that holds the actual form fields
     (variables). The Model (IFormModel) holds properties for fields,
-    liek requiredness, relevance, datatype, etc. The view is the
+    like requiredness, relevance, datatype, etc. The view is the
     renderable part of the form. The submission finally, holds the way
     to store and retrieve the form data. FormModel and FormView should
     be stateless, the FormData is the only statefull class for a given
@@ -30,6 +30,15 @@ class IForm(Interface):
 
     submission = Attribute(""" The submission handler """)    
     
+
+
+class IFormModifier(Interface):
+
+    """ Modify forms """
+
+    def modify(form):
+
+        """ Returns modified form """
 
 
 class IFormFactory(Interface):
@@ -67,6 +76,8 @@ class IField(Interface):
     value = Attribute(""" field's value """)
 
 
+# The model
+#
 class IFormModel(Interface):
 
     """ Hold model for form """

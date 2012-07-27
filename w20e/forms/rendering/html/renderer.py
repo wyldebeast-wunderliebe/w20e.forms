@@ -1,5 +1,5 @@
 from zope.interface import implements
-
+from templates import get_template
 from w20e.forms.rendering.interfaces import IRenderer
 from w20e.forms.rendering.baserenderer import BaseRenderer
 
@@ -22,23 +22,17 @@ class HTMLRenderer(BaseRenderer):
         BaseRenderer.__init__(self, **kwargs)
 
     def renderFrontMatter(self, form, out, errors=None, **kwargs):
-        """ Render whatever needs to be rendered before the actual form
-        components """
 
-        print >> out, FORM_HEADER % \
-              (kwargs.get("form_class", ""),
-               getattr(form.submission, 'action', kwargs.get('action', '')),
-               form.id)
-        if kwargs.get("status_message", None):
-            print >> out, """<div class="status">%s</div>""" % \
-                  kwargs['status_message']
-        print >> out, """<input type="hidden" name="formprocess" value="1"/>"""
+        """ Render whatever needs to be rendered before the actual
+        form components"""
 
-        if 'currentpage' in kwargs:
-            currentpage = kwargs['currentpage']
-            output = """<input type="hidden" name=""" \
-                    """'w20e.forms.currentpage' value="%s"/>""" % currentpage
-            print >> out, output
+        print >> out, get_template('frontmatter')(
+            form_class=kwargs.get("form_class", ""),
+            form_id=form.id,
+            status_message=kwargs.get("status", ""),
+            action=getattr(form.submission, 'action', kwargs.get('action', '')),
+            **kwargs
+            )
 
         #if errors:
         #    print >> out, """<div class="alert alert-warning"></div>"""
@@ -49,11 +43,7 @@ class HTMLRenderer(BaseRenderer):
 
     def render(self, form, renderable, out, errors=None, **kwargs):
 
-        #try:
         rtype = renderable.type
         renderer = self.getRendererForType(rtype, "html")()
         renderer.render(self, form, renderable, out, errors=errors,
                         **kwargs)
-        #except:
-
-        #    print >> out, "<!-- No renderer found for %s! -->" % rtype

@@ -13,9 +13,20 @@ class RenderableContainer:
         self._componentmap = {}
         self._bindmap = {}
 
-    def addRenderable(self, renderable):
+    def rmRenderable(self, renderable_id):
 
-        self._components.append(renderable)
+        renderable = self._componentmap.pop(renderable_id)
+        self._components.remove(renderable)
+
+    def addRenderable(self, renderable, pos=None):
+
+        """ Add renderable. If pos is given, insert into that
+        position, otherwise just append"""
+
+        if pos is None:
+            self._components.append(renderable)
+        else:
+            self._components.insert(pos, renderable)
         self._componentmap[renderable.id] = renderable
 
         if hasattr(renderable, 'bind'):
@@ -142,7 +153,8 @@ class FormView(RenderableContainer):
         currentpage = self.getNextPage(request, form, errors)
 
         self.renderer.renderFrontMatter(form, out, errors,
-                                        currentpage=currentpage, **opts)
+                                        currentpage=currentpage,
+                                        status=status, **opts)
 
         for item in self.getRenderables():
 

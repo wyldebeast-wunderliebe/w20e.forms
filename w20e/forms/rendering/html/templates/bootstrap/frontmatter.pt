@@ -1,0 +1,17 @@
+<form class="w20e-form ${form_class}" method="post" action="${action}"
+      id="${form_id}" enctype="multipart/form-data">
+  <div class="alert alert-success" 
+       tal:condition="status_message and status == 'stored'">
+    ${status_message}
+  </div>
+  <div class="alert alert-error" 
+       tal:condition="status_message and status == 'error'">
+    ${status_message}
+  </div>
+
+  <input type="hidden" name="formprocess" value="1"/>
+
+  <tal:condition condition="currentpage">
+    <input type="hidden" name="w20e.forms.currentpage"
+           value="${currentpage}" />
+  </tal:condition>
