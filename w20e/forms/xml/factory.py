@@ -98,7 +98,12 @@ class XMLFormFactory:
             for elt in ["required", "relevant", "readonly",
                         "calculate", "datatype", "constraint"]:
                 if child.xpath("./%s" % elt):
-                    kwargs[elt] = child.xpath("./%s" % elt)[0].text.strip()
+
+                    expr = child.xpath("./%s" % elt)[0].text.strip()
+                    expr = expr.replace("\n", " ")
+
+                    if expr:
+                        kwargs[elt] = expr
 
             prop = FieldProperties(child.get("id"), bind, **kwargs)
             model.addFieldProperties(prop)
