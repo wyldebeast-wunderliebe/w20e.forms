@@ -56,28 +56,8 @@ class formview(object):
 
         rendered = self.form.view.render(
             self.form, errors=errors, status=status,
-            request=self.request.params)
+            data=self.request.params)
         return unicode(rendered, "utf-8")
-
-    def handle_form(self):
-
-        """ Handle the form. Override this method if you wish... """
-
-        form = self.form
-        self._process_data(form, form.view, self.request.params)
-        status = 'processed'
-        errors = {}
-
-        try:
-            form.validate()
-            form.submission.submit(form, self.context, self.request)
-            status = 'stored'
-
-        except FormValidationError, fve:
-            errors = fve.errors
-            status = 'error'
-
-        return (status, errors)
 
     def __call__(self):
 
@@ -89,38 +69,16 @@ class formview(object):
 
         if self.request.params.get("submit", None):
 
-            status, errors = self.handle_form()
+            status, errors = self.form.view.handle_form(self.form, self.request.params)
 
         elif self.request.params.get("cancel", None):
 
             status = "cancelled"
 
+        if status in "completed":
+            self.form.submission.submit(self.form, self.context, self.request)
+
         return {'errors': errors, 'status': status}
-
-    def _process_data(self, form, view, data=None):
-
-        """ Get data form request and see what we can post...
-        """
-
-        if not data:
-            data = {}
-
-        for renderable in view.getRenderables():
-
-            try:
-                fld = form.data.getField(renderable.bind)
-
-                if not form.model.isRelevant(fld.id, form.data):
-                    continue
-
-                val = renderable.processInput(data)
-                fld.value = form.model.convert(renderable.bind, val)
-
-            except:
-                pass
-
-            if renderable.getRenderables:
-                self._process_data(form, renderable, data)
 
     def retrieve_efferent_fields(self, format="json"):
 
@@ -137,7 +95,7 @@ class formview(object):
         model = self.form.model
         form = self.form
 
-        self._process_data(form, form.view, self.request.params)
+        form.view.process_data(form, form.view, self.request.params)
 
         effected = []
         efferent = model.collectEfferentFields()

@@ -1,8 +1,10 @@
 from zope.interface import implements
-from interfaces import IFormView
+from interfaces import IFormView, IControlGroup, IControl
 from rendering.html.renderer import HTMLRenderer
 from StringIO import StringIO
 import codecs
+from config import PAGE_ID
+from w20e.forms.form import FormValidationError
 
 
 class RenderableContainer:
@@ -68,99 +70,200 @@ class RenderableContainer:
 
 class FormView(RenderableContainer):
 
-    """ Visible part of the form, that holds controls and groups.
+    """ Visible part of the form, that holds controls and groups and
+    handles rendering logic.
     """
 
     implements(IFormView)
 
-    def __init__(self, renderer=HTMLRenderer, renderOpts=None):
-
-        if not renderOpts:
-            renderOpts = {}
+    def __init__(self, renderer=HTMLRenderer, **opts):
 
         RenderableContainer.__init__(self)
-        self.renderer = renderer(**renderOpts)
+        self.renderer = renderer(**opts)
 
-    def getNextPage(self, request, form, errors):
-        """ find the next active page """
+    def get_renderables(self, form, current_page_id, direction="next"):
 
-        if not request:
-            return None
+        """ Find the set of renderables to show. Return none, if
+        there's nothing let to render. Direction can be 'previous' or 'next'.
+        """
 
-        forward = request.get('submit.next', None)
-        backward = request.get('submit.previous', None)
-        currentpage = request.get('w20e.forms.currentpage', None)
-        groups = [s for s in self.getRenderables() if s.type == 'stepgroup']
-        for stepgroup in groups:
-            # TODO: can we have other groups than flowgroups here?
-            steps = [s for s in stepgroup.getRenderables() if \
-                    s.type == 'flowgroup']
+        pages = self.getRenderables()
 
-            firstpage = steps and steps[0].id or ''
+        if not self.renderer.opts.get("multipage", False):
+            return pages
 
-            if not currentpage and steps:
-                # TODO should we check for the first relevant page instead?
-                return firstpage
+        page_ids = [p.id for p in pages]
 
-            # what direction are we going?
-            if forward:
-                pass  # default action
-            elif backward:
-                # clone the steps, and reverse them
-                steps = steps[:]  # clone so we don't change the original order
-                steps.reverse()
+        try:
+            page_index = page_ids.index(current_page_id) + 1
+        except:
+            page_index = 0
+            
+        page = None
+
+        while page_index < len(pages):
+
+            page = pages[page_index]
+
+            if page.is_group and form.model.isGroupRelevant(page, form.data):
+                break
+            elif not page.is_group and form.model.isRelevant(page, form.data):
+                break
             else:
-                return currentpage
+                page_index += 1
 
-            # find current  + next step
-            found = False
-            for s in steps:
-                if found:
-                    # check if this step is relevant
-                    if form.model.isGroupRelevant(s, form.data):
-                        # show the next or previous requested step
-                        # first clear the erros from this step (no alerts)
-                        if errors:
-                            children = [
-                                    child.id for child in s.getRenderables()]
-                            error_list = errors.keys()
-                            error = set(children).intersection(set(error_list))
-                            for e in error:
-                                del errors[e]
-                        return s.id
-                    continue
-                if s.id == currentpage:
-                    found = True
-                    # only allow to go forward if current page has no errors
-                    if forward:
-                        children = [child.id for child in s.getRenderables()]
-                        error_list = errors and errors.keys() or []
-                        error = set(children).intersection(set(error_list))
-                        if error:
-                            return currentpage
+        return [page]
 
-            return currentpage
+    def is_last_page(self, page_id):
 
-    def render(self, form, errors=None, status=None, request=None,
+        if not self.renderer.opts.get("multipage", False):
+            return True
+        else:
+            return self.getRenderables()[-1].id == page_id
+
+    def get_current_page(self, page_id):
+
+        if not self.renderer.opts.get("multipage", False):
+            return self
+
+        return self.getRenderable(page_id)
+
+    def render(self, form, errors=None, status=None, data=None,
                context=None, **opts):
 
-        """ Render all (front, content and back) """
+        """ Render all (front, content and back). Calling code should
+        take care of the case where there is nothing to render..."""
 
         str_out = StringIO()
         out = codecs.getwriter('utf-8')(str_out)
 
-        # find current page in case we have a multi-page form
-        currentpage = self.getNextPage(request, form, errors)
+        direction = "next"
+
+        if data is None:
+            data = {}
+
+        if data.get("w20e.forms.previous", None):
+            direction = "previous"
+
+        page_id = data.get(PAGE_ID, None)
+
+        if errors:
+            page = self.get_current_page(page_id)
+            if page:
+                renderables = [page]
+            else:
+                renderables = []
+        else:
+            renderables = self.get_renderables(
+                form,
+                page_id,
+                direction=direction
+                )
+            
+        if not renderables:
+            raise "Nothing to render!"
 
         self.renderer.renderFrontMatter(form, out, errors,
-                                        currentpage=currentpage,
+                                        page_id=renderables[0].id,
                                         status=status, **opts)
 
-        for item in self.getRenderables():
+        for item in renderables:
 
             self.renderer.render(form, item, out, errors=errors,
-                    request=request, currentpage=currentpage, context=context)
+                    data=data, context=context)
 
-        self.renderer.renderBackMatter(form, out, errors, request, **opts)
+        self.renderer.renderBackMatter(form, out, errors, **opts)
 
         return out.getvalue()
+
+    def process_data(self, form, view, data=None):
+
+        """ Process data for the form. Usually this will involve data
+        from a request.
+        """
+
+        if not data:
+            data = {}
+
+        if view.is_group:
+            renderables = view.getRenderables()
+        else:
+            renderables = [view]
+
+        for renderable in renderables:
+
+            try:
+                fld = form.data.getField(renderable.bind)
+
+                if not form.model.isRelevant(fld.id, form.data):
+                    continue
+
+                val = renderable.processInput(data)
+                fld.value = form.model.convert(renderable.bind, val)
+
+            except:
+                pass
+
+            if renderable.getRenderables:
+                self.process_data(form, renderable, data)
+
+    def handle_form(self, form, data):
+
+        """ Handle the form. Override this method if you
+        wish... 'data' is something dict-ish, usually a request...
+        Handle form will take care of setting data and validating the
+        form, or in the case of multipage forms, the current page. The
+        method will return the status, and map of errors, where keys
+        are field id's. Status can be one of:
+
+          completed - Form is completed and valid
+          valid - Form is valid, but (only for multipage forms) not completed
+          error - Form is invalid. In this case the errors map will also be
+                  filled with the errors found.
+
+        """
+
+        status = "init"
+        errors = {}
+
+        if data.get("w20e.forms.process", False):
+
+            fields = None
+
+            if self.renderer.opts.get("multipage", False):
+
+                fields = []
+                page = self.get_current_page(data.get("w20e.forms.page"))
+
+                # Page could actually be a single control
+                #
+                if page.is_group:
+                    for renderable in page.getRenderables(recursive=True):
+
+                        fld = form.data.getField(renderable.bind)
+
+                        if fld:
+                            fields.append(fld.id)
+                else:
+                    fields = [page.id]
+
+            self.process_data(
+                form,
+                self.get_current_page(data.get("w20e.forms.page")),
+                data)
+            
+            status = 'processed'
+
+            try:
+                if self.is_last_page(data.get("w20e.forms.page")):
+                    form.validate()
+                    status = 'completed'
+                else:
+                    form.validate(fields=fields)
+                    status = 'valid'
+
+            except FormValidationError, fve:
+                errors = fve.errors
+                status = 'error'
+
+        return (status, errors)

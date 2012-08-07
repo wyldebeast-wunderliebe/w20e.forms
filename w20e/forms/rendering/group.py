@@ -14,7 +14,7 @@ class Group(RenderableContainer, Renderable):
         Renderable.__init__(self, group_id, **props)
 
         self.label = label
-
+        self.is_group = True
 
 class FlowGroup(Group):
 
@@ -57,6 +57,13 @@ class CardGroup(Group):
 class StepGroup(Group):
 
     """ Wizard like group as step in wizard process """
+
+    def __init__(self, group_id, label="", **props):
+
+        Group.__init__(self, group_id, label=label, **props)
+
+
+class Page(Group):
 
     def __init__(self, group_id, label="", **props):
 

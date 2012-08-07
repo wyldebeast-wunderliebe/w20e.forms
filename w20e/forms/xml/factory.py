@@ -98,7 +98,7 @@ class XMLFormFactory:
             for elt in ["required", "relevant", "readonly",
                         "calculate", "datatype", "constraint"]:
                 if child.xpath("./%s" % elt):
-                    kwargs[elt] = child.xpath("./%s" % elt)[0].text
+                    kwargs[elt] = child.xpath("./%s" % elt)[0].text.strip()
 
             prop = FieldProperties(child.get("id"), bind, **kwargs)
             model.addFieldProperties(prop)
@@ -109,12 +109,20 @@ class XMLFormFactory:
 
         """ Create renderable part """
 
-        view = FormView()
+        kwargs = {}
+
+        for prop in root.xpath("./property"):
+            kwargs[prop.get("name")] = prop.text
+
+        view = FormView(**kwargs)
 
         for child in root.getchildren():
 
             if child.__class__.__name__ == "_Element":
-                self._create_renderables(child, view)
+
+                if not child.tag == "property":
+                
+                    self._create_renderables(child, view)
 
         return view
 

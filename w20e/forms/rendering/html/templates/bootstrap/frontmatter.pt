@@ -9,9 +9,5 @@
     ${status_message}
   </div>
 
-  <input type="hidden" name="formprocess" value="1"/>
-
-  <tal:condition condition="currentpage">
-    <input type="hidden" name="w20e.forms.currentpage"
-           value="${currentpage}" />
-  </tal:condition>
+  <input type="hidden" name="w20e.forms.process" value="1" />
+  <input type="hidden" name="w20e.forms.page" value="${page_id}" />

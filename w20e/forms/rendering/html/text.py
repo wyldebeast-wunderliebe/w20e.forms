@@ -13,5 +13,6 @@ class TextRenderer:
 
         print >> out, get_template("text")(
             control=renderable,
+            text=fmtmap['text'],
             extra_classes=fmtmap['extra_classes']
             )

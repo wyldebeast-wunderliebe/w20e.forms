@@ -37,7 +37,7 @@ class Renderable(object):
     def __getattr__(self, attr_name):
 
         try:
-            return object.__getattr__(self, attr_name)
+            return super(Renderable, self).__getattr__(attr_name)
         except:
             return None
 

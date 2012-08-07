@@ -26,18 +26,21 @@ class HTMLRenderer(BaseRenderer):
         """ Render whatever needs to be rendered before the actual
         form components"""
 
+        kwargs['action'] = getattr(form.submission, 'action',
+                                   kwargs.get('action', ''))
+        kwargs['form_class'] = kwargs.get('form_class', '')
+        kwargs['page_id'] = kwargs.get('page_id', '')        
+        kwargs['status_message'] = kwargs.get('status_message', '')
+
         print >> out, get_template('frontmatter')(
-            form_class=kwargs.get("form_class", ""),
             form_id=form.id,
-            status_message=kwargs.get("status", ""),
-            action=getattr(form.submission, 'action', kwargs.get('action', '')),
             **kwargs
             )
 
         #if errors:
         #    print >> out, """<div class="alert alert-warning"></div>"""
 
-    def renderBackMatter(self, form, out, errors=None, request=None, **opts):
+    def renderBackMatter(self, form, out, errors=None, **opts):
 
         print >> out, "</form>"
 
