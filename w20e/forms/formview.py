@@ -9,6 +9,8 @@ from w20e.forms.form import FormValidationError
 
 class RenderableContainer:
 
+    is_group = True
+
     def __init__(self):
 
         self._components = []

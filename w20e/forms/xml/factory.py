@@ -152,6 +152,7 @@ class XMLFormFactory:
                 kwargs[elt] = child.xpath("./%s" % elt)[0].text or ''
 
         if cls == Text:
+            
             ctrl = cls(child.get("id"),
                        child.text,
                        bind=child.get("bind"),
