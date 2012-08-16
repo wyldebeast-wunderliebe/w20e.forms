@@ -32,7 +32,7 @@ class HTMLRenderer(BaseRenderer):
         kwargs['page_id'] = kwargs.get('page_id', '')
         kwargs['status_message'] = ''
 
-        if kwargs['status'] != "ok":
+        if kwargs['status'] in ["completed", "error"]:
             kwargs['status_message'] = getattr(form.submission,
                                                "status_" + kwargs.get('status',
                                                                       ''),
