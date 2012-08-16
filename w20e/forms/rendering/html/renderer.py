@@ -29,8 +29,15 @@ class HTMLRenderer(BaseRenderer):
         kwargs['action'] = getattr(form.submission, 'action',
                                    kwargs.get('action', ''))
         kwargs['form_class'] = kwargs.get('form_class', '')
-        kwargs['page_id'] = kwargs.get('page_id', '')        
-        kwargs['status_message'] = kwargs.get('status_message', '')
+        kwargs['page_id'] = kwargs.get('page_id', '')
+        kwargs['status_message'] = ''
+
+        if kwargs['status'] != "ok":
+            kwargs['status_message'] = getattr(form.submission,
+                                               "status_" + kwargs.get('status',
+                                                                      ''),
+                                               kwargs.get('status', '')
+                                               )
 
         print >> out, get_template('frontmatter')(
             form_id=form.id,

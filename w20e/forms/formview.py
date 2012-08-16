@@ -130,7 +130,7 @@ class FormView(RenderableContainer):
 
         return self.getRenderable(page_id)
 
-    def render(self, form, errors=None, status=None, data=None,
+    def render(self, form, errors=None, status='', data=None,
                context=None, **opts):
 
         """ Render all (front, content and back). Calling code should

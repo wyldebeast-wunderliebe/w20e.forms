@@ -1,4 +1,4 @@
-<form class="w20e-form ${form_class}" method="post" action="${action}"
+<form class="w20e-form ${form_class} ${status}" method="post" action="${action}"
       id="${form_id}" enctype="multipart/form-data">
   <div tal:condition="status_message" class="status">${status_message}</div>
   <input type="hidden" name="w20e.forms.process" value="1" />
