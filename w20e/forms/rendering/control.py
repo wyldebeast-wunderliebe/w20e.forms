@@ -1,12 +1,13 @@
 from zope.interface import implements
 from w20e.forms.interfaces import IControl
 from renderables import Renderable
+from w20e.forms.registry import Registry
 
 
 REPR = """%(type)s %(id)s, bound to '%(bind)s':
   label: %(label)s
-  hint: %(hint)s
-  help: %(help)s
+  hint:  %(hint)s
+  help:  %(help)s
   alert: %(alert)s
   """
 
@@ -32,12 +33,24 @@ class Control(Renderable):
 
         return REPR % self.__dict__
 
-    def processInput(self, data=None):
+    def processInput(self, data=None, datatype="string"):
+
         """ Base implementation """
 
-        if data:
-            return data.get(self.id, None)
+        val = None
 
+        if data:
+            val = data.get(self.id, None)
+
+        try:
+            converter = Registry.get_converter(datatype)
+
+            val = converter(val)
+        except:
+            pass
+
+        return val
+            
     def lexVal(self, value):
 
         return value
@@ -47,6 +60,10 @@ class Input(Control):
 
     """ Base input """
 
+
+class DateTime(Control):
+
+    """ Datetime widget """
 
 class Password(Control):
 

@@ -183,6 +183,18 @@ class FormModel(object):
 
         return value
 
+    def get_field_datatype(self, field_id):
+
+        for props in self.getFieldProperties(field_id):
+
+            datatype = props.getDatatype()
+
+            if datatype:
+
+                return datatype
+
+        return "string"
+
     def convert(self, field_id, value):
 
         """ Convert field tp type given in constraint """
@@ -194,7 +206,7 @@ class FormModel(object):
             if datatype and datatype != 'file':
 
                 try:
-                    return eval("%s(arg)" % datatype, {'arg': value})
+                    return eval("to_%s(arg)" % datatype, {'arg': value})
                 except:
                     return value
 

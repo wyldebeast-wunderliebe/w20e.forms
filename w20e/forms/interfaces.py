@@ -152,10 +152,11 @@ class IControl(IRenderable):
     value, to transform it into something less lexical, say a date.
     """
 
-    def processInput(data=None):
+    def processInput(data=None, datatype="string"):
 
-        """ Process user given input into the value to be used
-        for the instance.
+        """ Process user given input into the value to be used for the
+        instance. The widget should also convert to the given
+        datatype.
         """
 
     def lexVal(value):

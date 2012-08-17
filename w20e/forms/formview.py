@@ -152,7 +152,7 @@ class FormView(RenderableContainer):
         if errors:
             page = self.get_current_page(page_id)
             if page:
-                renderables = [page]
+                renderables = page.getRenderables()
             else:
                 renderables = []
         else:
@@ -164,6 +164,10 @@ class FormView(RenderableContainer):
             
         if not renderables:
             raise "Nothing to render!"
+
+        if not self.renderer.opts.get("multipage", False):
+
+            pass
 
         self.renderer.renderFrontMatter(form, out, errors,
                                         page_id=renderables[0].id,
@@ -200,8 +204,9 @@ class FormView(RenderableContainer):
                 if not form.model.isRelevant(fld.id, form.data):
                     continue
 
-                val = renderable.processInput(data)
-                fld.value = form.model.convert(renderable.bind, val)
+                datatype = form.model.get_field_datatype(fld.id)
+
+                fld.value = renderable.processInput(data, datatype=datatype)
 
             except:
                 pass

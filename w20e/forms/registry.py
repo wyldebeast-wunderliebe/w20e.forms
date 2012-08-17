@@ -8,6 +8,7 @@ class Registry:
     vocabs = {}
     funcs = {}
     html_tpl_path = ""
+    converters = {}
 
     @staticmethod
     def set_html_template_path(name):
@@ -66,3 +67,13 @@ class Registry:
     def register_expr_context(name, context):
 
         Registry.funcs[name] = context
+
+    @staticmethod
+    def register_converter(name, converter):
+
+        Registry.converters[name] = converter
+
+    @staticmethod
+    def get_converter(name):
+
+        return Registry.converters[name]
