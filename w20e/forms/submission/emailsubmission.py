@@ -1,5 +1,4 @@
 import smtplib
-import os
 import re
 from email.mime.multipart import MIMEMultipart
 from email.mime.base import MIMEBase
@@ -23,19 +22,18 @@ class EmailSubmission(SubmissionBase):
 
         SubmissionBase.__init__(self, **props)
 
-
     def submit(self, form, *args):
 
         data = form.data
         model = form.model
 
-        if type(self.send_to)==str:
+        if type(self.send_to) == str:
             self.send_to = [self.send_to]
 
         msg = MIMEMultipart()
 
         # Special treatment for from... Check if it refers to a form field
-        #        
+        #
         if re.match("\$\{.+\}", self.send_from):
             try:
                 var = re.match("\$\{(.+)\}", self.send_from).groups()[0]
@@ -43,16 +41,27 @@ class EmailSubmission(SubmissionBase):
             except:
                 pass
 
-        msg['From'] = self.send_from                    
+        # Special treatment for reply_to... Check if it refers to a form field
+        #
+        if re.match("\$\{.+\}", self.reply_to):
+            try:
+                var = re.match("\$\{(.+)\}", self.reply_to).groups()[0]
+                self.reply_to = form.getFieldValue(var)
+            except:
+                pass
+
+        msg['From'] = self.send_from
         msg['To'] = COMMASPACE.join(self.send_to)
+        if hasattr(self, 'reply_to') and self.reply_to:
+            msg['Reply-To'] = self.reply_to
         msg['Date'] = formatdate(localtime=True)
         msg['Subject'] = self.subject
-        
+
         text = [getattr(self, 'pre_text', "")]
         files = []
 
         for field in data.getFields():
-            
+
             if not self.isFile(field, model):
 
                 text.append("%s: %s" % (field,
@@ -66,33 +75,31 @@ class EmailSubmission(SubmissionBase):
 
         text.append(getattr(self, 'post_text', ""))
 
-        msg.attach( MIMEText("\n".join(text)) )
-        
+        msg.attach(MIMEText("\n".join(text)))
+
         for f in files:
             part = MIMEBase('application', "octet-stream")
             part.set_payload(f)
             Encoders.encode_base64(part)
-            part.add_header('Content-Disposition', 
+            part.add_header('Content-Disposition',
                             'attachment; filename="%s"' % "pipo.txt")
             msg.attach(part)
-            
+
         smtp = smtplib.SMTP(getattr(self, 'host', "localhost"),
                             getattr(self, 'port', "25"))
-        
+
         if hasattr(self, 'tls'):
             smtp.starttls()
-            
+
         if hasattr(self, 'user'):
             smtp.login(self.user, getattr(self, 'pwd', ''))
-            
+
         smtp.sendmail(self.send_from, self.send_to, msg.as_string())
         smtp.close()
-
 
     def retrieve(self, *args):
 
         return None
-
 
     def isFile(self, field, model):
 
@@ -103,4 +110,3 @@ class EmailSubmission(SubmissionBase):
             return True
         else:
             return False
-        
