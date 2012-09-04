@@ -26,7 +26,7 @@ class InputRenderer:
             tpl = get_template("textarea")
         else:
             tpl = get_template("input")
-            
+
         print >> out, tpl(
             control=renderable,
             value=value,

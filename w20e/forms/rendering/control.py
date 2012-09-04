@@ -158,3 +158,13 @@ class Range(Select):
         Select.__init__(self, control_id, label, options=opts,
                         bind=bind, **properties)
 
+
+
+class Date(Input):                                                             
+    """ Date input. probably needs javascript to make it usefull """           
+                                                                               
+    def __init__(self, id, label, **props):                                    
+                                                                               
+        defaults = {'rows': 1, 'cols': 10}                                     
+        defaults.update(props)                                                 
+        Input.__init__(self, id, label, **defaults) 
