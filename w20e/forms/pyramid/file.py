@@ -11,12 +11,14 @@ class PyramidFile(File):
         self.type = "file"
 
 
-    def processInput(self, data=None):
+    def processInput(self, data=None, datatype="file"):
 
         """ File data is stored in value field """
 
         if not data:
             data = {}
+
+        assert datatype == 'file', 'expected a file as datatype'
 
         _file = None
 

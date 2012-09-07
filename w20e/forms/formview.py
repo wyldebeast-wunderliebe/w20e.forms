@@ -1,5 +1,5 @@
 from zope.interface import implements
-from interfaces import IFormView, IControlGroup, IControl
+from interfaces import IFormView
 from rendering.html.renderer import HTMLRenderer
 from StringIO import StringIO
 import codecs
@@ -100,7 +100,7 @@ class FormView(RenderableContainer):
             page_index = page_ids.index(current_page_id) + 1
         except:
             page_index = 0
-            
+
         page = None
 
         while page_index < len(pages):
@@ -161,7 +161,7 @@ class FormView(RenderableContainer):
                 page_id,
                 direction=direction
                 )
-            
+
         if not renderables:
             raise "Nothing to render!"
 
@@ -198,8 +198,9 @@ class FormView(RenderableContainer):
 
         for renderable in renderables:
 
-            try:
-                fld = form.data.getField(renderable.bind)
+            fld = form.data.getField(renderable.bind)
+
+            if fld:  # could be a flowgroup e.g.
 
                 if not form.model.isRelevant(fld.id, form.data):
                     continue
@@ -208,8 +209,6 @@ class FormView(RenderableContainer):
 
                 fld.value = renderable.processInput(data, datatype=datatype)
 
-            except:
-                pass
 
             if renderable.getRenderables:
                 self.process_data(form, renderable, data)
@@ -258,7 +257,7 @@ class FormView(RenderableContainer):
                 form,
                 self.get_current_page(data.get("w20e.forms.page")),
                 data)
-            
+
             status = 'processed'
 
             try:
