@@ -5,6 +5,7 @@ from StringIO import StringIO
 import codecs
 from config import PAGE_ID
 from w20e.forms.form import FormValidationError
+from w20e.forms.exceptions import ProcessingException
 
 
 class RenderableContainer:
@@ -207,7 +208,11 @@ class FormView(RenderableContainer):
 
                 datatype = form.model.get_field_datatype(fld.id)
 
-                fld.value = renderable.processInput(data, datatype=datatype)
+                try:
+                    fld.value = renderable.processInput(data,
+                            datatype=datatype)
+                except ProcessingException:
+                    pass
 
 
             if renderable.getRenderables:

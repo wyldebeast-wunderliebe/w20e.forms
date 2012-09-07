@@ -1,4 +1,5 @@
 from w20e.forms.rendering.control import File
+from w20e.forms.exceptions import ProcessingException
 
 
 class PloneFile(File):
@@ -28,7 +29,7 @@ class PloneFile(File):
             new_input.seek(0)  # reset the pointer
 
         if data[self.id] == '1' and not new_data:
-            raise "Skip this!"
+            raise ProcessingException("Skip this!")
 
         if new_data:
             _file = data["%s-new" % self.id]

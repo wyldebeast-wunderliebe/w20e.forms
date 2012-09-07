@@ -13,7 +13,7 @@ class FormValidationError(Exception):
 
     def __repr__(self):
 
-        print "FormValidationError: %s" % self._errors
+        return "FormValidationError: %s" % self._errors
 
     @property
     def errors(self):
