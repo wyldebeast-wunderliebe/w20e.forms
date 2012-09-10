@@ -23,7 +23,8 @@ class PyramidFile(File):
 
         _file = None
 
-        if data[self.id] == '1' and not data.get("%s-new" % self.id, None):
+        if data[self.id] == '1' and \
+            data.get("%s-new" % self.id, None) is None:
             raise ProcessingException("empty file. Skip this!")
 
         if data.get("%s-new" % self.id, None) is not None:
