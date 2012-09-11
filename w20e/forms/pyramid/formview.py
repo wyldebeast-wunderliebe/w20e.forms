@@ -1,10 +1,7 @@
-from inspect import getmembers, ismethod
-
 from xml.dom.minidom import Document
 
 from w20e.forms.form import FormValidationError
 from w20e.forms.xml.factory import XMLFormFactory
-from w20e.forms.registry import Registry
 import sys
 
 
@@ -56,7 +53,7 @@ class formview(object):
 
         rendered = self.form.view.render(
             self.form, errors=errors, status=status,
-            data=self.request.params)
+            data=self.request.params, context=self)
         return unicode(rendered, "utf-8")
 
     def __call__(self):
@@ -69,7 +66,8 @@ class formview(object):
 
         if self.request.params.get("submit", None):
 
-            status, errors = self.form.view.handle_form(self.form, self.request.params)
+            status, errors = self.form.view.handle_form(self.form,
+                    self.request.params)
 
         elif self.request.params.get("cancel", None):
 
