@@ -24,17 +24,6 @@ class formview(object):
         self.request = request
         self.form = form
 
-        # vocabs
-        # TODO: Now really...
-        #for method in getmembers(context, ismethod):
-
-        #    try:
-        #        if getattr(method[1], "__vocab__", False):
-
-        #            Registry.register_vocab(method[0], method[1])
-        #    except:
-        #        pass
-
         if retrieve_data:
             try:
                 data = self.form.submission.retrieve(form, context)
@@ -64,8 +53,9 @@ class formview(object):
         errors = {}
         status = ''
 
-        if self.request.params.get("submit", None):
+        submissions = set(["submit", "save", "w20e.forms.next"])
 
+        if submissions.intersection(self.request.params.keys()):
             status, errors = self.form.view.handle_form(self.form,
                     self.request.params)
 
@@ -73,7 +63,7 @@ class formview(object):
 
             status = "cancelled"
 
-        if status in "completed":
+        if status in ["completed"]:
             self.form.submission.submit(self.form, self.context, self.request)
 
         return {'errors': errors, 'status': status}

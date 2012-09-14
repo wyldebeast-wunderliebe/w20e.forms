@@ -1,2 +1,2 @@
-<input type="submit" name="submit" value="${control.label}"
+<input type="submit" name="${control.id}" value="${control.label}"
        class="btn btn-primary ${extra_classes}" />
