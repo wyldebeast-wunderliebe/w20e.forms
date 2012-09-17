@@ -1,9 +1,9 @@
 <div metal:use-macro="load: control.pt">
 
 <textarea metal:fill-slot="input" id="input-${control.id}"
-          cols="${cols}"
-          rows="${rows}"
-          class="${richclass}"
-          title="${richconfig}"
-          name="${control.id}">${value}</textarea>
+          cols="${fmtmap['cols']}"
+          rows="${fmtmap['rows']}"
+          class="${fmtmap['richclass']}"
+          title="${fmtmap['richconfig']}"
+          name="${control.id}">${fmtmap['value']}</textarea>
 </div>

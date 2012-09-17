@@ -19,6 +19,8 @@ class StepGroupRenderer:
         for sub_renderable in renderable.getRenderables():
             stepgroup_classes = "step"
 
+            item = sub_renderable
+
             if currentpage and item.id == currentpage:
                 stepgroup_classes += " active"
 
@@ -29,11 +31,13 @@ class StepGroupRenderer:
                  renderable.getRenderables()]
 
         steps[0]['class'] = "first"
-        steps[-1]['class'] = "last"        
+        steps[-1]['class'] = "last"
+
+        fmtmap = renderer.createFormatMap(form, renderable, **kwargs)
 
         print >> out, get_template('stepgroup')(
             group=renderable,
             steps=steps,
             content=str_out.getvalue().decode("utf-8"),
-            extra_classes=fmtmap['extra_classes']
+            fmtmap=fmtmap
             )

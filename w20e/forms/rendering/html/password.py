@@ -10,13 +10,13 @@ class PasswordRenderer:
     def render(self, renderer, form, renderable, out, **kwargs):
 
         """ render Input to HTML """
-    
+
         fmtmap = renderer.createFormatMap(form, renderable, **kwargs)
 
         fmtmap['value'] = "*****"
 
         print >> out, get_template('password')(
             control=renderable,
-            **fmtmap
+            fmtmap=fmtmap
             )
-            
+

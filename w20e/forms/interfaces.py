@@ -171,6 +171,8 @@ class IControl(IRenderable):
 
     hint = Attribute(""" Hint """)
 
+    placeholder = Attribute(""" Placeholder """)
+
     help = Attribute(""" Extra help """)
 
     alert = Attribute(""" Alert shown on errors """)    

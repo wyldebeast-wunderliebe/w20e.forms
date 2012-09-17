@@ -50,8 +50,8 @@ class Control(Renderable):
             pass
 
         return val
-            
-    def lexVal(self, value):
+
+    def lexVal(self, value, **kwargs):
 
         return value
 
@@ -133,12 +133,21 @@ class Select(Control):
 
             return res
 
+        options = []
+
+        if self.vocab:
+            vocab = Registry.get_vocab(self.vocab)
+            if callable(vocab):
+                options = vocab()
         else:
-            for opt in self.options:
+            options = self.options
 
-                if opt.value == str(value):
 
-                    return opt.label
+        for opt in options:
+
+            if opt.value == str(value):
+
+                return opt.label
 
         return value
 
@@ -160,11 +169,11 @@ class Range(Select):
 
 
 
-class Date(Input):                                                             
-    """ Date input. probably needs javascript to make it usefull """           
-                                                                               
-    def __init__(self, id, label, **props):                                    
-                                                                               
-        defaults = {'rows': 1, 'cols': 10}                                     
-        defaults.update(props)                                                 
-        Input.__init__(self, id, label, **defaults) 
+class Date(Input):
+    """ Date input. probably needs javascript to make it usefull """
+
+    def __init__(self, id, label, **props):
+
+        defaults = {'rows': 1, 'cols': 10}
+        defaults.update(props)
+        Input.__init__(self, id, label, **defaults)

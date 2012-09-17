@@ -10,8 +10,8 @@ class ResetRenderer:
     def render(self, renderer, form, renderable, out, **kwargs):
 
         fmtmap = renderer.createFormatMap(form, renderable, **kwargs)
-        
+
         print >> out, get_template('reset')(
             control=renderable,
-            extra_classes=fmtmap['extra_classes']
+            fmtmap=fmtmap
             )

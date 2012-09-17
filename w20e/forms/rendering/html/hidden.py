@@ -10,15 +10,15 @@ class HiddenRenderer:
     def render(self, renderer, form, renderable, out, **kwargs):
 
         """ render Hidden to HTML """
-    
+
         fmtmap = renderer.createFormatMap(form, renderable, **kwargs)
 
         try:
             value = form.getFieldValue(renderable.bind)
         except:
             value = ""
-    
+
         print >> out, get_template('hidden')(
-            control=renderable, 
+            control=renderable,
             value=value,
-            extra_classes=fmtmap['extra_classes'])
+            fmtmap=fmtmap)

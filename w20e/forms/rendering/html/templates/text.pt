@@ -1,4 +1,4 @@
-<div class="text %(extra_classes)s" id="${control.id}">
+<div class="text %(fmtmap['extra_classes'])s" id="${control.id}">
   <tal:replace replace="structure text" />
 </div>
 

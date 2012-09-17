@@ -31,7 +31,7 @@ class SelectRenderer:
                 control=renderable,
                 value=value,
                 options=opts,
-                extra_classes=fmtmap['extra_classes']
+                fmtmap=fmtmap
                 )
 
         else:
@@ -41,5 +41,5 @@ class SelectRenderer:
                 value=value,
                 options=opts,
                 multiple=fmtmap['multiple'],
-                extra_classes=fmtmap['extra_classes']
+                fmtmap=fmtmap
                 )

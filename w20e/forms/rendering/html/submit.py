@@ -10,11 +10,11 @@ class SubmitRenderer:
     def render(self, renderer, form, renderable, out, **kwargs):
 
         fmtmap = renderer.createFormatMap(form, renderable, **kwargs)
-        
+
         if 'name' not in fmtmap:
             fmtmap['name'] = 'submit'  # default name
 
         print >> out, get_template("submit")(
             control=renderable,
-            extra_classes=fmtmap['extra_classes']
+            fmtmap=fmtmap
             )

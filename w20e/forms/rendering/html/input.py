@@ -30,5 +30,5 @@ class InputRenderer:
         print >> out, tpl(
             control=renderable,
             value=value,
-            extra_classes=fmtmap['extra_classes']
+            fmtmap=fmtmap
             )

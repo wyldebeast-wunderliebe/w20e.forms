@@ -23,5 +23,5 @@ class CheckboxRenderer:
             control=renderable,
             value=value,
             checked=checked,
-            extra_classes=fmtmap['extra_classes']
+            fmtmap=fmtmap,
             )
