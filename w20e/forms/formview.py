@@ -161,7 +161,10 @@ class FormView(RenderableContainer):
         if errors:
             page = self.get_current_page(page_id)
             if page:
-                page_id = page.id
+                if hasattr(page, 'id'):
+                    page_id = page.id
+                else:
+                    page_id = None
                 renderables = page.getRenderables()
             else:
                 renderables = []
