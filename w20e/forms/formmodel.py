@@ -174,7 +174,7 @@ class FormModel(object):
                     valid = False
                     break
 
-        return value
+        return valid
 
     def get_field_datatype(self, field_id):
 

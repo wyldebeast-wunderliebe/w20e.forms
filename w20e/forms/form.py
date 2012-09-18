@@ -87,11 +87,8 @@ class Form(object):
                 field_errors.append("required")
 
             # check datatype
-            if value:
-                try:
-                    self.model.checkDatatype(field, value)
-                except:
-                    field_errors.append("datatype")
+            if value and not self.model.checkDatatype(field, value):
+                field_errors.append("datatype")
 
             # Constraint checking...
             if not self.model.meetsConstraint(field, self.data):

@@ -26,9 +26,12 @@ class PyramidFile(File):
         if data[self.id] == None or data[self.id] == '':
             raise ProcessingException("no file. skip it")
 
-        if data[self.id] == '1' and \
-            data.get("%s-new" % self.id, None) is None:
-            raise ProcessingException("empty file. Skip this!")
+        if data[self.id] == '1':
+            fieldstorage = data.get("%s-new" % self.id, None)
+            # comparing the fieldstorage with the unary 'not'
+            # operator doesn't work.. so weird looking check:
+            if fieldstorage == '' or fieldstorage == None:
+                raise ProcessingException("empty file. Skip this!")
 
         if data.get("%s-new" % self.id, None) is not None:
             _file = data["%s-new" % self.id]
