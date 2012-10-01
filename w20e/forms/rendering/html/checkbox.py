@@ -14,14 +14,16 @@ class CheckboxRenderer:
         value = form.data[renderable.bind]
         fmtmap = renderer.createFormatMap(form, renderable, **kwargs)
 
-        checked = ""
+        checked = None
 
         if value:
-            checked = 'checked="yes"'
+            checked = "checked"
+
+        value = "1"
 
         print >> out, get_template("checkbox")(
             control=renderable,
             value=value,
             checked=checked,
-            extra_classes=fmtmap['extra_classes']
+            fmtmap=fmtmap,
             )

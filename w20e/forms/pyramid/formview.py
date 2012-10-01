@@ -1,10 +1,7 @@
-from inspect import getmembers, ismethod
-
 from xml.dom.minidom import Document
 
 from w20e.forms.form import FormValidationError
 from w20e.forms.xml.factory import XMLFormFactory
-from w20e.forms.registry import Registry
 import sys
 
 
@@ -27,17 +24,6 @@ class formview(object):
         self.request = request
         self.form = form
 
-        # vocabs
-        # TODO: Now really...
-        #for method in getmembers(context, ismethod):
-
-        #    try:
-        #        if getattr(method[1], "__vocab__", False):
-
-        #            Registry.register_vocab(method[0], method[1])
-        #    except:
-        #        pass
-
         if retrieve_data:
             try:
                 data = self.form.submission.retrieve(form, context)
@@ -56,7 +42,7 @@ class formview(object):
 
         rendered = self.form.view.render(
             self.form, errors=errors, status=status,
-            data=self.request.params)
+            data=self.request.params, context=self)
         return unicode(rendered, "utf-8")
 
     def __call__(self):
@@ -67,15 +53,17 @@ class formview(object):
         errors = {}
         status = ''
 
-        if self.request.params.get("submit", None):
+        submissions = set(["submit", "save", "w20e.forms.next"])
 
-            status, errors = self.form.view.handle_form(self.form, self.request.params)
+        if submissions.intersection(self.request.params.keys()):
+            status, errors = self.form.view.handle_form(self.form,
+                    self.request.params)
 
         elif self.request.params.get("cancel", None):
 
             status = "cancelled"
 
-        if status in "completed":
+        if status in ["completed"]:
             self.form.submission.submit(self.form, self.context, self.request)
 
         return {'errors': errors, 'status': status}

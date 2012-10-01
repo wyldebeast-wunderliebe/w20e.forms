@@ -126,7 +126,7 @@ class XMLFormFactory:
             if child.__class__.__name__ == "_Element":
 
                 if not child.tag == "property":
-                
+
                     self._create_renderables(child, view)
 
         return view
@@ -147,12 +147,12 @@ class XMLFormFactory:
         for elt in child.xpath("./property"):
             kwargs[elt.get("name")] = elt.text
 
-        for elt in ["hint", "help", "alert"]:
+        for elt in ["hint", "help", "alert", "placeholder"]:
             if child.xpath("./%s" % elt):
                 kwargs[elt] = child.xpath("./%s" % elt)[0].text or ''
 
         if cls == Text:
-            
+
             ctrl = cls(child.get("id"),
                        child.text,
                        bind=child.get("bind"),

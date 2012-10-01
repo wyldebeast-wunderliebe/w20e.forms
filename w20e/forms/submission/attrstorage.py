@@ -95,6 +95,11 @@ class AttrStorage(SubmissionBase):
             else:
                 storage[field.id] = field.value
 
+            try:
+                del(context._v_data)
+            except:
+                pass
+
             context._p_changed = 1
 
     def _migrate_blob(self, storage, field_id):

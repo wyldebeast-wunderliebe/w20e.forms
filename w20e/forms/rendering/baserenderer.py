@@ -40,8 +40,15 @@ class BaseRenderer:
 
             try:
                 var = match.group()[2:-1]
-                value = form.getFieldValue(var) or ''
-                return str(value) # TODO: propably utf-8 issues here..
+                if var and var.endswith(":lexical"):
+                    var = var[:-len(":lexical")]
+                    value = form.getFieldValue(var, lexical=True) or ''
+                else:
+                    value = form.getFieldValue(var) or ''
+
+                if not isinstance(value, unicode):
+                    value = value.decode('utf-8')
+                return value
             except:
                 return match.group()
 
@@ -52,6 +59,9 @@ class BaseRenderer:
             fmtmap['hint'] = VAREXP.sub(replaceVars, fmtmap['hint'])
         if 'text' in fmtmap:
             fmtmap['text'] = VAREXP.sub(replaceVars, fmtmap['text'])
+        if 'placeholder' in fmtmap:
+            fmtmap['placeholder'] = VAREXP.sub(replaceVars,
+                    fmtmap['placeholder'])
 
         # defaults
         extra_classes = {'relevant': True, 'required': False,

@@ -13,14 +13,14 @@ class SelectRenderer:
         fmtmap = renderer.createFormatMap(form, renderable, **kwargs)
 
         opts = []
-        
+
         if renderable.vocab:
-            
+
             vocab = Registry.get_vocab(renderable.vocab)
-            
+
             if callable(vocab):
-                
-                opts = vocab()
+
+                opts = vocab(**kwargs)
         else:
             opts = renderable.options
 
@@ -28,18 +28,18 @@ class SelectRenderer:
         if renderable.format == "full":
 
             print >> out, get_template('select_full')(
-                control=renderable, 
+                control=renderable,
                 value=value,
                 options=opts,
-                extra_classes=fmtmap['extra_classes']
+                fmtmap=fmtmap
                 )
 
         else:
 
             print >> out, get_template('select')(
-                control=renderable, 
+                control=renderable,
                 value=value,
                 options=opts,
                 multiple=fmtmap['multiple'],
-                extra_classes=fmtmap['extra_classes']
+                fmtmap=fmtmap
                 )

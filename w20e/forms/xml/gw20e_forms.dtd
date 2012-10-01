@@ -26,7 +26,7 @@
 <!-- The view holds the renderables -->
 <!ELEMENT view (%controls;)*>
 
-<!ELEMENT group (property*,label?,hint?,(%controls;)*)>
+<!ELEMENT group (property*,label?,hint?,placeholder?,(%controls;)*)>
 <!ATTLIST group id ID #IMPLIED>
 <!ATTLIST group type CDATA #IMPLIED>
 <!ATTLIST group layout CDATA #IMPLIED>

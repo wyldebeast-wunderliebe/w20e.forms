@@ -26,9 +26,9 @@ class InputRenderer:
             tpl = get_template("textarea")
         else:
             tpl = get_template("input")
-            
+
         print >> out, tpl(
             control=renderable,
             value=value,
-            extra_classes=fmtmap['extra_classes']
+            fmtmap=fmtmap
             )

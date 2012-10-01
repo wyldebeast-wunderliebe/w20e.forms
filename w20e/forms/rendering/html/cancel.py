@@ -10,8 +10,9 @@ class CancelRenderer:
     def render(self, renderer, form, renderable, out, **kwargs):
 
         fmtmap = renderer.createFormatMap(form, renderable, **kwargs)
-        
+
         print >> out, get_template('cancel')(
             control=renderable,
-            extra_classes=fmtmap['extra_classes']
+            extra_classes=fmtmap['extra_classes'],
+            fmtmap=fmtmap
             )

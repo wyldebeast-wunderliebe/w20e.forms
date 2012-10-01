@@ -3,7 +3,7 @@ import base64
 
 from w20e.forms.rendering.control import DEFAULTS
 
-BASE_PROPS = ["label", "hint", "help", "alert"]
+BASE_PROPS = ["label", "hint", "help", "alert", "placeholder"]
 
 
 class XMLSerializer:

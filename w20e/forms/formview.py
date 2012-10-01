@@ -1,10 +1,11 @@
 from zope.interface import implements
-from interfaces import IFormView, IControlGroup, IControl
+from interfaces import IFormView
 from rendering.html.renderer import HTMLRenderer
 from StringIO import StringIO
 import codecs
 from config import PAGE_ID
 from w20e.forms.form import FormValidationError
+from w20e.forms.exceptions import ProcessingException
 
 
 class RenderableContainer:
@@ -97,10 +98,14 @@ class FormView(RenderableContainer):
         page_ids = [p.id for p in pages]
 
         try:
-            page_index = page_ids.index(current_page_id) + 1
+            moreorless = direction=="previous" and -1 or 1
+            page_index = page_ids.index(current_page_id) + moreorless
         except:
             page_index = 0
-            
+
+        if page_index >= len(page_ids):
+            page_index = 0
+
         page = None
 
         while page_index < len(pages):
@@ -114,7 +119,11 @@ class FormView(RenderableContainer):
             else:
                 page_index += 1
 
-        return [page]
+        renderables = None
+        if page:
+            renderables = [page]
+
+        return renderables
 
     def is_last_page(self, page_id):
 
@@ -152,6 +161,10 @@ class FormView(RenderableContainer):
         if errors:
             page = self.get_current_page(page_id)
             if page:
+                if hasattr(page, 'id'):
+                    page_id = page.id
+                else:
+                    page_id = None
                 renderables = page.getRenderables()
             else:
                 renderables = []
@@ -161,16 +174,17 @@ class FormView(RenderableContainer):
                 page_id,
                 direction=direction
                 )
-            
+            if renderables and renderables[0].is_group:
+                page_id = renderables[0].id
+
         if not renderables:
-            raise "Nothing to render!"
+            raise Exception("Nothing to render!")
 
         if not self.renderer.opts.get("multipage", False):
-
             pass
 
         self.renderer.renderFrontMatter(form, out, errors,
-                                        page_id=renderables[0].id,
+                                        page_id=page_id,
                                         status=status, **opts)
 
         for item in renderables:
@@ -198,18 +212,21 @@ class FormView(RenderableContainer):
 
         for renderable in renderables:
 
-            try:
-                fld = form.data.getField(renderable.bind)
+            fld = form.data.getField(renderable.bind)
+
+            if fld:  # could be a flowgroup e.g.
 
                 if not form.model.isRelevant(fld.id, form.data):
                     continue
 
                 datatype = form.model.get_field_datatype(fld.id)
 
-                fld.value = renderable.processInput(data, datatype=datatype)
+                try:
+                    fld.value = renderable.processInput(data,
+                            datatype=datatype)
+                except ProcessingException:
+                    pass
 
-            except:
-                pass
 
             if renderable.getRenderables:
                 self.process_data(form, renderable, data)
@@ -258,7 +275,7 @@ class FormView(RenderableContainer):
                 form,
                 self.get_current_page(data.get("w20e.forms.page")),
                 data)
-            
+
             status = 'processed'
 
             try:

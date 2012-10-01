@@ -1,3 +1,3 @@
-<div id="${control.id}" class="control ${control.type} ${extra_classes}">
-  <input type="submit" name="${control.id}" value="${control.label}"/>
+<div id="${control.id}" class="control ${control.type} ${fmtmap['extra_classes']}">
+  <input type="submit" name="${control.id}" value="${fmtmap['label']}"/>
 </div>

@@ -158,6 +158,8 @@ class FormModel(object):
 
         """ Check data type of value. Lists (multiple) is also ok. """
 
+        valid = True
+
         for props in self.getFieldProperties(field_id):
 
             datatype = props.getDatatype()
@@ -165,23 +167,14 @@ class FormModel(object):
             #TODO do a proper validation for file
             if datatype and datatype != 'file':
 
-                """ if hasattr(value, "__iter__"):
-
-                newvalue = []
-
-                for val in value:
-
-                newvalue.append(eval("%s(val)" % datatype),
-                {'val': val}, Registry.funcs)
-
-                return newvalue
-
-                else: """
-
-                return eval("%s(val)" % datatype,
+                try:
+                    valid = eval("%s(val)" % datatype,
                             {'val': value}, Registry.funcs)
+                except:
+                    valid = False
+                    break
 
-        return value
+        return valid
 
     def get_field_datatype(self, field_id):
 

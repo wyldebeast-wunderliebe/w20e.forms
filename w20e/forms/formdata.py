@@ -95,3 +95,7 @@ class FormData(object):
         if data:
             for key, val in data.items():
                 self[key] = val
+
+    def clone(self):
+        """ clone the data """
+        return FormData(self.as_dict())

@@ -1,20 +1,25 @@
 <!-- Control definition -->
 <metal:define-macro define-macro="control">
-  <div id="${control.id}"
-       class="control-group ${extra_classes}">
-    
-    <label metal:define-slot="label" class="control-label" 
-           for="input-${control.id}">
-      ${control.label}
-    </label>
+  <metal:mike
+    tal:define="well python: 'error' in fmtmap['extra_classes'] and 'well' or ''">
 
-    <div class="controls">
-      <span class="help-inline">${control.alert}</span>
-      
-      <p tal:condition="control.hint" class="help-block">${control.hint}</p>
-      <p tal:condition="control.help" class="help-block">${control.help}</p>
-      <metal:define-slot define-slot="input"/>
+    <div id="${control.id}"
+      class="control-group ${fmtmap['extra_classes']} ${well}">
+
+      <label metal:define-slot="label" class="control-label"
+             for="input-${control.id}">
+        ${fmtmap['label']}
+      </label>
+
+      <div class="controls">
+        <span class="help-inline alert alert-error"
+          tal:condition="control.alert">${fmtmap['alert']}</span>
+
+        <p tal:condition="control.hint" class="help-block">${fmtmap['hint']}</p>
+        <p tal:condition="control.help" class="help-block">${fmtmap['help']}</p>
+        <metal:define-slot define-slot="input"/>
+      </div>
+
     </div>
-    
-  </div>
+  </metal:mike>
 </metal:define-macro>

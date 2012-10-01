@@ -30,5 +30,5 @@ class CardGroupRenderer:
         print >> out, get_template('cardgroup')(
             group=renderable,
             content=str_out.getvalue().decode("utf-8"),
-            extra_classes=fmtmap['extra_classes']
+            fmtmap=fmtmap
             )

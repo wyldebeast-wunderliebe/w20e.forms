@@ -2,5 +2,5 @@
 
   <input metal:fill-slot="input"
          type="checkbox" id="input-${control.id}" value="${value}"
-         ${checked} name="${control.id}" />
+         name="${control.id}" tal:attributes="checked string:${checked}"/>
 </div>
