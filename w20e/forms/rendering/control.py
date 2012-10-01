@@ -65,6 +65,35 @@ class DateTime(Control):
 
     """ Datetime widget """
 
+    def __init__(self, *args, **kwargs):
+
+        super(DateTime, self).__init__(*args, **kwargs)
+        self.format = "%Y-%m-%d"
+        self.extra_classes = "datetime"
+
+    def processInput(self, data=None, datatype="datetime"):
+
+        """ Base implementation """
+
+        val = None
+
+        if data:
+            val = data.get(self.id, None)
+
+        try:
+            converter = Registry.get_converter(datatype)
+
+            val = converter(val, self.format)
+        except:
+            pass
+        
+        return val
+
+    def lexVal(self, value):
+
+        return value.strftime(self.format)
+
+
 class Password(Control):
 
     """ Base input with '*'... """
