@@ -15,8 +15,8 @@
         <span class="help-inline alert alert-error"
           tal:condition="control.alert">${fmtmap['alert']}</span>
 
-        <p tal:condition="control.hint" class="help-block">${fmtmap['hint']}</p>
-        <p tal:condition="control.help" class="help-block">${fmtmap['help']}</p>
+        <p tal:condition="control.hint" class="help-block control-hint">${fmtmap['hint']}</p>
+        <p tal:condition="control.help" class="help-block control-help">${fmtmap['help']}</p>
         <metal:define-slot define-slot="input"/>
       </div>
 

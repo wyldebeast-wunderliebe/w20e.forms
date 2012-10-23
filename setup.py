@@ -1,9 +1,9 @@
 from setuptools import setup, find_packages
-import sys, os
+import os
 from distutils.core import Command
 from unittest import TextTestRunner, TestLoader
 from glob import glob
-from os.path import splitext, basename, join as pjoin, walk
+from os.path import splitext, basename, join as pjoin
 import doctest
 
 def read(f):
