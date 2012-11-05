@@ -45,6 +45,26 @@ class formview(object):
             data=self.request.params, context=self)
         return unicode(rendered, "utf-8")
 
+    def handle_form(self):
+
+        """ Handle the form. Override this method if you wish... """
+
+        form = self.form
+        self._process_data(form, form.view, self.request.params)
+        status = 'processed'
+        errors = {}
+
+        try:
+            form.validate()
+            form.submission.submit(form, self.context, self.request)
+            status = 'stored'
+
+        except FormValidationError, fve:
+            errors = fve.errors
+            status = 'error'
+
+        return (status, errors)
+
     def __call__(self):
 
         """ The form posts to itself, so the call method handles the form,
@@ -68,6 +88,31 @@ class formview(object):
 
         return {'errors': errors, 'status': status}
 
+    def _process_data(self, form, view, data=None):
+
+        """ Get data form request and see what we can post...
+        """
+
+        if not data:
+            data = {}
+
+        for renderable in view.getRenderables():
+
+            try:
+                fld = form.data.getField(renderable.bind)
+
+                if not form.model.isRelevant(fld.id, form.data):
+                    continue
+
+                val = renderable.processInput(data)
+                fld.value = form.model.convert(renderable.bind, val)
+
+            except:
+                pass
+
+            if renderable.getRenderables:
+                self._process_data(form, renderable, data)
+
     def retrieve_efferent_fields(self, format="json"):
 
         return self.form.model.collectEfferentFields()
@@ -83,7 +128,7 @@ class formview(object):
         model = self.form.model
         form = self.form
 
-        form.view.process_data(form, form.view, self.request.params)
+        self._process_data(form, form.view, self.request.params)
 
         effected = []
         efferent = model.collectEfferentFields()

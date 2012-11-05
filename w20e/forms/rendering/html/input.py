@@ -16,7 +16,10 @@ class InputRenderer:
         try:
             value = form.getFieldValue(renderable.bind, lexical=True)
             # TODO: not sure about this string conversion..
+            # leave unicode values intact.
             if not isinstance(value, unicode):
+                value = str(value)
+            if isinstance(value, str):
                 value = value.decode('utf-8')
         except:
             value = u''

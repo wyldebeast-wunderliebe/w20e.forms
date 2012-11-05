@@ -168,7 +168,7 @@ class FormModel(object):
             if datatype and datatype != 'file':
 
                 try:
-                    valid = eval("%s(val)" % datatype,
+                    converted = eval("%s(val)" % datatype,
                             {'val': value}, Registry.funcs)
                 except:
                     valid = False
@@ -196,12 +196,20 @@ class FormModel(object):
 
             datatype = props.getDatatype()
 
-            if datatype and datatype != 'file':
+#            if datatype and datatype != 'file':
+#
+#                try:
+#                    return eval("to_%s(arg)" % datatype, {'arg': value})
+#                except:
+#                    return value
+            if datatype:
 
                 try:
-                    return eval("to_%s(arg)" % datatype, {'arg': value})
+                    converter = Registry.get_converter(datatype)
+
+                    value = converter(value)
                 except:
-                    return value
+                    pass
 
         return value
 

@@ -212,20 +212,22 @@ class FormView(RenderableContainer):
 
         for renderable in renderables:
 
-            fld = form.data.getField(renderable.bind)
+            if callable(renderable.processInput):
 
-            if fld:  # could be a flowgroup e.g.
+                fld = form.data.getField(renderable.bind)
 
-                if not form.model.isRelevant(fld.id, form.data):
-                    continue
+                if fld:  # could be a flowgroup e.g.
 
-                datatype = form.model.get_field_datatype(fld.id)
+                    if not form.model.isRelevant(fld.id, form.data):
+                        continue
 
-                try:
-                    fld.value = renderable.processInput(data,
-                            datatype=datatype)
-                except ProcessingException:
-                    pass
+                    datatype = form.model.get_field_datatype(fld.id)
+
+                    try:
+                        fld.value = renderable.processInput(data,
+                                datatype=datatype)
+                    except ProcessingException:
+                        pass
 
 
             if renderable.getRenderables:
