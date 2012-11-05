@@ -47,6 +47,8 @@ class BaseRenderer:
                     value = form.getFieldValue(var) or ''
 
                 if not isinstance(value, unicode):
+                    if not hasattr(value, "decode"):
+                        value = str(value)
                     value = value.decode('utf-8')
                 return value
             except:

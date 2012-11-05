@@ -174,14 +174,11 @@ class FormView(RenderableContainer):
                 page_id,
                 direction=direction
                 )
-            if renderables and renderables[0].is_group:
+            if renderables:
                 page_id = renderables[0].id
 
         if not renderables:
             raise Exception("Nothing to render!")
-
-        if not self.renderer.opts.get("multipage", False):
-            pass
 
         self.renderer.renderFrontMatter(form, out, errors,
                                         page_id=page_id,
