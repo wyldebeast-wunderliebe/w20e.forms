@@ -7,8 +7,8 @@
       class="control-group ${fmtmap['extra_classes']} ${well}">
 
       <label metal:define-slot="label" class="control-label"
-             for="input-${control.id}">
-        ${fmtmap['label']}
+        for="input-${control.id}">
+        <tal:block replace="structure fmtmap['label']"/>
       </label>
 
       <div class="controls">
