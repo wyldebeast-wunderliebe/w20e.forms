@@ -2,7 +2,7 @@ from w20e.forms.submission.interfaces import ISubmission
 from zope.interface import implements
 
 
-class SubmissionBase:
+class SubmissionBase(object):
 
     implements(ISubmission)
 

@@ -73,7 +73,8 @@ class formview(object):
         errors = {}
         status = ''
 
-        submissions = set(["submit", "save", "w20e.forms.next"])
+        submissions = set(["submit", "save", "w20e.forms.next",
+            "w20e.forms.process"])
 
         if submissions.intersection(self.request.params.keys()):
             status, errors = self.form.view.handle_form(self.form,
