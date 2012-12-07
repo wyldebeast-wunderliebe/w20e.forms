@@ -4,7 +4,7 @@ from zope.interface import implements
 from w20e.forms.registry import Registry
 
 
-class SelectRenderer:
+class SelectRenderer(object):
 
     implements(IControlRenderer)
 
