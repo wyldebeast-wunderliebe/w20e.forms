@@ -9,6 +9,7 @@ class Registry:
     funcs = {}
     html_tpl_path = ""
     converters = {}
+    validators = {}
 
     @staticmethod
     def set_html_template_path(name):
@@ -77,3 +78,13 @@ class Registry:
     def get_converter(name):
 
         return Registry.converters[name]
+
+    @staticmethod
+    def register_validator(name, validator):
+
+        Registry.validators[name] = validator
+
+    @staticmethod
+    def get_validator(name):
+
+        return Registry.validators[name]

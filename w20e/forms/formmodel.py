@@ -1,6 +1,10 @@
 from model.fieldproperties import FieldProperties
-from model.converters import *
+from model import converters, validators
 from registry import Registry
+
+
+converters.register()
+validators.register()
 
 
 class FormModel(object):
@@ -164,12 +168,13 @@ class FormModel(object):
 
             datatype = props.getDatatype()
 
-            #TODO do a proper validation for file
-            if datatype and datatype != 'file':
+            if datatype:
 
                 try:
-                    converted = eval("%s(val)" % datatype,
-                            {'val': value}, Registry.funcs)
+                    validator = Registry.get_validator(datatype)
+                    valid = validator(value)
+                    if not valid:
+                        break
                 except:
                     valid = False
                     break
@@ -196,18 +201,12 @@ class FormModel(object):
 
             datatype = props.getDatatype()
 
-#            if datatype and datatype != 'file':
-#
-#                try:
-#                    return eval("to_%s(arg)" % datatype, {'arg': value})
-#                except:
-#                    return value
             if datatype:
 
                 try:
                     converter = Registry.get_converter(datatype)
-
                     value = converter(value)
+                    break;
                 except:
                     pass
 
