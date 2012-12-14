@@ -54,6 +54,6 @@ class HTMLRenderer(BaseRenderer):
     def render(self, form, renderable, out, errors=None, **kwargs):
 
         rtype = renderable.type
-        renderer = self.getRendererForType(rtype, "html")()
+        renderer = self.getRendererForType(rtype, "html")
         renderer.render(self, form, renderable, out, errors=errors,
                         **kwargs)

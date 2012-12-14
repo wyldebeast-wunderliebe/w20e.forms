@@ -6,6 +6,16 @@ from w20e.forms.registry import Registry
 VAREXP = re.compile('\$\{[^\}]+\}')
 
 
+def cache(func):
+    def get_renderer(self, renderableType, rendererType):
+        key = "%s::%s" % (renderableType, rendererType)
+        renderer = self._v_registry.get(key, None)
+        if renderer is None:
+            renderer = func(self, renderableType, rendererType)
+            self._v_registry[key] = renderer
+        return renderer
+    return get_renderer
+
 class BaseRenderer:
 
     def __init__(self, **kwargs):
@@ -14,10 +24,13 @@ class BaseRenderer:
 
         self.opts = {}
         self.opts.update(kwargs)
+        self._v_registry = {}
 
+    @cache
     def getRendererForType(self, renderableType, rendererType):
 
-        return Registry.get_renderer(renderableType, rendererType)
+        clazz = Registry.get_renderer(renderableType, rendererType)
+        return clazz()
 
     def getType(self, renderable):
 
