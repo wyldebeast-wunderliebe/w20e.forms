@@ -1,7 +1,8 @@
 <!-- Control definition -->
 <metal:define-macro define-macro="control">
   <div id="${control.id}"
-        class="control ${control.type} ${fmtmap['extra_classes']}">
+    class="control ${control.type} ${fmtmap['extra_classes']}"
+    data-extra-options="${control.data_options}">
 
     <div class="control-info">
       <label class="control-label" for="input-${control.id}"

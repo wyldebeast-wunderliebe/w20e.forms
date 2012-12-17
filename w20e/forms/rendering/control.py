@@ -2,6 +2,7 @@ from zope.interface import implements
 from w20e.forms.interfaces import IControl
 from renderables import Renderable
 from w20e.forms.registry import Registry
+import json
 
 
 REPR = """%(type)s %(id)s, bound to '%(bind)s':
@@ -68,8 +69,19 @@ class DateTime(Control):
     def __init__(self, *args, **kwargs):
 
         super(DateTime, self).__init__(*args, **kwargs)
-        self.format = "%Y-%m-%d"
-        self.extra_classes = "datetime"
+        extra_classes = self.extra_classes or ""
+        self.extra_classes = extra_classes + " datetime"
+        if not self.format:
+            self.format = "%Y-%m-%d %H:%M"
+
+        data_options = {}
+        if self.dateFormat:
+            data_options['dateFormat'] = self.dateFormat
+        if self.timeFormat:
+            data_options['timeFormat'] = self.timeFormat
+        if self.showTimepicker:
+            data_options['showTimepicker'] = self.showTimepicker
+        self.data_options = json.dumps(data_options)
 
     def processInput(self, data=None, datatype="datetime"):
 
@@ -83,10 +95,10 @@ class DateTime(Control):
         try:
             converter = Registry.get_converter(datatype)
 
-            val = converter(val, self.format)
+            val = converter(val.strip(), self.format)
         except:
             pass
-        
+
         return val
 
     def lexVal(self, value):
@@ -171,7 +183,6 @@ class Select(Control):
         else:
             options = self.options
 
-
         for opt in options:
 
             if opt.value == str(value):
@@ -195,14 +206,3 @@ class Range(Select):
 
         Select.__init__(self, control_id, label, options=opts,
                         bind=bind, **properties)
-
-
-
-class Date(Input):
-    """ Date input. probably needs javascript to make it usefull """
-
-    def __init__(self, id, label, **props):
-
-        defaults = {'rows': 1, 'cols': 10}
-        defaults.update(props)
-        Input.__init__(self, id, label, **defaults)

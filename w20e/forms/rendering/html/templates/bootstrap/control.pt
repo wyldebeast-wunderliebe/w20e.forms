@@ -1,10 +1,13 @@
 <!-- Control definition -->
 <metal:define-macro define-macro="control">
   <metal:mike
-    tal:define="well python: 'error' in fmtmap['extra_classes'] and 'well' or ''">
+      tal:define="well python: 'error' in fmtmap['extra_classes'] and 'well' or '';">
+
 
     <div id="${control.id}"
-      class="control-group ${fmtmap['extra_classes']} ${well}">
+      class="control-group ${fmtmap['extra_classes']} ${well}"
+      data-extra-options="${control.data_options}"
+      >
 
       <label metal:define-slot="label" class="control-label"
         for="input-${control.id}">
