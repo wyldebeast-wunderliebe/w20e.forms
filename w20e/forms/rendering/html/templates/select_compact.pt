@@ -8,7 +8,7 @@
     <tal:repeat tal:condition="not: multiple" repeat="opt options">
       <option tal:condition="str(value) == str(opt.value)" 
               value="${opt.value}" selected>${opt.label}</option>
-      <option tal:condition="value != opt.value" 
+      <option tal:condition="str(value) != str(opt.value)" 
               value="${opt.value}">${opt.label}</option>
     </tal:repeat>
     <tal:repeat tal:condition="multiple" repeat="opt options">
