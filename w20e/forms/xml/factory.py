@@ -194,7 +194,7 @@ class XMLFormFactory:
                        bind=child.get("bind"),
                        **kwargs)
 
-        if hasattr(ctrl, "addOption"):
+        if hasattr(ctrl, "addOption") and getattr(ctrl, "addOption"):
 
             for subchild in child.xpath("option"):
                 ctrl.addOption(Option(subchild.get("value"),

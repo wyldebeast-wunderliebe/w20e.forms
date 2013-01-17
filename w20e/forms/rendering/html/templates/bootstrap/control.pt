@@ -7,6 +7,7 @@
     <div id="${control.id}"
       class="control-group ${fmtmap['extra_classes']} ${well}"
       data-extra-options="${control.data_options}"
+      data-bind="${control.bind}"
       >
 
       <label metal:define-slot="label" class="control-label"
