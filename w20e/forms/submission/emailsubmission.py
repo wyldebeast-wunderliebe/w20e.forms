@@ -19,6 +19,8 @@ class EmailSubmission(SubmissionBase):
     def __init__(self, **props):
 
         """ Email submission does... well, you get the idea... """
+        
+        self.subject = self.reply_to = self.send_from = self.send_to = ""
 
         SubmissionBase.__init__(self, **props)
 
