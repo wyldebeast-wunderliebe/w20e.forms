@@ -178,8 +178,13 @@ class Select(Control):
 
         if self.vocab:
             vocab = Registry.get_vocab(self.vocab)
+
+            args = []
+            if self.vocab_args:
+                args = self.vocab_args.split(",")
+
             if callable(vocab):
-                options = vocab()
+                options = vocab(*args)
         else:
             options = self.options
 

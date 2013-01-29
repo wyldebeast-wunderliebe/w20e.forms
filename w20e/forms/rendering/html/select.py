@@ -20,7 +20,11 @@ class SelectRenderer(object):
 
             if callable(vocab):
 
-                opts = vocab(**kwargs)
+                args = []
+                if renderable.vocab_args:
+                    args = renderable.vocab_args.split(",")
+
+                opts = vocab(*args, **kwargs)
         else:
             opts = renderable.options
 
