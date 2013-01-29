@@ -3,12 +3,12 @@
     <tal:repeat repeat="opt options">
       <label class="radio">
         <input type="radio"
-              tal:condition="str(value) == opt.value"
+              tal:condition="str(value) == str(opt.value)"
               checked="true"
               id="input-${control.id}-${opt.value}" value="${opt.value}"
               name="${control.id}"/>
         <input type="radio"
-              tal:condition="str(value) != opt.value"
+              tal:condition="str(value) != str(opt.value)"
               id="input-${control.id}-${opt.value}" value="${opt.value}"
               name="${control.id}"/>
         <tal:replace replace="structure opt.label" />
