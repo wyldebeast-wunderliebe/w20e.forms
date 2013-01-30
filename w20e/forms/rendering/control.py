@@ -190,7 +190,7 @@ class Select(Control):
 
         for opt in options:
 
-            if opt.value == str(value):
+            if opt.value == value:
 
                 return opt.label
 
