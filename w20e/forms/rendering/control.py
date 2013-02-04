@@ -190,11 +190,25 @@ class Select(Control):
 
         for opt in options:
 
-            if opt.value == value:
+            if self._is_same(opt.value, value):
 
                 return opt.label
 
         return value
+
+    def _is_same(self, opt_value, value):
+    
+        """ Yeah, well, this is a tad nasty. The type of the optin may
+        or may not be the same as the type of the actual value. So
+        let's see where we get from here..."""
+
+        if type(opt_value) == type(value):
+            if opt_value == value:
+                return True
+            else:
+                return False
+        else:
+            return str(opt_value) == str(value)
 
 
 class Range(Select):
