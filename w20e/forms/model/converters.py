@@ -3,12 +3,22 @@ Any datatype converters that are not yet standard python should go here...
 """
 
 from datetime import datetime
+import dateutil.parser
 from w20e.forms.registry import Registry
 
 
-def to_date(value, format):
+def to_date(value, format=None):
 
-    return datetime.strptime(value, format)
+    # return empty string is empty string was passed in..
+    if not (value and value.strip()):
+        return ''
+
+    if format:
+        return datetime.strptime(value, format)
+
+    else:
+        # converting datetime sucks.. fingers crossed for dateutil
+        return dateutil.parser.parse(value)
 
 
 def to_str(value):

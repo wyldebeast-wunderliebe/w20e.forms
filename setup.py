@@ -71,6 +71,7 @@ setup(name='w20e.forms',
         'lxml',
         'zope.interface',
         'ordereddict',
+        'python-dateutil',
         'Chameleon',
       ],
       entry_points="""
