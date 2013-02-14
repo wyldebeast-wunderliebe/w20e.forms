@@ -26,7 +26,7 @@ Would you wish to use w20e.forms, then:
       >>> from w20e.forms.data.field import Field
       >>> from w20e.forms.rendering.control import Input
       >>> from w20e.forms.pyramid.formview import formview as pyramidformview
-      
+
    Phew, that was a load of imports. Now do the actual view
    class. It's a pretty simple form, but you should get the picture.
 
@@ -35,7 +35,7 @@ Would you wish to use w20e.forms, then:
       ...     data = FormData()
       ...     data.addField(Field("foo", "some default value"))
       ...     data.addField(Field("bar"))
-      ...     model = FormModel() 
+      ...     model = FormModel()
       ...     view = FormView()
       ...     # We'll leave the poperties out for now, check the main
       ...     # README for details
@@ -45,7 +45,7 @@ Would you wish to use w20e.forms, then:
       ...     form = Form("test", data, model, view, submission)
       ...     pyramidformview.__init__(self, context, request, form)
 
-   Now, a view for pyramid just takes a context, and a request, so let's 
+   Now, a view for pyramid just takes a context, and a request, so let's
    create the view instance:
 
       >>> class Context:
@@ -60,36 +60,51 @@ Would you wish to use w20e.forms, then:
    Ok, we're ready for some action now. Let's try to render the form.
 
       >>> print view.renderform()
-      <form class="w20e-form" method="post" action="" enctype="multipart/form-data">
-      <input type="hidden" name="formprocess" value="1"/>
-      <div class="alert"></div>
-      <div id="input0" class="control input relevant">
-      <label for="input-input0">Input foo</label>
-      <div class="alert"></div>
-      <div class="hint"></div>
-      <input id="input-input0" type="text" name="input0" value="some default value" size="20"/>
-      </div>
-      <div id="input1" class="control input relevant">
-      <label for="input-input1">Input bar here</label>
-      <div class="alert"></div>
-      <div class="hint"></div>
-      <input id="input-input1" type="text" name="input1" value="" size="20"/>
-      </div>
+      <form class="w20e-form  " method="post" action=""
+            id="test" enctype="multipart/form-data">
+        <input type="hidden" name="w20e.forms.process" value="1" />
+        <input type="hidden" name="w20e.forms.page" value="input0" />
+      <!-- Control definition -->
+        <div id="input0"
+          class="control input relevant">
+          <div class="control-info">
+            <label class="control-label" for="input-input0">Input foo</label>
+            <div class="alert"></div>
+          </div>
+          <div class="control-widget">
+              <input
+           id="input-input0" type="text" name="input0"
+           value="" size="20"/>
+          </div>
+        </div>
+      <!-- Control definition -->
+        <div id="input1"
+          class="control input relevant">
+          <div class="control-info">
+            <label class="control-label" for="input-input1">Input bar here</label>
+            <div class="alert"></div>
+          </div>
+          <div class="control-widget">
+              <input
+           id="input-input1" type="text" name="input1"
+           value="" size="20"/>
+          </div>
+        </div>
       </form>
-      <BLANKLINE>
+
 
    Nice. Now let's give the request some content, and let the view handle the
    submission. This should result in the context having the form data stored
    in the _data attribute. formprocess is the marker used by w20e.forms
    to assume that the form is posted.
 
-      >>> req = Request({'formprocess': 1, 'input0': 6, 'input1': 'whatever'})
+      >>> req = Request({'w20e.forms.process': 1, 'input0': 6, 'input1': 'whatever'})
       >>> view = yourformview(ctx, req)
       >>> view()
-      {'status': 'stored', 'errors': {}}
-      >>> ctx._data.getField('foo').value
-      6
-      >>> ctx._data.getField('bar').value
+      {'status': 'completed', 'errors': {}}
+      >>> ctx._data['foo']
+      '6'
+      >>> ctx._data['bar']
       'whatever'
 
 
@@ -102,7 +117,7 @@ XML implementation
      from w20e.forms.xml.formfile import FormFile
 
      class yourformview(pyramidformview):
-     
+
        def __init__(self, context, request):
            pyramidformview.__init__(self, context, request, FormFile("forms/yourform.xml"))
 
@@ -118,7 +133,7 @@ XML implementation
 
 
  * Wire the stuff into zcml (assuming you use that), like so::
-   
+
      <view
        context=".models.YourModel"
        view=".views.yourformview"

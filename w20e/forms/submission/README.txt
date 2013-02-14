@@ -19,8 +19,8 @@ you'd like your own, follow the steps:
 
 What the package offers is:
 
-	attr	Store the data in a single attribute on some context
-	attrs	Store the data in a separate attributes, one per variable,
+    attr    Store the data in a single attribute on some context
+    attrs   Store the data in a separate attributes, one per variable,
                 on some context
-	none	Do nothing...
+    none    Do nothing...
 

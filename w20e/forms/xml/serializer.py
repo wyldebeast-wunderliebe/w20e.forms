@@ -1,7 +1,7 @@
 from lxml import etree
 import base64
 
-from w20e.forms.rendering.control import DEFAULTS
+from w20e.forms.rendering.renderables import DEFAULTS
 
 BASE_PROPS = ["label", "hint", "help", "alert", "placeholder"]
 
@@ -85,7 +85,7 @@ class XMLSerializer:
 
             kwargs = {'id': renderable.id}
 
-            if hasattr(renderable, 'bind'):
+            if hasattr(renderable, 'bind') and renderable.bind:
                 kwargs['bind'] = renderable.bind
 
             elt = etree.SubElement(root, self._determine_tag(renderable),
@@ -102,11 +102,12 @@ class XMLSerializer:
                     prop_elt = etree.SubElement(elt, "property", name=p)
                     prop_elt.text = str(getattr(renderable, p))
 
-            for opt in getattr(renderable, 'options', []):
+            for opt in renderable.options or []:
                 opt_elt = etree.SubElement(elt, "option", value=opt.value)
                 opt_elt.text = opt.label
 
-            if hasattr(renderable, "getRenderables"):
+            if hasattr(renderable, "getRenderables") and \
+                renderable.getRenderables:
 
                 self.create_view(renderable, elt)
 

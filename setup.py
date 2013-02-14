@@ -9,6 +9,8 @@ import doctest
 def read(f):
     return open(f).read()
 
+requires = read('requirements.txt').splitlines()
+
 version = read(os.path.join('w20e', 'forms', 'version.txt')).strip()
 long_descr = ".. contents:: Table of Contents\n\n" + \
     read(os.path.join('README.txt')) + '\n\n' + \
@@ -68,14 +70,7 @@ setup(name='w20e.forms',
       namespace_packages=['w20e'],
       include_package_data=True,
       zip_safe=False,
-      install_requires=[
-        'distribute',
-        'lxml',
-        'zope.interface',
-        'ordereddict',
-        'python-dateutil',
-        'Chameleon',
-      ],
+      install_requires=requires,
       entry_points="""
       # -*- Entry points: -*-
       """,

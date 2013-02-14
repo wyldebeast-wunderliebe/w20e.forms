@@ -43,7 +43,10 @@ class formview(object):
         rendered = self.form.view.render(
             self.form, errors=errors, status=status,
             data=self.request.params, context=self, **opts)
-        return unicode(rendered, "utf-8")
+        rendered = unicode(rendered, "utf-8")
+        # remove empty lines
+        filtered = '\n'.join([l for l in rendered.splitlines() if l.strip()])
+        return filtered
 
     def handle_form(self):
 
@@ -134,7 +137,7 @@ class formview(object):
         effected = []
         efferent = model.collectEfferentFields()
 
-        ctls = [form.view.getRenderable(key) for key in \
+        ctls = [form.view.getRenderable(key) for key in
                 self.request.params.keys()]
         ctls = [c for c in ctls if c]
 

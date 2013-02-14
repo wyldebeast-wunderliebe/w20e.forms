@@ -197,7 +197,7 @@ class Select(Control):
         return value
 
     def _is_same(self, opt_value, value):
-    
+
         """ Yeah, well, this is a tad nasty. The type of the optin may
         or may not be the same as the type of the actual value. So
         let's see where we get from here..."""

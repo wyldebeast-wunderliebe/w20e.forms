@@ -41,6 +41,7 @@ class XMLFormFactory:
         root = None
 
         # Try parsing as string first, then go for other options...
+        # TODO: parsing the first line and look for <?xml sucks
         if self.xml.splitlines()[0].strip().find("<?xml") > -1:
             root = etree.fromstring(self.xml)
         else:

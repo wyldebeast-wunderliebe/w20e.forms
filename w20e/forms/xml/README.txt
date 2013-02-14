@@ -12,11 +12,11 @@ creating forms, not unlike the way you create a form in HTML. Also, XML is a for
 
 Start using the XML factory
 
-      >>> from factory import XMLFormFactory
+      >>> from w20e.forms.xml.factory import XMLFormFactory
 
 Now let us create a factory class
 
-      >>> xml = """
+      >>> xml = """<?xml version="1.0"?>
       ... <form id="test">
       ...
       ...   <!-- The data part, a.k.a. the variables you wish to collect -->
@@ -28,12 +28,12 @@ Now let us create a factory class
       ...   <model>
       ...     <properties id="required">
       ...       <bind>foo</bind>
-      ...	<bind>bar</bind>
-      ...	<required>True</required>
+      ...       <bind>bar</bind>
+      ...       <required>True</required>
       ...     </properties>
       ...     <properties id="int">
       ...       <bind>bar</bind>
-      ...	<datatype>int</datatype>
+      ...       <datatype>int</datatype>
       ...     </properties>
       ...   </model>
       ...
@@ -86,14 +86,14 @@ Now let us create a factory class
       >>> print form.data.getField("bar").value
       666
 
-      Set the value 
+      Set the value
 
       >>> form.data.getField("bar").value = 777
       >>> print form.data.getField("bar").value
       777
 
       Okido, so far so good. Now let's see what properties we have.
-      
+
       >>> props = form.model.getFieldProperties("bar")
       >>> len(props)
       2
@@ -102,7 +102,7 @@ Now let us create a factory class
       >>> reqprop = [prop for prop in props if prop.id == "required"][0]
       >>> reqprop.getRequired()
       'True'
-      
+
       >>> intprop.getDatatype()
       'int'
 
@@ -141,7 +141,7 @@ Serialization
 
 You can easily serilialize the form back into XML. Let's try...
 
-      >>> from serializer import XMLSerializer
+      >>> from w20e.forms.xml.serializer import XMLSerializer
       >>> serializer = XMLSerializer()
       >>> print serializer.serialize(form)
       <form id="test">
@@ -152,29 +152,33 @@ You can easily serilialize the form back into XML. Let's try...
         <model>
           <properties id="int">
             <bind>bar</bind>
-      	    <datatype>int</datatype>
+            <datatype>int</datatype>
           </properties>
           <properties id="required">
             <bind>foo</bind>
-     	    <bind>bar</bind>
-      	    <required>True</required>
+            <bind>bar</bind>
+            <required>True</required>
           </properties>
         </model>
-	<view>
-      	  <input bind="foo" id="fooctl">
+        <view>
+          <input bind="foo" id="fooctl">
             <label>Foo?</label>
             <hint>Well, foo or no?</hint>
           </input>
           <select bind="bar" id="barctl">
             <label>Bar</label>
             <property name="multiple">False</property>
-	    <option value="1">One</option>
-	    <option value="2">Two</option>
+            <option value="1">One</option>
+            <option value="2">Two</option>
           </select>
           <select bind="bar" id="barctl2">
             <label>Bar2</label>
-	    <option value="3">Three</option>
-	    <option value="4">Four</option>
+            <option value="3">Three</option>
+            <option value="4">Four</option>
+          </select>
+          <select bind="bar" id="barctl3">
+            <label>Bar3</label>
+            <property name="vocab">some_vocab</property>
           </select>
           <flowgroup id="groupie">
             <label>GruppoSportivo</label>
@@ -182,8 +186,8 @@ You can easily serilialize the form back into XML. Let's try...
           </flowgroup>
         </view>
         <submission type="none">
-	  <property name="action">@@save</property>
-	</submission>
+          <property name="action">@@save</property>
+        </submission>
       </form>
       <BLANKLINE>
 
