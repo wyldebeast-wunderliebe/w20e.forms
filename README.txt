@@ -69,7 +69,7 @@ false. The model offers the following properties:
 
 * required: is a variable required or not?
 * relevant: is the variable relevant? Like maiden name would be irrelevant
-  when gender is male. In general, the related control/widget for irrelevant 
+  when gender is male. In general, the related control/widget for irrelevant
   variables would not be shown.
 * readonly: can a person change the value of a variable?
 * calculate: in stead of letting a person set the value of a variable, the
@@ -119,6 +119,9 @@ Let's get the imports over with...
       >>> from w20e.forms.form import Form, FormValidationError
       >>> from w20e.forms.rendering.html.renderer import HTMLRenderer
       >>> from w20e.forms.submission.attrstorage import AttrStorage
+      >>> import lxml.html.usedoctest
+      >>> import lxml.html
+      >>> from StringIO import StringIO
 
 Creating a form
 ---------------
@@ -210,53 +213,81 @@ enables specific styling, like 'display: none'.
       >>> form.data.getField('field0').value = None
       >>> field = form.view.getRenderable('input1')
       >>> renderer = HTMLRenderer()
-      >>> renderer.render(form, field, sys.stdout)
+      >>> out = StringIO()
+      >>> renderer.render(form, field, out)
+      >>> html = lxml.html.fromstring(out.getvalue())
+      >>> print lxml.html.tostring(html)
       <div id="input1" class="control input ">
-      <label for="input-input1">Last name</label>
-      <div class="alert"></div>
-      <div class="hint"></div>
-      <input id="input-input1" type="text" name="input1" value="foo" size="20"/>
+        <div class="control-info">
+          <label class="control-label" for="input-input1">Last name</label>
+          <div class="alert"></div>
+        </div>
+        <div class="control-widget">
+          <input id="input-input1" type="text" name="input1" value="foo" size="20">
+        </div>
       </div>
 
       >>> form.data.getField('field0').value = 'pipo'
       >>> field = form.view.getRenderable('input1')
       >>> renderer = HTMLRenderer()
-      >>> renderer.render(form, field, sys.stdout)
+      >>> out = StringIO()
+      >>> renderer.render(form, field, out)
+      >>> html = lxml.html.fromstring(out.getvalue())
+      >>> print lxml.html.tostring(html)
       <div id="input1" class="control input relevant">
-      <label for="input-input1">Last name</label>
-      <div class="alert"></div>
-      <div class="hint"></div>
-      <input id="input-input1" type="text" name="input1" value="foo" size="20"/>
+        <div class="control-info">
+          <label class="control-label" for="input-input1">Last name</label>
+          <div class="alert"></div>
+        </div>
+        <div class="control-widget">
+          <input id="input-input1" type="text" name="input1" value="foo" size="20">
+        </div>
       </div>
 
       >>> field = form.view.getRenderable('input0')
-      >>> renderer.render(form, field, sys.stdout)
+      >>> out = StringIO()
+      >>> renderer.render(form, field, out)
+      >>> html = lxml.html.fromstring(out.getvalue())
+      >>> print lxml.html.tostring(html)
       <div id="input0" class="control input relevant required">
-      <label for="input-input0">First name</label>
-      <div class="alert"></div>
-      <div class="hint"></div>
-      <input id="input-input0" type="text" name="input0" value="pipo" size="20"/>
+        <div class="control-info">
+          <label class="control-label" for="input-input0">First name</label>
+          <div class="alert"></div>
+        </div>
+        <div class="control-widget">
+          <input id="input-input0" type="text" name="input0" value="pipo" size="20">
+        </div>
       </div>
-      
+
 How 'bout those extra classes...
 
-      >>> renderer.render(form, field, sys.stdout, extra_classes="card")
+      >>> out = StringIO()
+      >>> renderer.render(form, field, out, extra_classes="card")
+      >>> html = lxml.html.fromstring(out.getvalue())
+      >>> print lxml.html.tostring(html)
       <div id="input0" class="control input card relevant required">
-      <label for="input-input0">First name</label>
-      <div class="alert"></div>
-      <div class="hint"></div>
-      <input id="input-input0" type="text" name="input0" value="pipo" size="20"/>
+        <div class="control-info">
+          <label class="control-label" for="input-input0">First name</label>
+          <div class="alert"></div>
+        </div>
+        <div class="control-widget">
+          <input id="input-input0" type="text" name="input0" value="pipo" size="20">
+        </div>
       </div>
 
       >>> select = form.view.getRenderable('select0')
-      >>> renderer.render(form, select, sys.stdout)
+      >>> out = StringIO()
+      >>> renderer.render(form, select, out)
+      >>> html = lxml.html.fromstring(out.getvalue())
+      >>> print lxml.html.tostring(html)
       <div id="select0" class="control select relevant">
-      <label for="input-select0">Select me!</label>
-      <div class="alert"></div>
-      <div class="hint"></div>
-      <select id="input-select0" name="select0"  size="1">
-      <option value="" >Maak een keuze</option>
-      </select>
+        <div class="control-info">
+          <label class="control-label" for="input-select0">Select me!</label>
+          <div class="alert"></div>
+        </div>
+        <div class="control-widget">
+          <select id="input-select0" name="select0" size="1"><option value="">--</option></select>
+        </div>
       </div>
 
 Do we actually get grouped controls?
@@ -284,7 +315,7 @@ Let's see what it does:
 The context now should hold the data in an attribute. We specified the
 name of the attribute to be '_data', so let's check:
 
-     >>> ctx._data.getField('field0').value
+     >>> ctx._data['field0']
      'pipo'
 
 
@@ -343,12 +374,18 @@ Can we use variable substitution in labels and hints? Yes, we can!
       >>> form = Form("test", data, model, view, None)
       >>> renderer = HTMLRenderer()
       >>> field = form.view.getRenderable('in1')
-      >>> renderer.render(form, field, sys.stdout)
+      >>> out = StringIO()
+      >>> renderer.render(form, field, out)
+      >>> html = lxml.html.fromstring(out.getvalue())
+      >>> print lxml.html.tostring(html)
       <div id="in1" class="control input relevant">
-      <label for="input-in1">Last name for Pipo</label>
-      <div class="alert"></div>
-      <div class="hint"></div>
-      <input id="input-in1" type="text" name="in1" value="" size="20"/>
+        <div class="control-info">
+          <label class="control-label" for="input-in1">Last name for Pipo</label>
+          <div class="alert"></div>
+        </div>
+        <div class="control-widget">
+          <input id="input-in1" type="text" name="in1" value="" size="20">
+        </div>
       </div>
 
 Let's delve into input processing a bit...
@@ -372,7 +409,7 @@ The global registry is available like so:
 
   >>> from w20e.forms.registry import Registry
 
-and offers a number of class methods to register stuff. 
+and offers a number of class methods to register stuff.
 
 Let's for exampe register a new renderer for an input:
 
@@ -383,15 +420,17 @@ Vocabularies
 w20e.forms enables use of vocabularies to limit possible answers to a
 given list. This is a feature that is generally used with select
 widgets. A vocabulary is a 'named' factory that creates a list of
-options. 
+options.
 
 Register like so:
 
 >>> def make_vocab():
 ...   return [Option('0', 'Opt 0'), Option('1', 'Opt 1')]
-... Registry.register_vocab('foovocab', make_vocab)
-... sel = Select("select0", "Select me!", vocab=make_vocab,
-...   bind="field2", with_empty=True))
+
+>>> Registry.register_vocab('foovocab', make_vocab)
+
+>>> sel = Select("select0", "Select me!", vocab=make_vocab,
+...       bind="field2", with_empty=True)
 
 
 Required, Relevant, Readonly
@@ -406,15 +445,15 @@ properties in variables, by their 'bind' attribute. So in the form
 model you may have a property set named 'req', that makes
 variable 'foo' required like so:
 
-  model.addFieldProperties(FieldProperties("req", ["foo"], required="True"))
+>>> model.addFieldProperties(FieldProperties("req", ["foo"], required="True"))
 
 Obviously in general you want something a bit more flexible than that,
 like checking for other data that has been entered. All form data is
 made available to the expression within the 'data' variable, that is a
 dict. So checking upon some other variable, goes like this:
 
-  model.addFieldProperties(FieldProperties("req", ["foo"],
-    required="data['bar'] == 42"))
+>>> model.addFieldProperties(FieldProperties("req", ["foo"],
+...    required="data['bar'] == 42"))
 
 So only if the answer to 'bar' is 42, 'foo' is required. Relevance,
 requiredness and readonly-ness all work like this.
@@ -423,7 +462,14 @@ You may even add your own expression context to the engine, to call
 methods on objects, etc.
 
 Go like this, assuming your object is obj:
+>>> class MyObject(object):
+...    """ My Context Object """
+...    def is_relevant(self):
+...        """ am I relevant? """
+...        return 1 < 2
 
->>> registry.register_expr_context('mycontext', obj)
-... model.addFieldProperties(FieldProperties("req", ["foo"],
-...   relevant="mycontext.some_method())
+>>> obj = MyObject()
+
+>>> Registry.register_expr_context('mycontext', obj)
+>>> model.addFieldProperties(FieldProperties("req", ["foo"],
+...   relevant="mycontext.is_relevant()"))

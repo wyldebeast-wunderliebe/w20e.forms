@@ -4,7 +4,7 @@ w20e.forms for Plone
 Basic forms
 -----------
 
-Needs more documentation, examples and tests... 
+Needs more documentation, examples and tests...
 
 
 Archetypes
@@ -68,7 +68,7 @@ class MyEdit(BrowserView):
 
 
     def __call__(self):
-        
+
         return self.template()
 
 template (snippet):

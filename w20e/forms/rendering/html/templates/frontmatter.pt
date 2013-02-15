@@ -1,5 +1,6 @@
-<form class="w20e-form ${form_class} ${status}" method="post" action="${action}"
-      id="${form_id}" enctype="multipart/form-data">
+<form method="post" action="${action}"
+  id="${form_id}" enctype="multipart/form-data"
+  tal:attributes="class ('w20e-form %s %s' % (form_class or '', status or '')).strip()">
   <div tal:condition="status_message" class="status">${status_message}</div>
   <input type="hidden" name="w20e.forms.process" value="1" />
   <input type="hidden" name="w20e.forms.page" value="${page_id}" />

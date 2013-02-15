@@ -1,5 +1,6 @@
-<form class="w20e-form ${form_class}" method="post" action="${action}"
-      id="${form_id}" enctype="multipart/form-data">
+<form method="post" action="${action}"
+  id="${form_id}" enctype="multipart/form-data"
+  tal:attributes="class ('w20e-form %s' % form_class or '').strip()">
   <div class="alert alert-success" 
        tal:condition="status_message and status == 'stored'">
     ${status_message}

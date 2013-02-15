@@ -13,6 +13,8 @@ creating forms, not unlike the way you create a form in HTML. Also, XML is a for
 Start using the XML factory
 
       >>> from w20e.forms.xml.factory import XMLFormFactory
+      >>> import lxml.usedoctest
+      >>> from lxml import etree
 
 Now let us create a factory class
 
@@ -143,7 +145,9 @@ You can easily serilialize the form back into XML. Let's try...
 
       >>> from w20e.forms.xml.serializer import XMLSerializer
       >>> serializer = XMLSerializer()
-      >>> print serializer.serialize(form)
+      >>> serialized = serializer.serialize(form)
+      >>> serialized_xml = etree.fromstring(serialized)
+      >>> print etree.tostring(serialized_xml)
       <form id="test">
         <data>
           <foo/>
@@ -189,7 +193,6 @@ You can easily serilialize the form back into XML. Let's try...
           <property name="action">@@save</property>
         </submission>
       </form>
-      <BLANKLINE>
 
 Note that variable foo now holds the value 777. Sadly, it is hard to
 guarantee that all XML will be exactely the same as the input XML.

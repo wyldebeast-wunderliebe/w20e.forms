@@ -26,6 +26,8 @@ Would you wish to use w20e.forms, then:
       >>> from w20e.forms.data.field import Field
       >>> from w20e.forms.rendering.control import Input
       >>> from w20e.forms.pyramid.formview import formview as pyramidformview
+      >>> import lxml.html.usedoctest
+      >>> import lxml.html
 
    Phew, that was a load of imports. Now do the actual view
    class. It's a pretty simple form, but you should get the picture.
@@ -59,37 +61,27 @@ Would you wish to use w20e.forms, then:
 
    Ok, we're ready for some action now. Let's try to render the form.
 
-      >>> print view.renderform()
-      <form class="w20e-form  " method="post" action=""
-            id="test" enctype="multipart/form-data">
-        <input type="hidden" name="w20e.forms.process" value="1" />
-        <input type="hidden" name="w20e.forms.page" value="input0" />
-      <!-- Control definition -->
-        <div id="input0"
-          class="control input relevant">
-          <div class="control-info">
-            <label class="control-label" for="input-input0">Input foo</label>
-            <div class="alert"></div>
-          </div>
-          <div class="control-widget">
-              <input
-           id="input-input0" type="text" name="input0"
-           value="" size="20"/>
-          </div>
+      >>> out = view.renderform()
+      >>> html = lxml.html.fromstring(out)
+      >>> print lxml.html.tostring(html)
+      <form class="w20e-form" method="post" action="" id="test" enctype="multipart/form-data">
+      <input type="hidden" name="w20e.forms.process" value="1"><input type="hidden" name="w20e.forms.page" value="input0"><!-- Control definition --><div id="input0" class="control input relevant">
+        <div class="control-info">
+          <label class="control-label" for="input-input0">Input foo</label>
+          <div class="alert"></div>
         </div>
+        <div class="control-widget">
+            <input id="input-input0" type="text" name="input0" value="" size="20"></div>
+      </div>
       <!-- Control definition -->
-        <div id="input1"
-          class="control input relevant">
-          <div class="control-info">
-            <label class="control-label" for="input-input1">Input bar here</label>
-            <div class="alert"></div>
-          </div>
-          <div class="control-widget">
-              <input
-           id="input-input1" type="text" name="input1"
-           value="" size="20"/>
-          </div>
+      <div id="input1" class="control input relevant">
+        <div class="control-info">
+          <label class="control-label" for="input-input1">Input bar here</label>
+          <div class="alert"></div>
         </div>
+        <div class="control-widget">
+            <input id="input-input1" type="text" name="input1" value="" size="20"></div>
+      </div>
       </form>
 
 
