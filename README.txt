@@ -109,16 +109,16 @@ Let's get the imports over with...
       >>> import sys
       >>> from w20e.forms.interfaces import *
       >>> from zope.interface import implements
-      >>> from formdata import FormData
-      >>> from formview import FormView
-      >>> from formmodel import FormModel
-      >>> from data.field import Field
-      >>> from model.fieldproperties import FieldProperties
-      >>> from rendering.control import Input, Select, Option
-      >>> from rendering.group import FlowGroup
-      >>> from form import Form, FormValidationError
-      >>> from rendering.html.renderer import HTMLRenderer
-      >>> from submission.attrstorage import AttrStorage
+      >>> from w20e.forms.formdata import FormData
+      >>> from w20e.forms.formview import FormView
+      >>> from w20e.forms.formmodel import FormModel
+      >>> from w20e.forms.data.field import Field
+      >>> from w20e.forms.model.fieldproperties import FieldProperties
+      >>> from w20e.forms.rendering.control import Input, Select, Option
+      >>> from w20e.forms.rendering.group import FlowGroup
+      >>> from w20e.forms.form import Form, FormValidationError
+      >>> from w20e.forms.rendering.html.renderer import HTMLRenderer
+      >>> from w20e.forms.submission.attrstorage import AttrStorage
 
 Creating a form
 ---------------
