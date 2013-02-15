@@ -107,7 +107,7 @@ care of producing a form holding the necessary stuff.
 Let's get the imports over with...
 
       >>> import sys
-      >>> from interfaces import *
+      >>> from w20e.forms.interfaces import *
       >>> from zope.interface import implements
       >>> from formdata import FormData
       >>> from formview import FormView
