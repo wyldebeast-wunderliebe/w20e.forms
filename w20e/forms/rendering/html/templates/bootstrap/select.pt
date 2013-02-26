@@ -1,7 +1,7 @@
 <div metal:use-macro="load: control.pt">
   <select metal:fill-slot="input"
           id="input-${control.id}"
-          name="${control.id}${multiple and ':list' or None}" size="${control.size}"
+          name="${control.id}" size="${control.size}"
     multiple="${multiple and 'multiple' or None}"
   >
     <option tal:condition="control.with_empty" value="">--</option>

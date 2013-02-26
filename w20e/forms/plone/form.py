@@ -104,8 +104,8 @@ class FormView(BrowserView):
                 if not form.model.isRelevant(fld.id, form.data):
                     continue
 
-                val = renderable.processInput(data)
-                fld.value = form.model.convert(renderable.bind, val)
+                datatype = form.model.get_field_datatype(fld.id)
+                fld.value = renderable.processInput(data, datatype=datatype)
 
             except:
                 pass

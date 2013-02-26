@@ -41,12 +41,28 @@ class Control(Renderable):
         val = None
 
         if data:
-            val = data.get(self.id, None)
+            # for multiselects we need to read all values from the request.
+            # TODO: note that this is done in different ways per framework
+            # I think for plone the HTML markup should use ":list" as a
+            # control name. But for now I need this in pyramid, and the
+            # getall method works fine..
+            if self.multiple:
+                val = data.getall(self.id)
+            else:
+                val = data.get(self.id, None)
 
         try:
             converter = Registry.get_converter(datatype)
 
-            val = converter(val)
+            # TODO: what to do when multiple values are present? convert each
+            # item in the list?
+            if self.multiple:
+                newval = []
+                for item in val:
+                    newval.append(converter(item))
+                val = newval
+            else:
+                val = converter(val)
         except:
             pass
 
