@@ -42,7 +42,7 @@ class formview(object):
 
         rendered = self.form.view.render(
             self.form, errors=errors, status=status,
-            data=self.request.params, context=self, **opts)
+            data=self.request.params, context=self.context, **opts)
         rendered = unicode(rendered, "utf-8")
         # remove empty lines
         filtered = '\n'.join([l for l in rendered.splitlines() if l.strip()])
