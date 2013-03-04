@@ -1,0 +1,21 @@
+<fieldset id="fieldset-${group.id}"
+          class="cards ${group.orientation} ${fmtmap['extra_classes']}">
+  <legend tal:condition="group.label">${group.label}</legend>
+
+  <ul class="nav nav-tabs cards ${group.orientation} ${fmtmap['extra_classes']}"
+    id="${group.id}">
+
+    <li tal:repeat="sub group.getRenderables()">
+      <a href="#tab-${sub.id}">${sub.label}</a>
+    </li>
+  </ul>
+
+  <div class="tab-content">
+    <tal:subs repeat="sub group.getRenderables()">
+      <div class="tab-pane" id="tab-${sub.id}">
+        <tal:replace replace="structure: render_subs(sub)"/>
+      </div>
+    </tal:subs>
+  </div>
+
+</fieldset>
