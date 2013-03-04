@@ -1,5 +1,15 @@
 <fieldset id="${group.id}"
           class="cards ${group.orientation} ${fmtmap['extra_classes']}">
   <legend tal:condition="group.label">${group.label}</legend>
-  <tal:replace replace="structure: content" />
+
+
+  <div class="tabs">
+    <div tal:repeat="sub group.getRenderables()"
+      class="tab" id="tab-${sub.id}">${sub.label}</div>
+  </div>
+
+  <tal:subs repeat="sub group.getRenderables()">
+    <tal:replace replace="structure: render_subs(sub)"/>
+  </tal:subs>
+
 </fieldset>
