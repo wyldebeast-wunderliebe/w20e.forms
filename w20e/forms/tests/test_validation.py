@@ -1,5 +1,3 @@
-from pyramid import testing
-from zope.interface import Interface, implements
 from w20e.forms.xml.factory import XMLFormFactory
 from w20e.forms.utils import find_file
 import datetime
@@ -8,12 +6,11 @@ import datetime
 class TestBaseModel(object):
 
     def setup_class(self):
-        self.config = testing.setUp()
         xml = find_file('test_xml_form.xml', __file__)
         self.form = XMLFormFactory(xml).create_form()
 
     def teardown_class(self):
-        testing.tearDown()
+        pass
 
     def test_validation(self):
 
