@@ -22,6 +22,9 @@ def to_date(value, format=None):
 
 
 def to_str(value):
+    if isinstance(value, unicode) or isinstance(value, str):
+        return value
+
     if value is None:
         return ''
     else:

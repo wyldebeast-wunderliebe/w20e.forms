@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+
+<form id="page"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+  <data>
+    <name/>
+    <text/>
+    <date/>
+  </data>
+
+  <model>
+    <properties id="required">
+      <bind>name</bind>
+      <required>True</required>
+    </properties>
+    <properties id="is_string">
+      <bind>name</bind>
+      <bind>text</bind>
+      <datatype>string</datatype>
+    </properties>
+    <properties id="is_date">
+      <bind>date</bind>
+      <datatype>datetime</datatype>
+    </properties>
+
+  </model>
+
+  <view>
+
+    <input id="name" bind="name">
+      <label>Name</label>
+      <property name="cols">40</property>
+    </input>
+
+    <richtext id="text" bind="text">
+      <label>Page text (including images)</label>
+      <hint>You may also use the 'layout' tab for more complex layout options</hint>
+      <property name="rows">20</property>
+      <property name="cols">80</property>
+    </richtext>
+
+
+    <datetime id="date" bind="date">
+      <label>When did this happen?</label>
+      <property name="cols">10</property>
+      <property name="dateFormat">dd-mm-yy</property>
+      <property name="showTimepicker">false</property>
+      <property name="format">%d-%m-%Y</property>
+    </datetime>
+
+    <group id="submission" layout="flow">
+      <property name="orientation">h</property>
+
+      <submit id="save">
+        <label>Save</label>
+      </submit>
+
+      <cancel id="cancel">
+        <label>Cancel</label>
+      </cancel>
+    </group>
+
+  </view>
+
+  <submission type="attr">
+     <property name="attr_name">_DATA</property>
+  </submission>
+
+</form>

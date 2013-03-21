@@ -15,6 +15,11 @@ class CheckInstance(object):
         return isinstance(value, self._datatype)
 
 
+def validate_string(value):
+    """ is the value a str or unicode type """
+    return isinstance(value, str) or isinstance(value, unicode)
+
+
 def validate_file(value):
     """ is the value a file type """
     ftype = isinstance(value, file)
@@ -35,7 +40,6 @@ def validate_file(value):
 
 def register():
 
-    validate_string = CheckInstance(str)
     validate_int = CheckInstance(int)
     validate_float = CheckInstance(float)
     validate_date = CheckInstance(datetime)
