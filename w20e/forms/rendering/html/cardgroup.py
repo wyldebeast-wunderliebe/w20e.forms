@@ -17,7 +17,7 @@ class CardGroupRenderer:
             """ render the sub renderable """
             str_out = StringIO()
             out = codecs.getwriter('utf-8')(str_out)
-            sub.extra_classes = sub.extra_classes or ""
+            sub.extra_classes = (sub.extra_classes or "") + " card"
             renderer.render(form, sub, out, **kwargs)
             return out.getvalue().decode('utf-8')
 
