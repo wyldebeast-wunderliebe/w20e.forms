@@ -19,7 +19,7 @@ class EmailSubmission(SubmissionBase):
     def __init__(self, **props):
 
         """ Email submission does... well, you get the idea... """
-        
+
         self.subject = self.reply_to = self.send_from = self.send_to = ""
 
         SubmissionBase.__init__(self, **props)
@@ -29,8 +29,8 @@ class EmailSubmission(SubmissionBase):
         data = form.data
         model = form.model
 
-        if type(self.send_to) == str:
-            self.send_to = [self.send_to]
+        if isinstance(self.send_to, (list, tuple)):
+            self.send_to = COMMASPACE.join(self.send_to)
 
         msg = MIMEMultipart()
 
@@ -53,7 +53,7 @@ class EmailSubmission(SubmissionBase):
                 pass
 
         msg['From'] = self.send_from
-        msg['To'] = COMMASPACE.join(self.send_to)
+        msg['To'] = self.send_to
         if hasattr(self, 'reply_to') and self.reply_to:
             msg['Reply-To'] = self.reply_to
         msg['Date'] = formatdate(localtime=True)
