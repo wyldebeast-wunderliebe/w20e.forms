@@ -5,12 +5,12 @@ class IForm(Interface):
 
     """ The form is the core concept of this API. A form holds at
     least four components that make up the complete form:
-    
+
      * data
      * model
      * view
      * submission
-     
+
     Data is an IFormData instance, that holds the actual form fields
     (variables). The Model (IFormModel) holds properties for fields,
     like requiredness, relevance, datatype, etc. The view is the
@@ -28,8 +28,8 @@ class IForm(Interface):
 
     view = Attribute(""" The form view """)
 
-    submission = Attribute(""" The submission handler """)    
-    
+    submission = Attribute(""" The submission handler """)
+
 
 
 class IFormModifier(Interface):
@@ -59,14 +59,14 @@ class IFormData(Interface):
     def getFields():
 
         """ return all field names """
-    
+
     def getField(id):
 
         """ return field by id """
 
 
 class IField(Interface):
-    
+
     """
     Basic field definition.
     """
@@ -113,7 +113,7 @@ class IFieldProperties(Interface):
 
     calculate = Attribute(""" Expression for value of field. """)
 
-    constraint = Attribute(""" Expression constraints on a field. """)    
+    constraint = Attribute(""" Expression constraints on a field. """)
 
     bind = Attribute(""" bind to the given (list of) variables """)
 
@@ -175,7 +175,7 @@ class IControl(IRenderable):
 
     help = Attribute(""" Extra help """)
 
-    alert = Attribute(""" Alert shown on errors """)    
+    alert = Attribute(""" Alert shown on errors """)
 
     bind = Attribute(""" Bind to given variable """)
 

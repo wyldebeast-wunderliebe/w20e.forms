@@ -1,3 +1,4 @@
+
 <div metal:use-macro="load: control.pt">
   <select metal:fill-slot="input"
           id="input-${control.id}"
@@ -5,18 +6,43 @@
     multiple="${multiple and 'multiple' or None}"
   >
     <option tal:condition="control.with_empty" value="">--</option>
-    <tal:repeat tal:condition="not: multiple" repeat="opt options">
-      <option tal:condition="str(value) == str(opt.value)"
-              value="${opt.value}" selected>${opt.label}</option>
-      <option tal:condition="str(value) != str(opt.value)"
-              value="${opt.value}">${opt.label}</option>
-    </tal:repeat>
-    <tal:repeat tal:condition="multiple" repeat="opt options">
-      <option tal:condition="value and opt.value in value"
-              value="${opt.value}" selected>${opt.label}</option>
-      <option tal:condition="not value or opt.value not in value"
-              value="${opt.value}">${opt.label}</option>
-    </tal:repeat>
+
+    <tal:optgroups condition="hasattr(options, 'optgroups')">
+      <tal:optgroup repeat="optgroup options">
+        <optgroup label="label"
+           tal:attributes="label optgroup['label']"
+           tal:define="optionlist optgroup['options']">
+          <tal:repeat tal:condition="not: multiple" repeat="opt optionlist">
+            <option tal:condition="str(value) == str(opt.value)"
+                    value="${opt.value}" selected>${opt.label}</option>
+            <option tal:condition="str(value) != str(opt.value)"
+                    value="${opt.value}">${opt.label}</option>
+          </tal:repeat>
+          <tal:repeat tal:condition="multiple" repeat="opt optionlist">
+            <option tal:condition="value and opt.value in value"
+                    value="${opt.value}" selected>${opt.label}</option>
+            <option tal:condition="not value or opt.value not in value"
+                    value="${opt.value}">${opt.label}</option>
+          </tal:repeat>
+        </optgroup>
+      </tal:optgroup>
+    </tal:optgroups>
+
+    <tal:options condition="not hasattr(options, 'optgroups')"
+    tal:define="optionlist options">
+          <tal:repeat tal:condition="not: multiple" repeat="opt optionlist">
+            <option tal:condition="str(value) == str(opt.value)"
+                    value="${opt.value}" selected>${opt.label}</option>
+            <option tal:condition="str(value) != str(opt.value)"
+                    value="${opt.value}">${opt.label}</option>
+          </tal:repeat>
+          <tal:repeat tal:condition="multiple" repeat="opt optionlist">
+            <option tal:condition="value and opt.value in value"
+                    value="${opt.value}" selected>${opt.label}</option>
+            <option tal:condition="not value or opt.value not in value"
+                    value="${opt.value}">${opt.label}</option>
+          </tal:repeat>
+    </tal:options>
 
   </select>
 </div>
