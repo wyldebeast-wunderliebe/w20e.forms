@@ -4,6 +4,7 @@ from rendering.html.renderer import HTMLRenderer
 from StringIO import StringIO
 import codecs
 from config import PAGE_ID
+from ordereddict import OrderedDict
 from w20e.forms.form import FormValidationError
 from w20e.forms.exceptions import ProcessingException
 
@@ -15,8 +16,8 @@ class RenderableContainer:
     def __init__(self):
 
         self._components = []
-        self._componentmap = {}
-        self._bindmap = {}
+        self._componentmap = OrderedDict()
+        self._bindmap = OrderedDict()
 
     def rmRenderable(self, renderable_id):
 
@@ -32,6 +33,9 @@ class RenderableContainer:
             self._components.append(renderable)
         else:
             self._components.insert(pos, renderable)
+
+        # todo: see if we can use the pos parameter for the insertion
+        # into the _componentmap ordereddict
         self._componentmap[renderable.id] = renderable
 
         if hasattr(renderable, 'bind'):
@@ -98,7 +102,7 @@ class FormView(RenderableContainer):
         page_ids = [p.id for p in pages]
 
         try:
-            moreorless = direction=="previous" and -1 or 1
+            moreorless = direction == "previous" and -1 or 1
             page_index = page_ids.index(current_page_id) + moreorless
         except:
             page_index = 0
@@ -173,7 +177,7 @@ class FormView(RenderableContainer):
                 form,
                 page_id,
                 direction=direction
-                )
+            )
             if renderables:
                 page_id = renderables[0].id
 
@@ -187,7 +191,7 @@ class FormView(RenderableContainer):
         for item in renderables:
 
             self.renderer.render(form, item, out, errors=errors,
-                    data=data, context=context)
+                                 data=data, context=context)
 
         self.renderer.renderBackMatter(form, out, errors, **opts)
 
@@ -221,11 +225,11 @@ class FormView(RenderableContainer):
                     datatype = form.model.get_field_datatype(fld.id)
 
                     try:
-                        fld.value = renderable.processInput(data,
-                                datatype=datatype)
+                        fld.value = renderable.processInput(
+                            data,
+                            datatype=datatype)
                     except ProcessingException:
                         pass
-
 
             if renderable.getRenderables:
                 self.process_data(form, renderable, data)

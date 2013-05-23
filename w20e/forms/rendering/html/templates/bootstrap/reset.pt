@@ -1,0 +1,2 @@
+<input type="reset" name="${control.id}" value="${control.label}"
+       class="btn ${fmtmap['extra_classes']}" />
