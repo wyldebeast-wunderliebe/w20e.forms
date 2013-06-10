@@ -2,7 +2,7 @@
 
   <input
      metal:fill-slot="input"
-     id="input-${control.id}" type="text" name="${control.id}" 
+     id="input-${control.id}" type="${fmtmap['input_type']}" name="${control.id}" 
      value="${value}" size="${control.cols}"
      placeholder="${fmtmap.get('placeholder','')}"/>
 </div>

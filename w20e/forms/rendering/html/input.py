@@ -13,6 +13,13 @@ class InputRenderer:
 
         fmtmap = renderer.createFormatMap(form, renderable, **kwargs)
 
+        # the input renderer is also used for date + datetime classes
+        # in that case we can use the html capable browser to set the 
+        # input type to 'date' or 'datetime'
+        fmtmap['input_type'] = 'text'
+        if fmtmap['type'] in ('date', 'datetime'):
+            fmtmap['input_type'] = fmtmap['type']
+
         try:
             value = form.getFieldValue(renderable.bind, lexical=True)
             # TODO: not sure about this string conversion..

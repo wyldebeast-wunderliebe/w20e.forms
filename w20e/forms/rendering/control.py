@@ -78,6 +78,47 @@ class Input(Control):
     """ Base input """
 
 
+class Date(Control):
+
+    """ Date widget """
+
+    def __init__(self, *args, **kwargs):
+
+        super(Date, self).__init__(*args, **kwargs)
+        extra_classes = self.extra_classes or ""
+        self.extra_classes = extra_classes + " date"
+        if not self.format:
+            self.format = "%Y-%m-%d"
+
+        data_options = {}
+        if self.dateFormat:
+            data_options['dateFormat'] = self.dateFormat
+        data_options['showTimepicker'] = 0  # not sure if this is used..
+        self.data_options = json.dumps(data_options)
+
+    def processInput(self, data=None, datatype="datetime"):
+
+        """ Base implementation """
+
+        val = None
+
+        if data:
+            val = data.get(self.id, None)
+
+        try:
+            converter = Registry.get_converter(datatype)
+
+            val = converter(val.strip(), self.format)
+        except:
+            pass
+
+        return val
+
+    def lexVal(self, value):
+
+        return value.strftime(self.format)
+
+
 class DateTime(Control):
 
     """ Datetime widget """
@@ -235,7 +276,7 @@ class Range(Select):
                  end=0, step=1, reverse=False, **properties):
 
         opts = [Option(i, str(i)) for i in range(int(start),
-            int(end), int(step))]
+                int(end), int(step))]
         if reverse:
             opts.reverse()
 

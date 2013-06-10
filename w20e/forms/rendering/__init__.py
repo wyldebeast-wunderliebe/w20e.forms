@@ -7,6 +7,7 @@ from w20e.forms.registry import Registry
 
 
 Registry.register_renderable('input', Input)
+Registry.register_renderable('date', Date)
 Registry.register_renderable('datetime', DateTime)
 Registry.register_renderable('hidden', Hidden)
 Registry.register_renderable('password', Password)
