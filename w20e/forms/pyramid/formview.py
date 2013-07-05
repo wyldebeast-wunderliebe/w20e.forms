@@ -26,7 +26,7 @@ class formview(object):
 
         if retrieve_data:
             try:
-                data = self.form.submission.retrieve(form, context)
+                data = self.form.submission.retrieve(form, context, request)
                 self.form.data.update(data)
             except:
                 pass

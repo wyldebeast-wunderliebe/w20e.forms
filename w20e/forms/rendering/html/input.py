@@ -3,7 +3,7 @@ from zope.interface import implements
 from templates import get_template
 
 
-class InputRenderer:
+class InputRenderer(object):
 
     implements(IControlRenderer)
 

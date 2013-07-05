@@ -28,7 +28,10 @@ class FormModel(object):
     def addFieldProperties(self, prop):
 
         self._props[prop.id] = prop
-        for binding in prop.bind:
+        binds = prop.bind
+        if isinstance(binds, basestring):
+            binds = [binds]
+        for binding in binds:
 
             if not binding in self._bindings:
                 self._bindings[binding] = []
@@ -229,7 +232,7 @@ class FormModel(object):
                 if not name in fields:
                     fields[name] = []
 
-                fields[name] += self._bind
+                fields[name].append(self._bind)
 
         for prop in self._props.values():
 

@@ -22,7 +22,7 @@ class SubmissionBase(object):
         """ Do nothing much... """
 
 
-    def retrieve(self):
+    def retrieve(self, *args):
 
         """ Same, same... """
 
