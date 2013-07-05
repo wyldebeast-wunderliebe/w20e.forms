@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from w20e.forms.xml.factory import XMLFormFactory
 from w20e.forms.utils import find_file
 import datetime
