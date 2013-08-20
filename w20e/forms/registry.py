@@ -7,14 +7,19 @@ class Registry:
     renderers = {}
     vocabs = {}
     funcs = {}
-    html_tpl_path = ""
+    html_tpl_path = []
     converters = {}
     validators = {}
 
     @staticmethod
     def set_html_template_path(name):
 
-        Registry.html_tpl_path = name
+        Registry.html_tpl_path = [name]
+
+    @staticmethod
+    def add_html_template_path(name):
+
+        Registry.html_tpl_path.append(name)
 
     @staticmethod
     def get_html_template_path():

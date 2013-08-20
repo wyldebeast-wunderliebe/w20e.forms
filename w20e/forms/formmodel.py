@@ -1,6 +1,7 @@
 from model.fieldproperties import FieldProperties
 from model import converters, validators
 from registry import Registry
+import types
 
 
 converters.register()
@@ -225,6 +226,8 @@ class FormModel(object):
         class Collector:
 
             def __init__(self, bind):
+                if not isinstance(bind, types.ListType):
+                    bind = [bind]
                 self._bind = bind
 
             def __getitem__(self, name):
@@ -232,7 +235,7 @@ class FormModel(object):
                 if not name in fields:
                     fields[name] = []
 
-                fields[name].append(self._bind)
+                fields[name].extend(self._bind)
 
         for prop in self._props.values():
 

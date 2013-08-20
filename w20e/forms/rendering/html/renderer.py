@@ -28,7 +28,10 @@ class HTMLRenderer(BaseRenderer):
 
         kwargs['action'] = getattr(form.submission, 'action',
                                    kwargs.get('action', ''))
-        kwargs['form_class'] = kwargs.get('form_class', '')
+
+        form_class = kwargs.get('form_class', '')
+        form_class += " " + self.opts.get('class', '')
+        kwargs['form_class'] = form_class.strip()
         kwargs['page_id'] = kwargs.get('page_id', '')
         kwargs['status_message'] = ''
 

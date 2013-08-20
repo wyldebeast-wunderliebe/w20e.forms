@@ -15,12 +15,18 @@ def get_template(tpl_type):
     if tpl_type in TPL_CACHE.keys():
         return TPL_CACHE[tpl_type]
 
-    tpl_path = Registry.get_html_template_path()
+    tpl_paths = Registry.get_html_template_path()
 
-    if tpl_path and not tpl_path.startswith("."):
-        tpl = "%s/%s.pt" % (tpl_path, tpl_type)
-    else:
-        tpl = find_file("templates/%s/%s.pt" % (tpl_path, tpl_type), __file__)
+    tpl = None
+
+    for  tpl_path in tpl_paths:
+        if tpl_path and not tpl_path.startswith("."):
+            tpl = "%s/%s.pt" % (tpl_path, tpl_type)
+        else:
+            tpl = find_file("templates/%s/%s.pt" % (tpl_path, tpl_type), __file__)
+
+        if os.path.isfile(tpl):
+            break
 
     if not os.path.isfile(tpl):
         tpl = find_file("templates/%s.pt" % tpl_type, __file__)

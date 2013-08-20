@@ -87,8 +87,13 @@ class Form(object):
                 field_errors.append("required")
 
             # check datatype
-            if value and not self.model.checkDatatype(field, value):
-                field_errors.append("datatype")
+            # TODO: should we get the non lexical value using getFieldValue?
+            if value:
+                # NOTE: we check the converted value, since e.g. int types
+                # will always be passed in as string by HTML submit
+                converted = self.model.convert(field, value)
+                if not self.model.checkDatatype(field, converted):
+                    field_errors.append("datatype")
 
             # Constraint checking...
             if not self.model.meetsConstraint(field, self.data):

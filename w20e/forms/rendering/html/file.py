@@ -17,5 +17,6 @@ class FileRenderer:
 
         print >> out, get_template("file")(
             control=renderable,
-            fmtmap=fmtmap
+            fmtmap=fmtmap,
+            form_id=form.id
             )
