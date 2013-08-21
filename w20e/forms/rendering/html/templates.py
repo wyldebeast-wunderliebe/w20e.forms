@@ -28,7 +28,7 @@ def get_template(tpl_type):
         if os.path.isfile(tpl):
             break
 
-    if not tpl or os.path.isfile(tpl):
+    if not (tpl and os.path.isfile(tpl)):
         tpl = find_file("templates/%s.pt" % tpl_type, __file__)
 
     tpl = PageTemplateFile(tpl, encoding="utf-8")
