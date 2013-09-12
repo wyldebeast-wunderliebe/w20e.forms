@@ -117,18 +117,20 @@ class Form(object):
 
         return False
 
-    def getFieldValue(self, name, default=None, val=None, lexical=False):
+    def getFieldValue(self, name, default=None, val=None, lexical=False,
+                      only_relevant=False):
 
         """ Get the data field value or default or calculated
         value. If lexical is something true-ish, return lexical space
         value.
-        NOTE: if this field is not relevant with regards to the relevance
-        properties in the form's model, then None will be returned.
+        NOTE: if the only_relevant parameter was specified and if this field
+        is not relevant with regards to the relevance properties in the form's
+        model, then None will be returned.
         In this case the field might have a value, but since it's not
         relevant we return None
         """
 
-        if not self.model.isRelevant(name, self.data):
+        if only_relevant and not self.model.isRelevant(name, self.data):
             return None
 
         calculate_found = False
