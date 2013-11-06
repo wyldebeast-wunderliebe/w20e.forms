@@ -119,6 +119,14 @@ class Date(Control):
         return value.strftime(self.format)
 
 
+class Month(Date):
+    """ Month input type """
+
+    def __init__(self, *args, **kwargs):
+        super(Month, self).__init__(*args, **kwargs)
+        self.format = "%Y-%m"
+
+
 class DateTime(Control):
 
     """ Datetime widget """

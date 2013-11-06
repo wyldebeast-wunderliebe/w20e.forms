@@ -17,7 +17,7 @@ class InputRenderer(object):
         # in that case we can use the html capable browser to set the 
         # input type to 'date' or 'datetime'
         fmtmap['input_type'] = 'text'
-        if fmtmap['type'] in ('date', 'datetime'):
+        if fmtmap['type'] in ('date', 'datetime', 'month'):
             fmtmap['input_type'] = fmtmap['type']
 
         try:
