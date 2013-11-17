@@ -31,12 +31,23 @@ def to_str(value):
         return str(value)
 
 
+def to_bool(value):
+
+    # try to convert "False" and "0" strings
+    str_val = to_str(value).lower()
+    if str_val in ("false", "0"):
+        return False
+
+    # use the default converter
+    return bool(value)
+
+
 def register():
 
     Registry.register_converter("string", to_str)
     Registry.register_converter("str", to_str)
     Registry.register_converter("int", int)
-    Registry.register_converter("bool", bool)
+    Registry.register_converter("bool", to_bool)
     Registry.register_converter("float", float)
     Registry.register_converter("date", to_date)
     Registry.register_converter("datetime", to_date)
