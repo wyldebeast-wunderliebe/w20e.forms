@@ -36,6 +36,7 @@ def register():
     Registry.register_converter("string", to_str)
     Registry.register_converter("str", to_str)
     Registry.register_converter("int", int)
+    Registry.register_converter("bool", bool)
     Registry.register_converter("float", float)
     Registry.register_converter("date", to_date)
     Registry.register_converter("datetime", to_date)
