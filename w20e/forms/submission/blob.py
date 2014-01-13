@@ -1,5 +1,6 @@
 import zlib
 from ZODB.blob import Blob as Blob
+from copy import deepcopy
 
 
 class TheBlob(object):
@@ -17,6 +18,20 @@ class TheBlob(object):
 
         if data:
             self.set(data)
+
+    def __deepcopy__(self, memo):
+        cls = self.__class__
+        result = cls.__new__(cls)
+        memo[id(self)] = result
+
+        new_blob = Blob()
+        memo[id(new_blob)] = new_blob
+
+        memo[id(new_blob)] = new_blob
+        setattr(result, '_compress', self._compress)
+        setattr(result, '_blob', new_blob)
+        result.set(self.get())
+        return result
 
     def set(self, data):
         """ store the data in the blob. Compress if necessary """
