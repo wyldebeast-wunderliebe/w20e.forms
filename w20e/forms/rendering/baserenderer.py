@@ -68,13 +68,13 @@ class BaseRenderer:
                 return match.group()
 
         # process labels and hints
-        if 'label' in fmtmap:
-            fmtmap['label'] = VAREXP.sub(replaceVars, fmtmap['label'])
-        if 'hint' in fmtmap:
+        if 'label' in fmtmap and fmtmap['label'] != None:
+           fmtmap['label'] = VAREXP.sub(replaceVars, fmtmap['label'])
+        if 'hint' in fmtmap and fmtmap['hint'] != None:
             fmtmap['hint'] = VAREXP.sub(replaceVars, fmtmap['hint'])
-        if 'text' in fmtmap:
+        if 'text' in fmtmap and fmtmap['text'] != None:
             fmtmap['text'] = VAREXP.sub(replaceVars, fmtmap['text'])
-        if 'placeholder' in fmtmap:
+        if 'placeholder' in fmtmap and fmtmap['placeholder'] != None:
             fmtmap['placeholder'] = VAREXP.sub(replaceVars,
                     fmtmap['placeholder'])
 
