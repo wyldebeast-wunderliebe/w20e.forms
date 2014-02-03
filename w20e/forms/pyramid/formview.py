@@ -137,8 +137,13 @@ class formview(object):
         effected = []
         efferent = model.collectEfferentFields()
 
-        ctls = [form.view.getRenderable(key) for key in
-                self.request.params.keys()]
+        # HB: take inputs from self.request.params is not safe, since not
+        # all fields are serialized by jquery (e.g. empty multiselect)
+
+        #ctls = [form.view.getRenderable(key) for key in
+        #        self.request.params.keys()]
+        ctls = form.view.getRenderables(recursive=True)
+
         ctls = [c for c in ctls if c]
 
         for ctl in ctls:

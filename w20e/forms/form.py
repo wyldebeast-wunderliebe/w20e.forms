@@ -115,6 +115,11 @@ class Form(object):
 
             return True
 
+        # empty list or tuple is considered empty as well
+        if value == [] or value == ():
+
+            return True
+
         return False
 
     def getFieldValue(self, name, default=None, val=None, lexical=False,
