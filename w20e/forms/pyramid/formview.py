@@ -121,7 +121,7 @@ class formview(object):
 
         return self.form.model.collectEfferentFields()
 
-    def ajax_validate(self, format="xml"):
+    def ajax_validate(self, format="xml", requested_params_only=True):
 
         """
         Validate data given the context, request and formview. The
@@ -139,10 +139,11 @@ class formview(object):
 
         # HB: take inputs from self.request.params is not safe, since not
         # all fields are serialized by jquery (e.g. empty multiselect)
-
-        #ctls = [form.view.getRenderable(key) for key in
-        #        self.request.params.keys()]
-        ctls = form.view.getRenderables(recursive=True)
+        if requested_params_only:
+            ctls = [form.view.getRenderable(key) for key in
+                    self.request.params.keys()]
+        else:
+            ctls = form.view.getRenderables(recursive=True)
 
         ctls = [c for c in ctls if c]
 
