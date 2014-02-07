@@ -1,2 +1,2 @@
-<input type="submit" name="${control.id}" value="${control.label}"
+<input type="submit" id="${control.id}" name="${control.id}" value="${control.label}"
        class="btn btn-primary ${fmtmap['extra_classes']}" />

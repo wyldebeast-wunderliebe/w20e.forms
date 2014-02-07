@@ -246,6 +246,17 @@ class FormModel(object):
                     eval(getattr(prop, rule, ""),
                          {"data": Collector(prop.bind)})
                 except:
-                    pass
+                    # this is possibly a calculated field which uses
+                    # a registered function for it's calculation. There is no
+                    # simple way to find which fields are used to calculated
+                    # the value, so just add the current field to the efferent
+                    # list, so the caller can at least process this fields
+                    bind = prop.bind
+                    if not isinstance(bind, types.ListType):
+                        bind = [bind]
+                    for name in bind:
+                        if not name in fields:
+                            fields[name] = []
+                        fields[name].extend(bind)
 
         return fields

@@ -168,6 +168,7 @@ class XMLFormFactory:
 
             ctrl = cls(child.get("id"),
                        child.find("label").text,
+                       bind=child.get("bind"),
                        **kwargs)
         elif cls == Group:
             cls = eval("%sGroup" % child.get("layout", "flow").capitalize())
@@ -181,6 +182,7 @@ class XMLFormFactory:
 
             ctrl = cls(child.get("id"),
                        label,
+                       bind=child.get("bind"),
                        **kwargs)
         else:
             label = ''

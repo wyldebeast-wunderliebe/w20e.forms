@@ -164,6 +164,7 @@ class formview(object):
                 state[ctrl.id]['readonly'] = model.isReadonly(field, data)
                 state[ctrl.id]['relevant'] = model.isRelevant(field, data)
                 state[ctrl.id]['required'] = model.isRequired(field, data)
+                state[ctrl.id]['calculate'] = model.getCalculate(field, data)
 
         errors = []
         error = None
@@ -192,12 +193,23 @@ class formview(object):
         # Let's send back changes
         for f in state.keys():
 
-            for cmd in ['required', 'relevant', 'readonly']:
+            for cmd in ['required', 'relevant', 'readonly', 'calculate']:
+
+                value = state[f][cmd]
+
+                # for calculates it's a bit different: this is a tuple with
+                # first param the calculated value, second whether a
+                # calculation was found
+                if cmd == 'calculate':
+                    if value[1]:
+                        value = value[0]
+                    else:
+                        continue  # skip this entry
 
                 command = doc.createElement("command")
                 command.setAttribute("selector", "#%s" % f)
                 command.setAttribute("name", cmd)
-                command.setAttribute("value", "%s" % state[f][cmd])
+                command.setAttribute("value", "%s" % value)
                 root.appendChild(command)
 
         for field, message in errors:

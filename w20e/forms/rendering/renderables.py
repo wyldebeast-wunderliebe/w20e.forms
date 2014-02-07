@@ -66,35 +66,41 @@ class Text(Renderable):
 
 class Button(Renderable):
     """ Do we really need this? """
-    def __init__(self, id, label, **props):
+    def __init__(self, id, label, bind=None, **props):
 
         Renderable.__init__(self, id, **props)
         self.label = label
+        # it can sometime be usefull to have relevance for a text field
+        # so we need to set the bind here
+        self.bind = bind
 
 
 class Submit(Renderable):
 
-    def __init__(self, id, label, **props):
+    def __init__(self, id, label, bind=None, **props):
 
         Renderable.__init__(self, id, **props)
         self.label = label
+        self.bind = bind
 
 
 class Cancel(Renderable):
 
     implements(IRenderable)
 
-    def __init__(self, id, label, **props):
+    def __init__(self, id, label, bind=None, **props):
 
         Renderable.__init__(self, id, **props)
         self.label = label
+        self.bind = bind
 
 
 class Reset(Renderable):
 
     implements(IRenderable)
 
-    def __init__(self, id, label, **props):
+    def __init__(self, id, label, bind=None, **props):
 
         Renderable.__init__(self, id, **props)
-        self.label = label        
+        self.label = label
+        self.bind = bind
