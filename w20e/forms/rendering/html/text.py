@@ -11,6 +11,27 @@ class TextRenderer:
 
         fmtmap = renderer.createFormatMap(form, renderable, **kwargs)
 
+        if renderable.bind:
+            # only change text if a value was calculated
+            calculate_found = False
+            for props in form.model.getFieldProperties(renderable.bind):
+                if props.getCalculate():
+                    calculate_found = True
+                    break
+
+            if calculate_found:
+                try:
+                    value = form.getFieldValue(renderable.bind, lexical=True)
+                    # TODO: not sure about this string conversion..
+                    # leave unicode values intact.
+                    if not isinstance(value, unicode):
+                        value = str(value)
+                    if isinstance(value, str):
+                        value = value.decode('utf-8')
+                    fmtmap['text'] = value
+                except:
+                    pass
+
         print >> out, get_template("text")(
             control=renderable,
             text=fmtmap['text'],
