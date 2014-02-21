@@ -123,7 +123,7 @@ class Form(object):
         return False
 
     def getFieldValue(self, name, default=None, val=None, lexical=False,
-                      only_relevant=False):
+                      only_relevant=False, **kwargs):
 
         """ Get the data field value or default or calculated
         value. If lexical is something true-ish, return lexical space
@@ -162,7 +162,8 @@ class Form(object):
 
                 val = self.model.convert(name, val)
 
-                return self.view.getRenderableByBind(name).lexVal(val)
+                return self.view.getRenderableByBind(name).lexVal(
+                    val, **kwargs)
             except:
                 return val
 

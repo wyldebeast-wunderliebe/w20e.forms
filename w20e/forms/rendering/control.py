@@ -224,7 +224,7 @@ class Select(Control):
 
         self._options = self._options + options[:]
 
-    def lexVal(self, value):
+    def lexVal(self, value, **kwargs):
 
         """ Lexical value of select should return the label of the
         matching option. """
@@ -249,7 +249,7 @@ class Select(Control):
                 args = self.vocab_args.split(",")
 
             if callable(vocab):
-                options = vocab(*args)
+                options = vocab(*args, **kwargs)
         else:
             options = self.options
 
