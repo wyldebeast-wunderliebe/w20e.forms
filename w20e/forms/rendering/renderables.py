@@ -17,7 +17,7 @@ renderable_attrs = [
     'extra_classes', 'format', 'dateFormat', 'timeFormat',
     'data_options', 'vocab', 'addOption', 'cols', 'getRenderables', 'rows',
     'size', 'with_empty', 'orientation', 'multiple', 'options',
-    'processInput',
+    'processInput', 'vocab_args',
 ]
 
 
