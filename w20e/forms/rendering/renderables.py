@@ -16,7 +16,8 @@ DEFAULTS = {'input': {"rows": 1, "cols": 20},
 renderable_attrs = [
     'extra_classes', 'format', 'dateFormat', 'timeFormat',
     'data_options', 'vocab', 'addOption', 'cols', 'getRenderables', 'rows',
-    'size', 'with_empty', 'orientation'
+    'size', 'with_empty', 'orientation', 'multiple', 'options',
+    'processInput',
 ]
 
 
