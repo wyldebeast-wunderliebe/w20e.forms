@@ -1,19 +1,23 @@
 from w20e.forms.interfaces import IRenderable
 from zope.interface import implements
 
-DEFAULTS = {'input':
-                {"rows": 1, "cols": 20},
-            'password':
-                {"rows": 1, "cols": 20},
-            'select':
-                {"multiple": "", "size": "1", "format": "compact",
-                 "with_empty": False},
-            'range':
-                {"multiple": "", "size": "1", "format": "compact",
-                 "with_empty": False},
-            'table':
-                {"rows": 3, "cols": 2},
+DEFAULTS = {'input': {"rows": 1, "cols": 20},
+            'password': {"rows": 1, "cols": 20},
+            'select': {
+                "multiple": "", "size": "1", "format": "compact",
+                "with_empty": False},
+            'range': {
+                "multiple": "", "size": "1", "format": "compact",
+                "with_empty": False},
+            'table': {
+                "rows": 3, "cols": 2},
             }
+
+renderable_attrs = [
+    'extra_classes', 'format', 'dateFormat', 'timeFormat',
+    'data_options', 'vocab', 'addOption', 'cols', 'getRenderables', 'rows',
+    'size', 'with_empty', 'orientation'
+]
 
 
 class Renderable(object):
@@ -35,11 +39,21 @@ class Renderable(object):
         self.__dict__.update(defaults)
 
     def __getattr__(self, attr_name):
+        """ override the __getattr__ and return None instead of the
+            AttributeError exception was a bad idea. It breaks things
+            in e.g. the deepcopy. For backward compatibility it now still
+            works for a number of attributes that are declared in the
+            'renderable_attrs'. This might need some more work
+        """
 
-        try:
-            return super(Renderable, self).__getattr__(attr_name)
-        except:
-            return None
+        if attr_name in renderable_attrs:
+            try:
+                #return super(Renderable, self).__getattr__(attr_name)
+                return object.__getattribute__(self, attr_name)
+            except AttributeError:
+                return None
+        else:
+            return object.__getattribute__(self, attr_name)
 
 
 class Hidden(Renderable):
