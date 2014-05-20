@@ -250,8 +250,8 @@ class Select(Control):
 
             if callable(vocab):
                 options = vocab(*args, **kwargs)
-        else:
-            options = self.options
+
+        options.extend(self.options)
 
         for opt in options:
 

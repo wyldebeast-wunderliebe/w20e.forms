@@ -17,7 +17,7 @@ renderable_attrs = [
     'extra_classes', 'format', 'dateFormat', 'timeFormat',
     'data_options', 'vocab', 'addOption', 'cols', 'getRenderables', 'rows',
     'size', 'with_empty', 'orientation', 'multiple', 'options',
-    'processInput', 'vocab_args',
+    'processInput', 'vocab_args', 'alert',
 ]
 
 
@@ -49,7 +49,6 @@ class Renderable(object):
 
         if attr_name in renderable_attrs:
             try:
-                #return super(Renderable, self).__getattr__(attr_name)
                 return object.__getattribute__(self, attr_name)
             except AttributeError:
                 return None

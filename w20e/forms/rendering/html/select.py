@@ -25,8 +25,8 @@ class SelectRenderer(object):
                     args = renderable.vocab_args.split(",")
 
                 opts = vocab(*args, **kwargs)
-        else:
-            opts = renderable.options
+
+        opts.extend(renderable.options)
 
         value = form.data[renderable.bind]
         if renderable.format == "full":
