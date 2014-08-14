@@ -79,13 +79,13 @@ class formview(object):
         submissions = set(["submit", "save", "w20e.forms.next",
             "w20e.forms.process"])
 
-        if submissions.intersection(self.request.params.keys()):
+        if self.request.params.get("cancel", None):
+            status = "cancelled"
+
+        elif submissions.intersection(self.request.params.keys()):
             status, errors = self.form.view.handle_form(self.form,
                     self.request.params)
 
-        elif self.request.params.get("cancel", None):
-
-            status = "cancelled"
 
         if status in ["completed"]:
             self.form.submission.submit(self.form, self.context, self.request)
