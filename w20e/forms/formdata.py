@@ -89,14 +89,19 @@ class FormData(object):
 
         return res
 
-    def from_dict(self, data=None, ignore_missing=False):
+    def from_dict(self, data=None):
 
         """ Set the form fields and values from a dict """
+        self.clear()
         if data:
             for key, val in data.items():
-                if not ignore_missing or self.getField(key):
-                    self[key] = val
+               self[key] = val
 
     def clone(self):
         """ clone the data """
         return FormData(self.as_dict())
+
+    def clear(self):
+        """ clear all data """
+        for fieldId in self.getFields():
+            self._fields[fieldId].value = None
