@@ -50,7 +50,7 @@ class FormData(object):
         """ Item assignment on formdata. Setting the value of a non existing
         field is NOT an error... """
 
-        if not fieldId in self._fields:
+        if fieldId not in self._fields:
             self._fields[fieldId] = Field(fieldId, val)
         else:
             self._fields[fieldId].value = val
@@ -92,10 +92,16 @@ class FormData(object):
     def from_dict(self, data=None):
 
         """ Set the form fields and values from a dict """
+        self.clear()
         if data:
             for key, val in data.items():
-                self[key] = val
+               self[key] = val
 
     def clone(self):
         """ clone the data """
         return FormData(self.as_dict())
+
+    def clear(self):
+        """ clear all data """
+        for fieldId in self.getFields():
+            self._fields[fieldId].value = None
