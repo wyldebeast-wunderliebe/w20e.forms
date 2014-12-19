@@ -3,6 +3,7 @@
   <input
      metal:fill-slot="input"
      id="input-${control.id}" type="${fmtmap['input_type']}" name="${control.id}" 
+     dir="${fmtmap.get('dir')}"
      value="${value}" size="${control.cols}"
      placeholder="${fmtmap.get('placeholder','')}"/>
 </div>

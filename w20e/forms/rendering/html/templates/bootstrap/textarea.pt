@@ -3,5 +3,6 @@
   <textarea
             metal:fill-slot="input"
             name="${control.id}" rows="${control.rows}"
+            dir="${fmtmap.get('dir')}"
             cols="${control.cols}">${value}</textarea>
 </div>
