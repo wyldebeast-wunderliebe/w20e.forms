@@ -1,4 +1,4 @@
-distribute
+setuptools
 ZODB3
 lxml
 zope.interface
