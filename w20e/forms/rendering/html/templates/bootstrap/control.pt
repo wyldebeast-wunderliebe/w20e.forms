@@ -11,6 +11,7 @@
       >
 
       <label metal:define-slot="label" class="control-label"
+        tal:condition="fmtmap['label']"
         for="input-${control.id}">
         <tal:block replace="structure fmtmap['label']"/>
       </label>

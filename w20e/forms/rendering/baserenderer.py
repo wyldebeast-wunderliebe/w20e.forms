@@ -107,6 +107,7 @@ class BaseRenderer:
             pass
 
         if extras.get("errors", None) and \
+               hasattr(renderable, 'bind') and renderable.bind and \
                extras['errors'].get(renderable.bind, None):
 
             extra_classes['error'] = True
