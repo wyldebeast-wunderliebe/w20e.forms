@@ -89,13 +89,18 @@ class FormData(object):
 
         return res
 
-    def from_dict(self, data=None):
+    def from_dict(self, data=None, create_missing_fields=True):
 
         """ Set the form fields and values from a dict """
         self.clear()
         if data:
             for key, val in data.items():
-               self[key] = val
+                if create_missing_fields:
+                    self[key] = val
+                else:
+                    fld = self.getField(key)
+                    if fld:
+                        fld.value = val
 
     def clone(self):
         """ clone the data """
