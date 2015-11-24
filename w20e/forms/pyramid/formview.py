@@ -144,6 +144,7 @@ class formview(object):
                     self.request.params.keys()]
         else:
             ctls = form.view.getRenderables(recursive=True)
+            ctls = [_c for _c in ctls if hasattr(_c, 'bind')]
 
         ctls = [c for c in ctls if c]
 
