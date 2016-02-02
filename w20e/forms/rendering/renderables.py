@@ -22,7 +22,6 @@ renderable_attrs = [
 
 
 class Renderable(object):
-
     """ Base class for controls """
 
     implements(IRenderable)
@@ -38,6 +37,9 @@ class Renderable(object):
         self._custom_props = props.keys()
 
         self.__dict__.update(defaults)
+
+    def __json__(self, request):
+        return self.__dict__
 
     def __getattr__(self, attr_name):
         """ override the __getattr__ and return None instead of the
@@ -57,20 +59,16 @@ class Renderable(object):
 
 
 class Hidden(Renderable):
-
     """ Base hidden. Is somewhere between control and renderable... """
 
     def __init__(self, id, bind=None, **props):
-
         Renderable.__init__(self, id, **props)
 
         self.bind = bind
 
 
 class Text(Renderable):
-
     def __init__(self, id, text, bind=None, **props):
-
         Renderable.__init__(self, id, **props)
         self.text = text
         # it can sometime be usefull to have relevance for a text field
@@ -80,8 +78,8 @@ class Text(Renderable):
 
 class Button(Renderable):
     """ Do we really need this? """
-    def __init__(self, id, label, bind=None, **props):
 
+    def __init__(self, id, label, bind=None, **props):
         Renderable.__init__(self, id, **props)
         self.label = label
         # it can sometime be usefull to have relevance for a text field
@@ -90,31 +88,25 @@ class Button(Renderable):
 
 
 class Submit(Renderable):
-
     def __init__(self, id, label, bind=None, **props):
-
         Renderable.__init__(self, id, **props)
         self.label = label
         self.bind = bind
 
 
 class Cancel(Renderable):
-
     implements(IRenderable)
 
     def __init__(self, id, label, bind=None, **props):
-
         Renderable.__init__(self, id, **props)
         self.label = label
         self.bind = bind
 
 
 class Reset(Renderable):
-
     implements(IRenderable)
 
     def __init__(self, id, label, bind=None, **props):
-
         Renderable.__init__(self, id, **props)
         self.label = label
         self.bind = bind

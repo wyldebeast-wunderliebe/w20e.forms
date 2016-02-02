@@ -41,6 +41,16 @@ class FieldProperties(object):
         self._datatype = datatype
 
 
+    def __json__(self, request):
+        return {
+          "required": self._required,
+          "relevant": self._relevant,
+          "readonly": self._readonly,
+          "constraint": self._constraint,
+          "calculate": self._calculate,
+          "datatype": self._datatype
+        }
+
     def getRequired(self):
 
         """ return expression for requiredness """

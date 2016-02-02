@@ -4,7 +4,6 @@ from renderables import Renderable
 from w20e.forms.registry import Registry
 import json
 
-
 REPR = """%(type)s %(id)s, bound to '%(bind)s':
   label: %(label)s
   hint:  %(hint)s
@@ -14,7 +13,6 @@ REPR = """%(type)s %(id)s, bound to '%(bind)s':
 
 
 class Control(Renderable):
-
     """ Base class for controls """
 
     implements(IControl)
@@ -31,8 +29,10 @@ class Control(Renderable):
         self.alert = alert
 
     def __repr__(self):
-
         return REPR % self.__dict__
+
+    def __json__(self, request):
+        return self.__dict__
 
     def processInput(self, data=None, datatype="string"):
 
@@ -74,12 +74,10 @@ class Control(Renderable):
 
 
 class Input(Control):
-
     """ Base input """
 
 
 class Date(Control):
-
     """ Date widget """
 
     def __init__(self, *args, **kwargs):
@@ -128,7 +126,6 @@ class Month(Date):
 
 
 class DateTime(Control):
-
     """ Datetime widget """
 
     def __init__(self, *args, **kwargs):
@@ -172,36 +169,36 @@ class DateTime(Control):
 
 
 class Password(Control):
-
     """ Base input with '*'... """
 
 
 class File(Control):
-
     """ File upload control """
 
 
 class Checkbox(Control):
-
     """ Checkbox """
 
 
 class RichText(Control):
-
     """ Base input """
 
 
 class Option:
-
     def __init__(self, value, label):
-
         self.value = value
         self.label = label
         self.selected = "false"
 
+    def __json__(self, request):
+        return {
+            "value": self.value,
+            "label": self.label,
+            "selected": self.selected
+        }
+
 
 class Select(Control):
-
     def __init__(self, control_id, label, options=[], bind=None, **properties):
 
         Control.__init__(self, control_id, label, bind=bind, **properties)
@@ -234,7 +231,6 @@ class Select(Control):
             res = []
 
             for val in value:
-
                 res.append(self.lexVal(val))
 
             return res
@@ -256,7 +252,6 @@ class Select(Control):
         for opt in options:
 
             if self._is_same(opt.value, value):
-
                 return opt.label
 
         return value
@@ -277,14 +272,12 @@ class Select(Control):
 
 
 class Range(Select):
-
     """ Show range of options """
 
     def __init__(self, control_id, label, bind=None, start=0,
                  end=0, step=1, reverse=False, **properties):
-
         opts = [Option(i, str(i)) for i in range(int(start),
-                int(end), int(step))]
+                                                 int(end), int(step))]
         if reverse:
             opts.reverse()
 

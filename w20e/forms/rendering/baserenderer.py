@@ -1,7 +1,6 @@
 import re
 from w20e.forms.registry import Registry
 
-
 # Expression for variable subsitution in labels and hints
 VAREXP = re.compile('\$\{[^\}]+\}')
 
@@ -14,10 +13,11 @@ def cache(func):
             renderer = func(self, renderableType, rendererType)
             self._v_registry[key] = renderer
         return renderer
+
     return get_renderer
 
-class BaseRenderer:
 
+class BaseRenderer:
     def __init__(self, **kwargs):
 
         """ Initialize renderer, given global options """
@@ -37,7 +37,6 @@ class BaseRenderer:
         """ Return the renderable's type (or class) """
 
         if hasattr(renderable, 'type'):
-
             return renderable.type
 
         return renderable.__class__.__name__
@@ -69,18 +68,18 @@ class BaseRenderer:
 
         # process labels and hints
         if 'label' in fmtmap and fmtmap['label'] != None:
-           fmtmap['label'] = VAREXP.sub(replaceVars, fmtmap['label'])
+            fmtmap['label'] = VAREXP.sub(replaceVars, fmtmap['label'])
         if 'hint' in fmtmap and fmtmap['hint'] != None:
             fmtmap['hint'] = VAREXP.sub(replaceVars, fmtmap['hint'])
         if 'text' in fmtmap and fmtmap['text'] != None:
             fmtmap['text'] = VAREXP.sub(replaceVars, fmtmap['text'])
         if 'placeholder' in fmtmap and fmtmap['placeholder'] != None:
             fmtmap['placeholder'] = VAREXP.sub(replaceVars,
-                    fmtmap['placeholder'])
+                                               fmtmap['placeholder'])
 
         # defaults
         extra_classes = {'relevant': True, 'required': False,
-                'readonly': False, 'error': False}
+                         'readonly': False, 'error': False}
 
         # Let's see whether we got properties here...
         try:
@@ -107,8 +106,8 @@ class BaseRenderer:
             pass
 
         if extras.get("errors", None) and \
-               hasattr(renderable, 'bind') and renderable.bind and \
-               extras['errors'].get(renderable.bind, None):
+                hasattr(renderable, 'bind') and renderable.bind and \
+                extras['errors'].get(renderable.bind, None):
 
             extra_classes['error'] = True
 
@@ -123,11 +122,13 @@ class BaseRenderer:
 
         if "extra_classes" in fmtmap:
             fmtmap['extra_classes'] = " ".join([fmtmap['extra_classes']] + \
-                    [key for key in extra_classes.keys()
-                        if extra_classes[key]])
+                                               [key for key in
+                                                extra_classes.keys()
+                                                if extra_classes[key]])
         else:
             fmtmap['extra_classes'] = " ".join([key for key in
-                extra_classes.keys() if extra_classes[key]])
+                                                extra_classes.keys() if
+                                                extra_classes[key]])
 
         fmtmap['type'] = self.getType(renderable)
 

@@ -5,7 +5,6 @@ from ordereddict import OrderedDict
 
 
 class FormData(object):
-
     implements(IFormData)
 
     def __init__(self, data=None):
@@ -32,6 +31,9 @@ class FormData(object):
             reprlist.append("%s: %s\n" % (field, value))
 
         return "\n".join(reprlist)
+
+    def __json__(self, request):
+        return self.as_dict()
 
     def __getitem__(self, fieldId):
 
@@ -84,7 +86,6 @@ class FormData(object):
         res = {}
 
         for field_id in self._fields.keys():
-
             res[field_id] = self._fields[field_id].value
 
         return res

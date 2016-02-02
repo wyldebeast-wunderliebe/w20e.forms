@@ -3,13 +3,11 @@ from model import converters, validators
 from registry import Registry
 import types
 
-
 converters.register()
 validators.register()
 
 
 class FormModel(object):
-
     """ Hold properties for form """
 
     def __init__(self):
@@ -25,6 +23,12 @@ class FormModel(object):
             reprlist.append(self._props[prop].__repr__())
 
         return "\n".join(reprlist)
+
+    def __json__(self, request):
+        return {
+            "props": self._props,
+            "bindings": self._bindings
+        }
 
     def addFieldProperties(self, prop):
 
@@ -94,7 +98,7 @@ class FormModel(object):
 
             try:
                 if not eval(props.getRelevant(), {"data": data, "model": self},
-                        Registry.funcs):
+                            Registry.funcs):
                     return False
             except:
                 return True
@@ -108,7 +112,6 @@ class FormModel(object):
             try:
                 if eval(props.getRequired(), {"data": data, "model": self},
                         Registry.funcs):
-
                     return True
             except:
                 return False
@@ -122,7 +125,6 @@ class FormModel(object):
             try:
                 if eval(props.getReadonly(), {"data": data, "model": self},
                         Registry.funcs):
-
                     return True
             except:
                 return False
@@ -154,8 +156,8 @@ class FormModel(object):
 
             try:
                 if not eval(props.getConstraint(), {"data": data,
-                    "model": self}, Registry.funcs):
-
+                                                    "model": self},
+                            Registry.funcs):
                     meets = False
             except:
                 pass
@@ -192,7 +194,6 @@ class FormModel(object):
             datatype = props.getDatatype()
 
             if datatype:
-
                 return datatype
 
         return "string"

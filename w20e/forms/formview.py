@@ -10,7 +10,6 @@ from w20e.forms.exceptions import ProcessingException
 
 
 class RenderableContainer:
-
     is_group = True
 
     def __init__(self):
@@ -76,7 +75,6 @@ class RenderableContainer:
 
 
 class FormView(RenderableContainer):
-
     """ Visible part of the form, that holds controls and groups and
     handles rendering logic.
     """
@@ -87,6 +85,11 @@ class FormView(RenderableContainer):
 
         RenderableContainer.__init__(self)
         self.renderer = renderer(**opts)
+
+    def __json__(self, request):
+        return {
+            "components": self._componentmap
+        }
 
     def get_renderables(self, form, current_page_id, direction="next"):
 
@@ -189,7 +192,6 @@ class FormView(RenderableContainer):
                                         status=status, **opts)
 
         for item in renderables:
-
             self.renderer.render(form, item, out, errors=errors,
                                  data=data, context=context)
 

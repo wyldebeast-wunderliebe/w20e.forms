@@ -47,8 +47,16 @@ class Form(object):
         self.view = view
         self.submission = submission
 
-    def render(self):
+    def __json__(self, request):
+        return {
+            "id": self.id,
+            "data": self.data,
+            "model": self.model,
+            "view": self.view,
+            "submission": self.submission
+        }
 
+    def render(self):
         return self.view.render(self)
 
     def validate(self, fields=None):
@@ -166,5 +174,3 @@ class Form(object):
                     val, **kwargs)
             except:
                 return val
-
-            return default
