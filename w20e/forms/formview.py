@@ -18,6 +18,11 @@ class RenderableContainer:
         self._componentmap = OrderedDict()
         self._bindmap = OrderedDict()
 
+    def __json__(self, request):
+        return {
+            "components": self._componentmap
+        }
+
     def rmRenderable(self, renderable_id):
 
         renderable = self._componentmap.pop(renderable_id)
@@ -85,11 +90,6 @@ class FormView(RenderableContainer):
 
         RenderableContainer.__init__(self)
         self.renderer = renderer(**opts)
-
-    def __json__(self, request):
-        return {
-            "components": self._componentmap
-        }
 
     def get_renderables(self, form, current_page_id, direction="next"):
 

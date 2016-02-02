@@ -26,7 +26,6 @@ class FormModel(object):
 
     def __json__(self, request):
         return {
-            "props": self._props,
             "bindings": self._bindings
         }
 
