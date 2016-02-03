@@ -16,9 +16,9 @@ class TestBaseModel(object):
     def test_validation(self):
 
         data = {
-           'name':'piëbe',
-           'text':'<html>hi</html>',
-           'w20e.forms.process':1
+           'name': 'piëbe',
+           'text': '<html>hi</html>',
+           'w20e.forms.process': 1
         }
 
         # test string type validation
@@ -50,4 +50,3 @@ class TestBaseModel(object):
         assert status == 'error'
         assert 'date' in errors
         assert 'datatype' in errors['date']
-

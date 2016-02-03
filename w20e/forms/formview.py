@@ -18,7 +18,6 @@ class RenderableContainer(object):
         self._componentmap = OrderedDict()
         self._bindmap = OrderedDict()
 
-
     def __json__(self, request):
         return {
             "components": self._componentmap
@@ -46,36 +45,36 @@ class RenderableContainer(object):
         if hasattr(renderable, 'bind'):
             self._bindmap[renderable.bind] = renderable
 
-        # Huub: recursive adding below  doesn't make sense.
-        # The containers do this themselves
-        #try:
-        #    for r in renderable.getRenderables():
-        #        self._recurseAddRenderable(r)
-        #except:
-        #    pass
-
-    def _recurseAddRenderable(self, renderable):
-
-        self._componentmap[renderable.id] = renderable
-        if hasattr(renderable, 'bind'):
-            self._bindmap[renderable.bind] = renderable
-
-        try:
-            for r in renderable.getRenderables():
-                self._recurseAddRenderable(r)
-        except:
-            pass
-
     def getRenderables(self, recursive=False):
+        """ retrieve all renderables. If recursive is true, then
+        also return all renderables from the children recursively """
 
         if recursive:
-            return self._componentmap.values()
+            result = self._componentmap.values()
+            for r in self._componentmap.values():
+                try:
+                    result.append(r.getRenderables(recursive))
+                except:
+                    pass
+            return result
+
         else:
             return self._components
 
     def getRenderable(self, id):
+        """ find renderable by id in the complete (recursive) tree """
 
-        return self._componentmap.get(id, None)
+        found = self._componentmap.get(id, None)
+        if not found:
+            # search children
+            for r in self.getRenderables(True):
+                try:
+                    found = r.getRenderable(id)
+                    if found:
+                        break
+                except:
+                    pass
+        return found
 
     def getRenderableByBind(self, bind):
 
@@ -93,7 +92,6 @@ class FormView(RenderableContainer):
 
         RenderableContainer.__init__(self)
         self.renderer = renderer(**opts)
-
 
     def get_renderables(self, form, current_page_id, direction="next"):
 
