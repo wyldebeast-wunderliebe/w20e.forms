@@ -9,7 +9,7 @@ from w20e.forms.form import FormValidationError
 from w20e.forms.exceptions import ProcessingException
 
 
-class RenderableContainer:
+class RenderableContainer(object):
     is_group = True
 
     def __init__(self):
@@ -17,6 +17,7 @@ class RenderableContainer:
         self._components = []
         self._componentmap = OrderedDict()
         self._bindmap = OrderedDict()
+
 
     def __json__(self, request):
         return {
@@ -45,11 +46,13 @@ class RenderableContainer:
         if hasattr(renderable, 'bind'):
             self._bindmap[renderable.bind] = renderable
 
-        try:
-            for r in renderable.getRenderables():
-                self._recurseAddRenderable(r)
-        except:
-            pass
+        # Huub: recursive adding below  doesn't make sense.
+        # The containers do this themselves
+        #try:
+        #    for r in renderable.getRenderables():
+        #        self._recurseAddRenderable(r)
+        #except:
+        #    pass
 
     def _recurseAddRenderable(self, renderable):
 
@@ -90,6 +93,7 @@ class FormView(RenderableContainer):
 
         RenderableContainer.__init__(self)
         self.renderer = renderer(**opts)
+
 
     def get_renderables(self, form, current_page_id, direction="next"):
 

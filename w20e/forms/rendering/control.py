@@ -31,9 +31,6 @@ class Control(Renderable):
     def __repr__(self):
         return REPR % self.__dict__
 
-    def __json__(self, request):
-        return self.__dict__
-
     def processInput(self, data=None, datatype="string"):
 
         """ Base implementation """
