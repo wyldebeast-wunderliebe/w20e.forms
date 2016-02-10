@@ -34,12 +34,13 @@ class Renderable(object):
         defaults = DEFAULTS.get(self.type, {}).copy()
         defaults.update(props)
 
-        self._custom_props = props.keys()
+        self.property_keys = defaults.keys()
+        self.property_keys += ['id', 'type', ]
 
         self.__dict__.update(defaults)
 
     def __json__(self, request):
-        return self.__dict__
+        return {k: self.__dict__[k] for k in self.property_keys}
 
     def __getattr__(self, attr_name):
         """ override the __getattr__ and return None instead of the
@@ -65,6 +66,7 @@ class Hidden(Renderable):
         Renderable.__init__(self, id, **props)
 
         self.bind = bind
+        self.property_keys += ['bind', ]
 
 
 class Text(Renderable):
@@ -74,6 +76,7 @@ class Text(Renderable):
         # it can sometime be usefull to have relevance for a text field
         # so we need to set the bind here
         self.bind = bind
+        self.property_keys += ['bind', 'text', ]
 
 
 class Button(Renderable):
@@ -85,6 +88,7 @@ class Button(Renderable):
         # it can sometime be usefull to have relevance for a text field
         # so we need to set the bind here
         self.bind = bind
+        self.property_keys += ['bind', 'label', ]
 
 
 class Submit(Renderable):
@@ -92,6 +96,7 @@ class Submit(Renderable):
         Renderable.__init__(self, id, **props)
         self.label = label
         self.bind = bind
+        self.property_keys += ['bind', 'label', ]
 
 
 class Cancel(Renderable):
@@ -101,6 +106,7 @@ class Cancel(Renderable):
         Renderable.__init__(self, id, **props)
         self.label = label
         self.bind = bind
+        self.property_keys += ['bind', 'label', ]
 
 
 class Reset(Renderable):
@@ -110,3 +116,4 @@ class Reset(Renderable):
         Renderable.__init__(self, id, **props)
         self.label = label
         self.bind = bind
+        self.property_keys += ['bind', 'label', ]

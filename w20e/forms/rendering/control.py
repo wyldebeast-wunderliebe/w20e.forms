@@ -28,6 +28,8 @@ class Control(Renderable):
         self.help = help
         self.alert = alert
 
+        self.property_keys += ['bind', 'label', 'hint', 'help', 'alert', ]
+
     def __repr__(self):
         return REPR % self.__dict__
 
@@ -280,3 +282,5 @@ class Range(Select):
 
         Select.__init__(self, control_id, label, options=opts,
                         bind=bind, **properties)
+
+        self.property_keys += ['start', 'end', 'step', 'reverse', ]

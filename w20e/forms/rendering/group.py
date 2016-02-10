@@ -16,6 +16,13 @@ class Group(RenderableContainer, Renderable):
         self.label = label
         self.is_group = True
 
+    def __json__(self, request):
+        """ join json representation from both base classes """
+        json = RenderableContainer.__json__(self, request)
+        json.update(Renderable.__json__(self, request))
+        return json
+
+
 class FlowGroup(Group):
 
     """ Implement a grouping component that makes it's content flow,
