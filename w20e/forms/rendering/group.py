@@ -16,6 +16,8 @@ class Group(RenderableContainer, Renderable):
         self.label = label
         self.is_group = True
 
+        self.property_keys += ['label', ]
+
     def __json__(self, request):
         """ join json representation from both base classes """
         json = RenderableContainer.__json__(self, request)
