@@ -33,6 +33,7 @@ class Renderable(object):
 
         defaults = DEFAULTS.get(self.type, {}).copy()
         defaults.update(props)
+        self._custom_props = props.keys()
 
         self.property_keys = defaults.keys()
         self.property_keys += ['id', 'type', ]
