@@ -187,13 +187,13 @@ class Option:
     def __init__(self, value, label):
         self.value = value
         self.label = label
-        self.selected = "false"
+        self.default = False
 
     def __json__(self, request):
         return {
             "value": self.value,
             "label": self.label,
-            "selected": self.selected
+            "default": self.default
         }
 
 
@@ -202,6 +202,11 @@ class Select(Control):
 
         Control.__init__(self, control_id, label, bind=bind, **properties)
         self._options = options[:]
+
+    def __json__(self, request):
+        json = super(Select, self).__json__(request)
+        json['options'] = self._options
+        return json
 
     @property
     def options(self):

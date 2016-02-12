@@ -67,7 +67,7 @@ class RenderableContainer(object):
         found = self._componentmap.get(id, None)
         if not found:
             # search children
-            for r in self.getRenderables(True):
+            for r in self.getRenderables(False):
                 try:
                     found = r.getRenderable(id)
                     if found:
@@ -78,7 +78,17 @@ class RenderableContainer(object):
 
     def getRenderableByBind(self, bind):
 
-        return self._bindmap.get(bind, None)
+        found = self._bindmap.get(bind, None)
+        if not found:
+            # search children
+            for r in self.getRenderables(False):
+                try:
+                    found = r.getRenderableByBind(bind)
+                    if found:
+                        break
+                except:
+                    pass
+        return found
 
 
 class FormView(RenderableContainer):
