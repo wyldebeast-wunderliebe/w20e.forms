@@ -40,9 +40,15 @@ class formview(object):
         """ Render the form.
         """
 
+        params = {}
+        try:
+            params = self.request.json
+        except:
+            params = self.request.params
+
         rendered = self.form.view.render(
             self.form, errors=errors, status=status,
-            data=self.request.params, context=self.context, **opts)
+            data=params, context=self.context, **opts)
         rendered = unicode(rendered, "utf-8")
         # remove empty lines
         filtered = '\n'.join([l for l in rendered.splitlines() if l.strip()])
@@ -53,7 +59,13 @@ class formview(object):
         """ Handle the form. Override this method if you wish... """
 
         form = self.form
-        self._process_data(form, form.view, self.request.params)
+        params = {}
+        try:
+            params = self.request.json
+        except:
+            params = self.request.params
+
+        self._process_data(form, form.view, params)
         status = 'processed'
         errors = {}
 
@@ -76,15 +88,21 @@ class formview(object):
         errors = {}
         status = ''
 
+        params = {}
+        try:
+            params = self.request.json
+        except:
+            params = self.request.params
+
         submissions = set(["submit", "save", "w20e.forms.next",
             "w20e.forms.process"])
 
-        if self.request.params.get("cancel", None):
+        if params.get("cancel", None):
             status = "cancelled"
 
-        elif submissions.intersection(self.request.params.keys()):
+        elif submissions.intersection(params.keys()):
             status, errors = self.form.view.handle_form(self.form,
-                    self.request.params)
+                    params)
 
 
         if status in ["completed"]:
@@ -132,7 +150,13 @@ class formview(object):
         model = self.form.model
         form = self.form
 
-        self._process_data(form, form.view, self.request.params)
+        params = {}
+        try:
+            params = self.request.json
+        except:
+            params = self.request.params
+
+        self._process_data(form, form.view, params)
 
         effected = []
         efferent = model.collectEfferentFields()
@@ -141,7 +165,7 @@ class formview(object):
         # all fields are serialized by jquery (e.g. empty multiselect)
         if requested_params_only:
             ctls = [form.view.getRenderable(key) for key in
-                    self.request.params.keys()]
+                    params.keys()]
         else:
             ctls = form.view.getRenderables(recursive=True)
             ctls = [_c for _c in ctls if hasattr(_c, 'bind')]
