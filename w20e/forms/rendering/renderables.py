@@ -1,5 +1,6 @@
 from w20e.forms.interfaces import IRenderable
 from zope.interface import implements
+from w20e.forms.registry import Registry
 
 DEFAULTS = {'input': {"rows": 1, "cols": 20},
             'password': {"rows": 1, "cols": 20},
@@ -68,6 +69,23 @@ class Hidden(Renderable):
 
         self.bind = bind
         self.property_keys += ['bind', ]
+
+
+    def processInput(self, data=None, datatype="string"):
+
+        val = None
+        data_attr = self.bind or self.id
+
+        if data:
+            val = data.get(data_attr, None)
+
+        try:
+            converter = Registry.get_converter(datatype)
+            val = converter(val)
+        except:
+            pass
+
+        return val
 
 
 class Text(Renderable):

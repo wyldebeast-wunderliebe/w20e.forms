@@ -22,19 +22,21 @@ class PloneFile(File):
 
         _file = None
 
-        new_input = data.get("%s-new" % self.id, None)
+        data_attr = self.bind or self.id
+
+        new_input = data.get("%s-new" % data_attr, None)
         new_data = None
         if new_input:
             new_data = new_input.read()
             new_input.seek(0)  # reset the pointer
 
-        if data[self.id] == '1' and not new_data:
+        if data[data_attr] == '1' and not new_data:
             raise ProcessingException("Skip this!")
 
         if new_data:
-            _file = data["%s-new" % self.id]
+            _file = data["%s-new" % data_attr]
         else:
-            _file = data[self.id]
+            _file = data[data_attr]
 
         # if we don't have file data, return None
         value = None

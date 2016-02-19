@@ -38,6 +38,7 @@ class Control(Renderable):
         """ Base implementation """
 
         val = None
+        data_attr = self.bind or self.id
 
         if data:
             # for multiselects we need to read all values from the request.
@@ -46,9 +47,9 @@ class Control(Renderable):
             # control name. But for now I need this in pyramid, and the
             # getall method works fine..
             if self.multiple:
-                val = data.getall(self.id)
+                val = data.getall(data_attr)
             else:
-                val = data.get(self.id, None)
+                val = data.get(data_attr, None)
 
         try:
             converter = Registry.get_converter(datatype)
@@ -98,9 +99,10 @@ class Date(Control):
         """ Base implementation """
 
         val = None
+        data_attr = self.bind or self.id
 
         if data:
-            val = data.get(self.id, None)
+            val = data.get(data_attr, None)
 
         try:
             converter = Registry.get_converter(datatype)
@@ -149,9 +151,10 @@ class DateTime(Control):
         """ Base implementation """
 
         val = None
+        data_attr = self.bind or self.id
 
         if data:
-            val = data.get(self.id, None)
+            val = data.get(data_attr, None)
 
         try:
             converter = Registry.get_converter(datatype)

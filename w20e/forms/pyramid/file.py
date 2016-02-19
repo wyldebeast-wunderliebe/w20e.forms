@@ -22,23 +22,24 @@ class PyramidFile(File):
         assert datatype == 'file', 'expected a file as datatype'
 
         _file = None
+        data_attr = self.bind or self.id
 
-        present = self.id in data
+        present = data_attr in data
 
-        if not present or data[self.id] == None or data[self.id] == '':
+        if not present or data[data_attr] == None or data[data_attr] == '':
             raise ProcessingException("no file. skip it")
 
-        if data[self.id] == '1':
-            fieldstorage = data.get("%s-new" % self.id, None)
+        if data[data_attr] == '1':
+            fieldstorage = data.get("%s-new" % data_attr, None)
             # comparing the fieldstorage with the unary 'not'
             # operator doesn't work.. so weird looking check:
             if fieldstorage == '' or fieldstorage == None:
                 raise ProcessingException("empty file. Skip this!")
 
-        if data.get("%s-new" % self.id, None) is not None:
-            _file = data["%s-new" % self.id]
+        if data.get("%s-new" % data_attr, None) is not None:
+            _file = data["%s-new" % data_attr]
         else:
-            _file = data[self.id]
+            _file = data[data_attr]
 
 
         return {'data': _file.value, 'name': _file.filename}

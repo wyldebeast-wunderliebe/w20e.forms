@@ -391,8 +391,8 @@ Can we use variable substitution in labels and hints? Yes, we can!
 Let's delve into input processing a bit...
 A simple input should just return it's own value
 
-  >>> data = {'pipo': 'lala'}
-  >>> ctl = Input("pipo", "f0", "Some input")
+  >>> data = {'f0': 'lala'}
+  >>> ctl = Input("pipo", "Some input", "f0")
   >>> ctl.processInput(data)
   'lala'
 

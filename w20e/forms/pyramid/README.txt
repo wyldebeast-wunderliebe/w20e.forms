@@ -90,7 +90,7 @@ Would you wish to use w20e.forms, then:
    in the _data attribute. formprocess is the marker used by w20e.forms
    to assume that the form is posted.
 
-      >>> req = Request({'w20e.forms.process': 1, 'input0': 6, 'input1': 'whatever'})
+      >>> req = Request({'w20e.forms.process': 1, 'foo': 6, 'bar': 'whatever'})
       >>> view = yourformview(ctx, req)
       >>> view()
       {'status': 'completed', 'errors': {}}
