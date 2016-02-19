@@ -28,6 +28,11 @@ class FormData(object):
                 if 'name' in value:
                     value = value['name']
 
+            if isinstance(field, unicode):
+                field = field.encode('utf-8')
+            if isinstance(value, unicode):
+                value = value.encode('utf-8')
+
             reprlist.append("%s: %s\n" % (field, value))
 
         return "\n".join(reprlist)

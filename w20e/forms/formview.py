@@ -53,7 +53,7 @@ class RenderableContainer(object):
             result = self._componentmap.values()
             for r in self._componentmap.values():
                 try:
-                    result.append(r.getRenderables(recursive))
+                    result += r.getRenderables(recursive)
                 except:
                     pass
             return result
