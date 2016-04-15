@@ -42,7 +42,7 @@ class Renderable(object):
         self.__dict__.update(defaults)
 
     def __json__(self, request):
-        return {k: self.__dict__[k] for k in self.property_keys}
+        return {k: self.__dict__.get(k) for k in self.property_keys}
 
     def __getattr__(self, attr_name):
         """ override the __getattr__ and return None instead of the
@@ -69,7 +69,6 @@ class Hidden(Renderable):
 
         self.bind = bind
         self.property_keys += ['bind', ]
-
 
     def processInput(self, data=None, datatype="string"):
 

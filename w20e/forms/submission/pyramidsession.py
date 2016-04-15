@@ -32,4 +32,5 @@ class PyramidSessionStorage(SubmissionBase):
 
         """ Restore data. """
 
-        return request.session[self.attr_name]
+        if self.attr_name in request.session:
+            return request.session[self.attr_name]

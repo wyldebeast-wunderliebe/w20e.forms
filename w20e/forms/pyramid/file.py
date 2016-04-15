@@ -11,7 +11,6 @@ class PyramidFile(File):
         File.__init__(self, *args, **kwargs)
         self.type = "file"
 
-
     def processInput(self, data=None, datatype="file"):
 
         """ File data is stored in value field """
@@ -25,14 +24,14 @@ class PyramidFile(File):
 
         present = self.id in data
 
-        if not present or data[self.id] == None or data[self.id] == '':
+        if present or data[self.id] is None or data[self.id] == '':
             raise ProcessingException("no file. skip it")
 
         if data[self.id] == '1':
             fieldstorage = data.get("%s-new" % self.id, None)
             # comparing the fieldstorage with the unary 'not'
             # operator doesn't work.. so weird looking check:
-            if fieldstorage == '' or fieldstorage == None:
+            if fieldstorage == '' or fieldstorage is None:
                 raise ProcessingException("empty file. Skip this!")
 
         if data.get("%s-new" % self.id, None) is not None:
@@ -40,13 +39,11 @@ class PyramidFile(File):
         else:
             _file = data[self.id]
 
-
         return {'data': _file.value, 'name': _file.filename}
-
 
     def lexVal(self, value):
 
-        if type(value) == type({}):
+        if isinstance(value, dict):
             return value.get("name", "")
         else:
             return value
