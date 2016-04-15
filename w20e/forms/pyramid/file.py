@@ -24,7 +24,7 @@ class PyramidFile(File):
 
         present = self.id in data
 
-        if present or data[self.id] is None or data[self.id] == '':
+        if not present or data[self.id] is None or data[self.id] == '':
             raise ProcessingException("no file. skip it")
 
         if data[self.id] == '1':
