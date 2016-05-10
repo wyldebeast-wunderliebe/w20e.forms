@@ -280,6 +280,11 @@ class Range(Select):
 
     def __init__(self, control_id, label, bind=None, start=0,
                  end=0, step=1, reverse=False, **properties):
+
+        self.start = start
+        self.end = end
+        self.step = step
+
         opts = [Option(i, str(i)) for i in range(int(start),
                                                  int(end), int(step))]
         if reverse:
