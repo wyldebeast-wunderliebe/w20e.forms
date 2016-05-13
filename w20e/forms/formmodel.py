@@ -2,6 +2,7 @@ from model.fieldproperties import FieldProperties
 from model import converters, validators
 from registry import Registry
 import types
+import evaluator
 
 converters.register()
 validators.register()
@@ -10,10 +11,11 @@ validators.register()
 class FormModel(object):
     """ Hold properties for form """
 
-    def __init__(self):
+    def __init__(self, expressionlanguage='python'):
 
         self._props = {}
         self._bindings = {}
+        self._expressionlanguage = expressionlanguage
 
     def __repr__(self):
 
@@ -29,6 +31,13 @@ class FormModel(object):
             "bindings": self._bindings
         }
 
+    def _eval(self, expression, _globals, _locals):
+
+        if self._expressionlanguage == 'javascript':
+            return evaluator.eval_javascript(expression, _globals, _locals)
+
+        return evaluator.eval_python(expression, _globals, _locals)
+
     def addFieldProperties(self, prop):
 
         self._props[prop.id] = prop
@@ -37,7 +46,7 @@ class FormModel(object):
             binds = [binds]
         for binding in binds:
 
-            if not binding in self._bindings:
+            if binding not in self._bindings:
                 self._bindings[binding] = []
 
             self._bindings[binding].append(prop)
@@ -96,8 +105,9 @@ class FormModel(object):
         for props in self.getFieldProperties(field_id):
 
             try:
-                if not eval(props.getRelevant(), {"data": data, "model": self},
-                            Registry.funcs):
+                if not self._eval(
+                        props.getRelevant(),
+                        {"data": data, "model": self}, Registry.funcs):
                     return False
             except:
                 return True
@@ -109,8 +119,9 @@ class FormModel(object):
         for props in self.getFieldProperties(field_id):
 
             try:
-                if eval(props.getRequired(), {"data": data, "model": self},
-                        Registry.funcs):
+                if self._eval(
+                            props.getRequired(), {"data": data, "model": self},
+                            Registry.funcs):
                     return True
             except:
                 return False
@@ -122,7 +133,8 @@ class FormModel(object):
         for props in self.getFieldProperties(field_id):
 
             try:
-                if eval(props.getReadonly(), {"data": data, "model": self},
+                if self._eval(
+                        props.getReadonly(), {"data": data, "model": self},
                         Registry.funcs):
                     return True
             except:
@@ -138,7 +150,8 @@ class FormModel(object):
         for props in self.getFieldProperties(field_id):
 
             try:
-                val = eval(props.getCalculate(), {"data": data, "model": self},
+                val = self._eval(
+                           props.getCalculate(), {"data": data, "model": self},
                            Registry.funcs)
                 return (val, True)
 
@@ -154,9 +167,9 @@ class FormModel(object):
         for props in self.getFieldProperties(field_id):
 
             try:
-                if not eval(props.getConstraint(), {"data": data,
-                                                    "model": self},
-                            Registry.funcs):
+                if not self._eval(
+                        props.getConstraint(), {"data": data, "model": self},
+                        Registry.funcs):
                     meets = False
             except:
                 pass
@@ -210,7 +223,7 @@ class FormModel(object):
                 try:
                     converter = Registry.get_converter(datatype)
                     value = converter(value)
-                    break;
+                    break
                 except:
                     pass
 
@@ -232,7 +245,7 @@ class FormModel(object):
 
             def __getitem__(self, name):
 
-                if not name in fields:
+                if name not in fields:
                     fields[name] = []
 
                 fields[name].extend(self._bind)
@@ -243,8 +256,9 @@ class FormModel(object):
                          "_calculate"]:
 
                 try:
-                    eval(getattr(prop, rule, ""),
-                         {"data": Collector(prop.bind)})
+                    self._eval(
+                        getattr(prop, rule, ""),
+                        {"data": Collector(prop.bind)})
                 except:
                     # this is possibly a calculated field which uses
                     # a registered function for it's calculation. There is no
@@ -255,7 +269,7 @@ class FormModel(object):
                     if not isinstance(bind, types.ListType):
                         bind = [bind]
                     for name in bind:
-                        if not name in fields:
+                        if name not in fields:
                             fields[name] = []
                         fields[name].extend(bind)
 

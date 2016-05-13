@@ -85,7 +85,12 @@ class XMLFormFactory:
 
         """ Create the form model. """
 
-        model = FormModel()
+        kwargs = {}
+
+        for k,v in root.items():
+            kwargs[k] = v
+
+        model = FormModel(**kwargs)
 
         for child in root.getchildren():
 
