@@ -53,19 +53,19 @@ class XMLSerializer:
                 bindElt = etree.SubElement(sub, "bind")
                 bindElt.text = bind
 
-            if prop.getRequired() != "False":
+            if prop.getRequired() != "0":
                 subsub = etree.SubElement(sub, "required")
                 subsub.text = prop.getRequired()
 
-            if prop.getRelevant() != "True":
+            if prop.getRelevant() != "1":
                 subsub = etree.SubElement(sub, "relevant")
                 subsub.text = prop.getRelevant()
 
-            if prop.getReadonly() != "False":
+            if prop.getReadonly() != "0":
                 subsub = etree.SubElement(sub, "readonly")
                 subsub.text = prop.getReadonly()
 
-            if prop.getConstraint() != "True":
+            if prop.getConstraint() != "1":
                 subsub = etree.SubElement(sub, "constraint")
                 subsub.text = prop.getConstraint()
 
