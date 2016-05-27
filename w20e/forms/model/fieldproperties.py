@@ -1,7 +1,7 @@
 from zope.interface import implements
 from w20e.forms.interfaces import IFieldProperties
 
-REPR="""FieldProperties %(id)s for %(bind)s:
+REPR = """FieldProperties %(id)s for %(bind)s:
   required: %(_required)s
   relevant: %(_relevant)s
   readonly: %(_readonly)s
@@ -10,36 +10,34 @@ REPR="""FieldProperties %(id)s for %(bind)s:
   datatype: %(_datatype)s
   """
 
+
 class FieldProperties(object):
 
     """ Properties implementation class """
 
     implements(IFieldProperties)
 
-
     def __repr__(self):
 
         return REPR % self.__dict__
 
-
     def __init__(self, id, bind,
-                 required="False",
-                 relevant="True",
+                 required="0",  # False (in python + javascript)
+                 relevant="1",  # True (in python + javascript)
                  datatype=None,
-                 readonly="False",
-                 constraint="True",
+                 readonly="0",   # False
+                 constraint="1",  # True
                  calculate=None):
 
         object.__init__(self)
         self.id = id
         self.bind = bind
         self._required = required
-        self._relevant = relevant        
+        self._relevant = relevant
         self._readonly = readonly
         self._constraint = constraint
         self._calculate = calculate
         self._datatype = datatype
-
 
     def __json__(self, request):
         return {
@@ -57,13 +55,11 @@ class FieldProperties(object):
 
         return self._required
 
-
     def getRelevant(self):
 
         """ return expression for requiredness """
 
         return self._relevant
-
 
     def getReadonly(self):
 
@@ -71,20 +67,17 @@ class FieldProperties(object):
 
         return self._readonly
 
-
     def getConstraint(self):
 
-        """ return expression for requiredness """        
+        """ return expression for requiredness """
 
         return self._constraint
 
-
     def getCalculate(self):
 
-        """ return expression for requiredness """        
+        """ return expression for requiredness """
 
         return self._calculate
-
 
     def getDatatype(self):
 

@@ -295,6 +295,12 @@ class FormView(RenderableContainer):
 
             status = 'processed'
 
+            # process the calculate model properties
+            for fieldid in form.data._fields.keys():
+                (val, found) = form.model.getCalculate(fieldid, form.data)
+                if found:
+                    form.data[fieldid] = val
+
             try:
                 if self.is_last_page(data.get("w20e.forms.page")):
                     form.validate()
