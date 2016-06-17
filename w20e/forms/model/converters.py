@@ -9,16 +9,19 @@ from w20e.forms.registry import Registry
 
 def to_date(value, format=None):
 
-    # return empty string is empty string was passed in..
-    if not (value and value.strip()):
-        return ''
+    if isinstance(value, basestring):
+        # return empty string is empty string was passed in..
+        if not (value and value.strip()):
+            return ''
 
-    if format:
-        return datetime.strptime(value, format)
+        if format:
+            return datetime.strptime(value, format)
 
-    else:
-        # converting datetime sucks.. fingers crossed for dateutil
-        return dateutil.parser.parse(value)
+        else:
+            # converting datetime sucks.. fingers crossed for dateutil
+            return dateutil.parser.parse(value)
+
+    return value
 
 
 def to_str(value):
