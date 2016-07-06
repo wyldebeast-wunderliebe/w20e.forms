@@ -31,7 +31,6 @@ class IForm(Interface):
     submission = Attribute(""" The submission handler """)
 
 
-
 class IFormModifier(Interface):
 
     """ Modify forms """
@@ -86,7 +85,6 @@ class IFormModel(Interface):
 
         """ Return all properties contained by this model. """
 
-
     def getFieldProperties(self, binding):
 
         """ Return the properties that bind to the given id. """
@@ -101,7 +99,6 @@ class IFieldProperties(Interface):
     def evalValue(value):
 
         """ evaluate given value against all properties """
-
 
     dataType = Attribute(""" Datatype for field. """)
 
