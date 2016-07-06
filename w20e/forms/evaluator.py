@@ -38,15 +38,17 @@ class EvalJSUtil(SingletonMixin):
     def __init__(self):
         # note: need the runtime here, to prevent
         # "Failed to allocate new JSRuntime" error
-        if not spidermonkey:
-            raise ("Spidermonkey not available. "
-                   "Please install python-spidermonkey")
 
-        self.spidermonkey_rt = spidermonkey.Runtime()
-        self.spidermonkey_cx = self.spidermonkey_rt.new_context()
+        if spidermonkey:
+            self.spidermonkey_rt = spidermonkey.Runtime()
+            self.spidermonkey_cx = self.spidermonkey_rt.new_context()
 
     def eval(self, expression, _globals, _locals=None):
         """ import spidermonkey and eval the expression  """
+
+        if not spidermonkey:
+            raise ("Spidermonkey not available. "
+                   "Please install python-spidermonkey")
 
         for k, v in _globals.items():
             self.spidermonkey_cx.add_global(k, v)
