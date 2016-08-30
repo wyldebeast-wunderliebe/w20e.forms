@@ -52,16 +52,16 @@ class Control(Renderable):
 
         try:
             converter = Registry.get_converter(datatype)
-
+            val = converter(val)
             # TODO: what to do when multiple values are present? convert each
             # item in the list?
-            if self.multiple:
-                newval = []
-                for item in val:
-                    newval.append(converter(item))
-                val = newval
-            else:
-                val = converter(val)
+            # if self.multiple:
+            #     newval = []
+            #     for item in val:
+            #         newval.append(converter(item))
+            #     val = newval
+            # else:
+            #     val = converter(val)
         except:
             pass
 
