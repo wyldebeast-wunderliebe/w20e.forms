@@ -55,11 +55,11 @@ class EvalJSUtil(SingletonMixin):
         # and work around a potential memory leak
 
         for k, v in _globals.items():
-            self.pyduktape_cx.set_global(k=None)
+            self.pyduktape_cx.set_globals(k=None)
 
         if _locals:
             for k, v in _locals.items():
-                self.pyduktape_cx.set_global(k=None)
+                self.pyduktape_cx.set_globals(k=None)
 
         return result
 
