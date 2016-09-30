@@ -1,12 +1,12 @@
 """
 Evaluate the given expression
 Either use the default python eval() method to evaluate the expression
-or use javascript (spidermonkey)
+or use javascript (pyduktape)
 """
 try:
-    import spidermonkey
+    import pyduktape
 except ImportError:
-    spidermonkey = None
+    pyduktape = None
 
 # from zope import interface
 # from zope.component import getUtility
@@ -29,44 +29,37 @@ class SingletonMixin(object):
 
 
 class EvalJSUtil(SingletonMixin):
-
-    """ There seems to be a memory leak issue with spidermonkey
-    context creation. So wrapping this in a util class and
-    ceating a single context which is reused solves the issue I hope
-    """
-
     def __init__(self):
         # note: need the runtime here, to prevent
         # "Failed to allocate new JSRuntime" error
 
-        if spidermonkey:
-            self.spidermonkey_rt = spidermonkey.Runtime()
-            self.spidermonkey_cx = self.spidermonkey_rt.new_context()
+        if pyduktape:
+            self.pyduktape_cx = pyduktape.DuktapeContext()
 
     def eval(self, expression, _globals, _locals=None):
-        """ import spidermonkey and eval the expression  """
+        """ import pyduktape and eval the expression  """
 
-        if not spidermonkey:
-            raise ("Spidermonkey not available. "
-                   "Please install python-spidermonkey")
+        if not pyduktape:
+            raise ("Pyduktape not available. "
+                   "Please install pyduktape")
 
-        for k, v in _globals.items():
-            self.spidermonkey_cx.add_global(k, v)
+        self.pyduktape_cx.set_globals(**_globals)
 
+        # pyduktape doesn's have locals so insert it into the globals instead
         if _locals:
-            for k, v in _locals.items():
-                self.spidermonkey_cx.add_global(k, v)
+            self.pyduktape_cx.set_globals(**_locals)
 
-        result = self.spidermonkey_cx.execute(expression)
+        result = self.pyduktape_cx.eval_js(expression)
 
         # clean up globals, so we can reuse the context
-        # and work around the memory leak
+        # and work around a potential memory leak
+
         for k, v in _globals.items():
-            self.spidermonkey_cx.rem_global(k)
+            self.pyduktape_cx.set_global(k=None)
 
         if _locals:
             for k, v in _locals.items():
-                self.spidermonkey_cx.rem_global(k)
+                self.pyduktape_cx.set_global(k=None)
 
         return result
 
@@ -80,6 +73,5 @@ evalJSUtil = EvalJSUtil()
 
 
 def eval_javascript(expression, _globals, _locals=None):
-    """ import spidermonkey and eval the expression  """
-
+    """ import pyduktape and eval the expression  """
     return evalJSUtil.eval(expression, _globals, _locals)

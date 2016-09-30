@@ -49,6 +49,7 @@ class FormModel(object):
             if binding not in self._bindings:
                 self._bindings[binding] = []
 
+
             self._bindings[binding].append(prop)
 
     def getAllFieldProperties(self):
@@ -149,12 +150,14 @@ class FormModel(object):
 
         for props in self.getFieldProperties(field_id):
 
-            try:
-                val = self._eval(
-                           props.getCalculate(), {"data": data, "model": self},
-                           Registry.funcs)
-                return (val, True)
 
+            try:
+                calc = props.getCalculate()
+                if calc:
+                    val = self._eval(
+                               calc, {"data": data, "model": self},
+                               Registry.funcs)
+                    return (val, True)
             except:
                 pass
 

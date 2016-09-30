@@ -5,25 +5,36 @@
 
   <data>
     <name/>
+    <lastname/>
     <text/>
     <date/>
   </data>
 
-  <model>
-    <properties id="required">
+  <model expressionlanguage="javascript">
+
+    <properties id="is_required">
       <bind>name</bind>
+      <bind>lastname</bind>
       <required>True</required>
     </properties>
+
     <properties id="is_string">
       <bind>name</bind>
       <bind>text</bind>
+      <bind>lastname</bind>
       <datatype>string</datatype>
     </properties>
-    <properties id="is_date">
+
+    <properties id="is_datetime">
       <bind>date</bind>
       <datatype>datetime</datatype>
     </properties>
 
+    <properties id="is_calculate">
+        <bind>lastname</bind>
+        <required>True</required>
+        <calculate>data['name'] == 'piebe' ? 'bliksem' : 'donder'</calculate>
+    </properties>
   </model>
 
   <view>
@@ -33,13 +44,17 @@
       <property name="cols">40</property>
     </input>
 
+    <input id="lastname" bind="lastname">
+      <label>Lastname</label>
+      <property name="cols">40</property>
+    </input>
+
     <richtext id="text" bind="text">
       <label>Page text (including images)</label>
       <hint>You may also use the 'layout' tab for more complex layout options</hint>
       <property name="rows">20</property>
       <property name="cols">80</property>
     </richtext>
-
 
     <datetime id="date" bind="date">
       <label>When did this happen?</label>
