@@ -6,6 +6,7 @@ from glob import glob
 from os.path import splitext, basename, join as pjoin
 import doctest
 
+
 def read(f):
     return open(f).read()
 
@@ -19,7 +20,7 @@ long_descr = ".. contents:: Table of Contents\n\n" + \
 
 
 class TestCommand(Command):
-    user_options = [ ]
+    user_options = []
 
     def initialize_options(self):
         self._dir = os.getcwd()
@@ -31,7 +32,7 @@ class TestCommand(Command):
         '''
         Finds all the tests modules in tests/, and runs them.
         '''
-        testfiles = [ ]
+        testfiles = []
         for t in glob(pjoin(self._dir, 'tests', '*.py')):
             if not t.endswith('__init__.py'):
                 testfiles.append('.'.join(
@@ -41,7 +42,7 @@ class TestCommand(Command):
         print testfiles
 
         tests = TestLoader().loadTestsFromNames(testfiles)
-        t = TextTestRunner(verbosity = 1)
+        t = TextTestRunner(verbosity=1)
         t.run(tests)
 
         doctest.testmod()
@@ -74,6 +75,6 @@ setup(name='w20e.forms',
       entry_points="""
       # -*- Entry points: -*-
       """,
-      cmdclass = { 'test': TestCommand }
+      cmdclass={'test': TestCommand}
 
       )

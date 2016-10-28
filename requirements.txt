@@ -1,7 +1,7 @@
-setuptools
 ZODB3
 lxml==3.4.0
 zope.interface
 ordereddict
 python-dateutil
 Chameleon
+pyduktape
