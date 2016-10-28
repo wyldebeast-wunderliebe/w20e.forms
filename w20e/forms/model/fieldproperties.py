@@ -1,13 +1,14 @@
 from zope.interface import implements
 from w20e.forms.interfaces import IFieldProperties
 
-REPR = """FieldProperties %(id)s for %(bind)s:
-  required: %(_required)s
-  relevant: %(_relevant)s
-  readonly: %(_readonly)s
-  constraint: %(_constraint)s
-  calculate: %(_calculate)s
-  datatype: %(_datatype)s
+REPR = u"""FieldProperties {id} for {bind}:
+  required: {_required}
+  relevant: {_relevant}
+  readonly: {_readonly}
+  constraint: {_constraint}
+  calculate: {_calculate}
+  datatype: {_datatype}
+  default: {_default}
   """
 
 
@@ -19,7 +20,8 @@ class FieldProperties(object):
 
     def __repr__(self):
 
-        return REPR % self.__dict__
+        result = REPR.format(**self.__dict__)
+        return result.encode('utf-8')
 
     def __init__(self, id, bind,
                  required="0",  # False (in python + javascript)
@@ -27,7 +29,8 @@ class FieldProperties(object):
                  datatype=None,
                  readonly="0",   # False
                  constraint="1",  # True
-                 calculate=None):
+                 calculate=None,
+                 default=None):
 
         object.__init__(self)
         self.id = id
@@ -38,6 +41,7 @@ class FieldProperties(object):
         self._constraint = constraint
         self._calculate = calculate
         self._datatype = datatype
+        self._default = default
 
     def __json__(self, request):
         return {
@@ -46,7 +50,8 @@ class FieldProperties(object):
           "readonly": self._readonly,
           "constraint": self._constraint,
           "calculate": self._calculate,
-          "datatype": self._datatype
+          "datatype": self._datatype,
+          "default": self._default
         }
 
     def getRequired(self):
@@ -82,3 +87,7 @@ class FieldProperties(object):
     def getDatatype(self):
 
         return self._datatype
+
+    def getDefault(self):
+
+        return self._default

@@ -25,9 +25,12 @@ Now let us create a factory class
       ...   <data>
       ...     <foo/>
       ...     <bar value="666"/>
+      ...     <myarr/>
+      ...     <hello/>
+      ...     <world/>
       ...   </data>
       ...
-      ...   <model>
+      ...   <model expressionlanguage='javascript'>
       ...     <properties id="required">
       ...       <bind>foo</bind>
       ...       <bind>bar</bind>
@@ -36,6 +39,20 @@ Now let us create a factory class
       ...     <properties id="int">
       ...       <bind>bar</bind>
       ...       <datatype>int</datatype>
+      ...     </properties>
+      ...     <properties id="mylist">
+      ...       <bind>myarr</bind>
+      ...       <datatype>list</datatype>
+      ...     </properties>
+      ...     <properties id="hello">
+      ...       <bind>hello</bind>
+      ...       <datatype>string</datatype>
+      ...       <default>data['bar'] + 1</default>
+      ...     </properties>
+      ...     <properties id="world">
+      ...       <bind>world</bind>
+      ...       <datatype>string</datatype>
+      ...       <default>"W&#248;r&#235;ld"</default>
       ...     </properties>
       ...   </model>
       ...
@@ -80,13 +97,19 @@ Now let us create a factory class
       >>> xmlff = XMLFormFactory(xml)
       >>> form = xmlff.create_form()
       >>> print len(form.data.getFields())
-      2
+      5
 
       >>> print form.data.getField("foo").id
       foo
 
       >>> print form.data.getField("bar").value
       666
+
+      >>> print form.data.getField("hello").value
+      667
+
+      >>> form.data.getField("world").value == u'W\xf8r\xebld'
+      True
 
       Set the value
 
@@ -152,16 +175,33 @@ You can easily serilialize the form back into XML. Let's try...
         <data>
           <foo/>
           <bar value="777"/>
+          <myarr/>
+          <hello value="667"/>
+          <world value="W&#248;r&#235;ld"/>
         </data>
         <model>
-          <properties id="int">
-            <bind>bar</bind>
-            <datatype>int</datatype>
-          </properties>
           <properties id="required">
             <bind>foo</bind>
             <bind>bar</bind>
             <required>True</required>
+          </properties>
+          <properties id="int">
+            <bind>bar</bind>
+            <datatype>int</datatype>
+          </properties>
+          <properties id="mylist">
+            <bind>myarr</bind>
+            <datatype>list</datatype>
+          </properties>
+          <properties id="hello">
+            <bind>hello</bind>
+            <datatype>string</datatype>
+            <default>data['bar'] + 1</default>
+          </properties>
+          <properties id="world">
+            <bind>world</bind>
+            <datatype>string</datatype>
+            <default>"W&#248;r&#235;ld"</default>
           </properties>
         </model>
         <view>

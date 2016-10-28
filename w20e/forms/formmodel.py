@@ -1,3 +1,4 @@
+from collections import OrderedDict
 from model.fieldproperties import FieldProperties
 from model import converters, validators
 from registry import Registry
@@ -13,8 +14,8 @@ class FormModel(object):
 
     def __init__(self, expressionlanguage='python'):
 
-        self._props = {}
-        self._bindings = {}
+        self._props = OrderedDict()
+        self._bindings = OrderedDict()
         self._expressionlanguage = expressionlanguage
 
     def __repr__(self):
@@ -160,6 +161,24 @@ class FormModel(object):
 
         return (None, False)
 
+    def getDefault(self, field_id, data):
+        """ return a tuple with first param the default value
+        and the second param indicates whether a default has been found
+        """
+
+        for props in self.getFieldProperties(field_id):
+
+            try:
+                val = self._eval(
+                           props.getDefault(), {"data": data, "model": self},
+                           Registry.funcs)
+                return (val, True)
+
+            except:
+                pass
+
+        return (None, False)
+
     def meetsConstraint(self, field_id, data):
 
         meets = True
@@ -253,7 +272,7 @@ class FormModel(object):
         for prop in self._props.values():
 
             for rule in ["_constraint", "_relevant", "_required", "_readonly",
-                         "_calculate"]:
+                         "_calculate", "_default"]:
 
                 try:
                     self._eval(

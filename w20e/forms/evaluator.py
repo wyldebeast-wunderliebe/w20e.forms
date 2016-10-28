@@ -37,6 +37,11 @@ def eval_javascript(expression, _globals, _locals=None):
     if _locals:
         context.set_globals(**_locals)
 
+    # not that the expression sometimes comes in as unicode. pyduktape
+    # doesn't seem t like this, so make it a bytestring instead
+    if isinstance(expression, unicode):
+        expression = expression.encode('utf-8')
+
     result = context.eval_js(expression)
 
     # clean up globals (since it's being reused in threadlocal)

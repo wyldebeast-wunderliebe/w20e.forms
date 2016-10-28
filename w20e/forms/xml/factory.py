@@ -87,7 +87,7 @@ class XMLFormFactory:
 
         kwargs = {}
 
-        for k,v in root.items():
+        for k, v in root.items():
             kwargs[k] = v
 
         model = FormModel(**kwargs)
@@ -101,8 +101,8 @@ class XMLFormFactory:
 
             kwargs = {}
 
-            for elt in ["required", "relevant", "readonly",
-                        "calculate", "datatype", "constraint"]:
+            for elt in ["required", "relevant", "readonly", "calculate",
+                        "datatype", "constraint", "default", ]:
                 if child.xpath("./%s" % elt):
 
                     expr = child.xpath("./%s" % elt)[0].text.strip()
@@ -220,7 +220,7 @@ class XMLFormFactory:
                 ctrl.addOption(Option(subchild.get("value"), text))
 
         for subchild in child.xpath("|".join(
-            Registry.get_registered_renderables())):
+                Registry.get_registered_renderables())):
 
             self._create_renderables(subchild, ctrl)
 
