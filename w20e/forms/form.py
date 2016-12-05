@@ -116,7 +116,7 @@ class Form(object):
                 # NOTE: we check the converted value, since e.g. int types
                 # will always be passed in as string by HTML submit
                 converted = self.model.convert(field, value)
-                if not self.model.checkDatatype(field, converted):
+                if not self.model.checkDatatype(field, converted, self.data):
                     field_errors.append("datatype")
 
             # Constraint checking...

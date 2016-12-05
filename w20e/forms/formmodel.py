@@ -207,7 +207,7 @@ class FormModel(object):
 
         return meets
 
-    def checkDatatype(self, field_id, value):
+    def checkDatatype(self, field_id, value, data):
 
         """ Check data type of value. Lists (multiple) is also ok. """
 
