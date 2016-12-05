@@ -42,6 +42,10 @@ def eval_javascript(expression, _globals, _locals=None):
     if isinstance(expression, unicode):
         expression = expression.encode('utf-8')
 
+
+    # convert the statement to an expression or the other way around :)
+    expression = 'new Function("with(this) { return ' + expression + ' }")()'
+
     result = context.eval_js(expression)
 
     # clean up globals (since it's being reused in threadlocal)

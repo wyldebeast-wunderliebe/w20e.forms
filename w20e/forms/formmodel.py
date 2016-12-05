@@ -117,6 +117,12 @@ class FormModel(object):
 
     def isRequired(self, field_id, data):
 
+        # fields can only be required if they are relevant
+        # generic business rule!
+        relevant = self.isRelevant(field_id, data)
+        if not relevant:
+            return False
+
         for props in self.getFieldProperties(field_id):
 
             try:
@@ -181,6 +187,12 @@ class FormModel(object):
 
     def meetsConstraint(self, field_id, data):
 
+        # check only if field is relevant
+        # generic business rule!
+        relevant = self.isRelevant(field_id, data)
+        if not relevant:
+            return True
+
         meets = True
 
         for props in self.getFieldProperties(field_id):
@@ -198,6 +210,12 @@ class FormModel(object):
     def checkDatatype(self, field_id, value):
 
         """ Check data type of value. Lists (multiple) is also ok. """
+
+        # check only if field is relevant
+        # generic business rule!
+        relevant = self.isRelevant(field_id, data)
+        if not relevant:
+            return True
 
         valid = True
 
