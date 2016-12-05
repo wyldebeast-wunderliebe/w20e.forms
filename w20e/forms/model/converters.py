@@ -5,6 +5,7 @@ Any datatype converters that are not yet standard python should go here...
 from datetime import datetime
 import dateutil.parser
 from w20e.forms.registry import Registry
+from types import ListType
 
 
 def to_date(value, format=None):
@@ -45,6 +46,13 @@ def to_bool(value):
     return bool(value)
 
 
+def to_list(value):
+
+    # convert to list
+    if type(value) != ListType:
+        return [value]
+
+
 def register():
 
     Registry.register_converter("string", to_str)
@@ -54,3 +62,4 @@ def register():
     Registry.register_converter("float", float)
     Registry.register_converter("date", to_date)
     Registry.register_converter("datetime", to_date)
+    Registry.register_converter("list", to_list)

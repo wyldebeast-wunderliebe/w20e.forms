@@ -42,7 +42,7 @@ class RenderableContainer(object):
         # into the _componentmap ordereddict
         self._componentmap[renderable.id] = renderable
 
-        if hasattr(renderable, 'bind'):
+        if getattr(renderable, 'bind', None):
             self._bindmap[renderable.bind] = renderable
 
     def getRenderables(self, recursive=False):

@@ -73,7 +73,14 @@ class StepGroup(Group):
 
 
 class Page(Group):
+    """ DEPRECATED in favor of PageGroup """
 
     def __init__(self, group_id, label="", **props):
 
         Group.__init__(self, group_id, label=label, **props)
+
+
+class PageGroup(Page):
+
+    def __init__(self, group_id, label="", **props):
+        Page.__init__(self, group_id, label=label, **props)

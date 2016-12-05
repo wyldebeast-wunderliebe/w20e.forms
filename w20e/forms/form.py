@@ -36,7 +36,7 @@ class Form(object):
 
     implements(IForm)
 
-    def __init__(self, id, data, model, view, submission):
+    def __init__(self, id, data, model, view, submission, set_defaults=True):
 
         """ Initialize the form, using the given data, model and view.
         """
@@ -47,6 +47,10 @@ class Form(object):
         self.view = view
         self.submission = submission
 
+        # set the default values
+        if set_defaults:
+            self.setDefaults()
+
     def __json__(self, request):
         return {
             "id": self.id,
@@ -55,6 +59,18 @@ class Form(object):
             "view": self.view,
             "submission": self.submission
         }
+
+    def setDefaults(self):
+        """ set the default values from the model field properties """
+
+        for prop in self.model.getAllFieldProperties():
+            expression = prop.getDefault()
+            if expression:
+                binds = prop.bind
+                for bind in binds:
+                    (value, found) = self.model.getDefault(bind, self.data)
+                    if found:
+                        self.data[bind] = value
 
     def render(self):
         return self.view.render(self)
@@ -100,7 +116,7 @@ class Form(object):
                 # NOTE: we check the converted value, since e.g. int types
                 # will always be passed in as string by HTML submit
                 converted = self.model.convert(field, value)
-                if not self.model.checkDatatype(field, converted):
+                if not self.model.checkDatatype(field, converted, self.data):
                     field_errors.append("datatype")
 
             # Constraint checking...

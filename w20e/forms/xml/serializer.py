@@ -38,7 +38,7 @@ class XMLSerializer:
 
             sub = etree.SubElement(root, field.id)
 
-            if not field.value is None:
+            if field.value is not None:
                 self._set_value(sub, field.value)
 
     def create_model(self, model, root):
@@ -77,6 +77,10 @@ class XMLSerializer:
                 subsub = etree.SubElement(sub, "datatype")
                 subsub.text = prop.getDatatype()
 
+            if prop.getDefault():
+                subsub = etree.SubElement(sub, "default")
+                subsub.text = prop.getDefault()
+
     def create_view(self, view, root):
 
         """ Serialize  view """
@@ -107,7 +111,7 @@ class XMLSerializer:
                 opt_elt.text = opt.label
 
             if hasattr(renderable, "getRenderables") and \
-                renderable.getRenderables:
+                    renderable.getRenderables:
 
                 self.create_view(renderable, elt)
 
@@ -125,7 +129,9 @@ class XMLSerializer:
     def _set_value(self, field, value):
 
         try:
-            field.set("value", str(value))
+            if not isinstance(value, basestring):
+                value = str(value)
+            field.set("value", value)
         except:
             field.set("value", base64.b64encode(str(value)))
 
