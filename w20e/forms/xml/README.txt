@@ -52,7 +52,7 @@ Now let us create a factory class
       ...     <properties id="world">
       ...       <bind>world</bind>
       ...       <datatype>string</datatype>
-      ...       <default>"W&#248;r&#235;ld"</default>
+      ...       <default>'W&#248;r&#235;ld'</default>
       ...     </properties>
       ...   </model>
       ...
@@ -107,6 +107,9 @@ Now let us create a factory class
 
       >>> print form.data.getField("hello").value
       667
+
+      >>> form.data.getField("world").value
+      u'W\xf8r\xebld'
 
       >>> form.data.getField("world").value == u'W\xf8r\xebld'
       True
@@ -201,7 +204,7 @@ You can easily serilialize the form back into XML. Let's try...
           <properties id="world">
             <bind>world</bind>
             <datatype>string</datatype>
-            <default>"W&#248;r&#235;ld"</default>
+            <default>'W&#248;r&#235;ld'</default>
           </properties>
         </model>
         <view>
