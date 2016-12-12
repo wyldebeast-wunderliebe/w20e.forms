@@ -3,6 +3,7 @@ from w20e.forms.interfaces import IControl
 from renderables import Renderable
 from w20e.forms.registry import Registry
 import json
+from numbers import Number
 
 REPR = """%(type)s %(id)s, bound to '%(bind)s':
   label: %(label)s
@@ -285,10 +286,18 @@ class Range(Select):
         self.end = end
         self.step = step
 
-        opts = [Option(i, str(i)) for i in range(int(start),
-                                                 int(end), int(step))]
-        if reverse:
-            opts.reverse()
+        opts = []
+
+        if (isinstance(self.start, Number) and
+                isinstance(self.end, Number) and
+                isinstance(self.step, Number)):
+
+            opts = [
+                Option(i, str(i)) for i in
+                range(int(start), int(end), int(step))]
+
+            if reverse:
+                opts.reverse()
 
         Select.__init__(self, control_id, label, options=opts,
                         bind=bind, **properties)
