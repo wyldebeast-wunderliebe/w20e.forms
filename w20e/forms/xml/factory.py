@@ -56,7 +56,10 @@ class XMLFormFactory:
 
         submission = self.create_submission(root.find("submission"))
 
-        return Form(root.get("id"), data, model, view, submission)
+        version = root.get("version")
+
+        return Form(
+            root.get("id"), data, model, view, submission, version=version)
 
     def create_data(self, root, model, **opts):
 

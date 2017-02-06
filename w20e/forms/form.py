@@ -36,12 +36,15 @@ class Form(object):
 
     implements(IForm)
 
-    def __init__(self, id, data, model, view, submission, set_defaults=True):
+    def __init__(
+            self, id, data, model, view, submission, set_defaults=True,
+            version=None):
 
         """ Initialize the form, using the given data, model and view.
         """
 
         self.id = id
+        self.version = version
         self.data = data
         self.model = model
         self.view = view
@@ -54,6 +57,7 @@ class Form(object):
     def __json__(self, request):
         return {
             "id": self.id,
+            "version": self.version,
             "data": self.data,
             "model": self.model,
             "view": self.view,
