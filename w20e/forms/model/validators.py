@@ -44,6 +44,7 @@ def register():
     validate_bool = CheckInstance(bool)
     validate_float = CheckInstance(float)
     validate_date = CheckInstance(datetime)
+    validate_list = CheckInstance(list)
 
     Registry.register_validator("string", validate_string)
     Registry.register_validator("int", validate_int)
@@ -52,3 +53,4 @@ def register():
     Registry.register_validator("date", validate_date)
     Registry.register_validator("datetime", validate_date)
     Registry.register_validator("file", validate_file)
+    Registry.register_validator("list", validate_list)

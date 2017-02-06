@@ -52,6 +52,8 @@ def to_list(value):
     if type(value) != ListType:
         return [value]
 
+    return value
+
 
 def register():
 

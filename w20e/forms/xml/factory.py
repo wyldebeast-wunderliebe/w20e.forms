@@ -160,7 +160,7 @@ class XMLFormFactory:
         if cls == Text:
 
             ctrl = cls(child.get("id"),
-                       child.text,
+                       ''.join(child.xpath("./text()")),
                        bind=child.get("bind"),
                        **kwargs)
 
