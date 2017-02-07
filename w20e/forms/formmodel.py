@@ -4,6 +4,7 @@ from model import converters, validators
 from registry import Registry
 import types
 import evaluator
+import math
 
 converters.register()
 validators.register()
@@ -160,6 +161,15 @@ class FormModel(object):
                 val = self._eval(
                            props.getCalculate(), {"data": data, "model": self},
                            Registry.funcs)
+
+                # is returned value is float, check if it's NaN
+                # if it's NaN we return None, since we can't handle the JSON
+                # response with NaN.. we could also deal with this at the
+                # JSON encoding.. perhaps it would be better?
+                if isinstance(val, float):
+                    if math.isnan(val):
+                        val = None
+
                 return (val, True)
 
             except:
