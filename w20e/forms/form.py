@@ -64,14 +64,34 @@ class Form(object):
             "submission": self.submission
         }
 
-    def setDefaults(self):
-        """ set the default values from the model field properties """
+    def setCalculates(self):
+        """ set the calculated values from the model field properties.
+        """
+        for prop in self.model.getAllFieldProperties():
+            expression = prop.getCalculate()
+            if expression:
+                binds = prop.bind
+                for bind in binds:
+                    (value, found) = self.model.getCalculate(bind, self.data)
+                    if found:
+                        self.data[bind] = value
 
+
+    def setDefaults(self, overwrite=False):
+        """ set the default values from the model field properties.
+            if overwrite is true, then values will be overwritten
+            if overwrite is false then any existing value will be preserved
+        """
         for prop in self.model.getAllFieldProperties():
             expression = prop.getDefault()
             if expression:
                 binds = prop.bind
                 for bind in binds:
+
+                    existing = self.data[bind]
+                    if (not overwrite) and existing:
+                        continue
+
                     (value, found) = self.model.getDefault(bind, self.data)
                     if found:
                         self.data[bind] = value
