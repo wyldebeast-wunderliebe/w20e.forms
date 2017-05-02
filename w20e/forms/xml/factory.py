@@ -15,7 +15,7 @@ from w20e.forms.registry import Registry
 from zope.interface import implements
 
 
-class XMLFormFactory:
+class XMLFormFactory(object):
 
     """ The XMLFormFactory uses lxml to generate a form from an XML
     definition.
