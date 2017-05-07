@@ -233,8 +233,13 @@ class FormView(RenderableContainer):
 
                 if fld:  # could be a flowgroup e.g.
 
-                    if not form.model.isRelevant(fld.id, form.data):
-                        continue
+                    # HUUB: This does not work for calculated fields
+                    # which depend on other calculated fields
+                    # so easy solution is just store all non relevant fields
+                    # if you need to get the relevant fields only just
+                    # use the relevant_only parameter in the getFieldValue
+                    # if not form.model.isRelevant(fld.id, form.data):
+                    #     continue
 
                     datatype = form.model.get_field_datatype(fld.id)
 
