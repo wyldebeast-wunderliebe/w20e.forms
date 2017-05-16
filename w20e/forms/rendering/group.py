@@ -38,6 +38,8 @@ class FlowGroup(Group):
 
         self.orientation = orientation
 
+        self.property_keys += ['orientation', ]
+
 
 class GridGroup(Group):
 
@@ -50,6 +52,8 @@ class GridGroup(Group):
         Group.__init__(self, group_id, label=label, **props)
 
         self.cols = cols
+
+        self.property_keys += ['cols', ]
 
 
 class CardGroup(Group):
