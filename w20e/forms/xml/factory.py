@@ -69,18 +69,20 @@ class XMLFormFactory(object):
 
         for child in root.getchildren():
 
-            val = None
+            if child.tag != etree.Comment:
 
-            if child.get("value"):
+                val = None
 
-                try:
-                    val = model.convert(child.tag, child.get("value"))
-                except:
-                    pass
+                if child.get("value"):
 
-            field = Field(child.tag, val)
+                    try:
+                        val = model.convert(child.tag, child.get("value"))
+                    except:
+                        pass
 
-            data.addField(field)
+                field = Field(child.tag, val)
+
+                data.addField(field)
 
         return data
 
