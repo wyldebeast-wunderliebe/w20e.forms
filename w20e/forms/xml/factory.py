@@ -16,7 +16,6 @@ from zope.interface import implements
 
 
 class XMLFormFactory(object):
-
     """ The XMLFormFactory uses lxml to generate a form from an XML
     definition.
     """
@@ -137,7 +136,6 @@ class XMLFormFactory(object):
             if child.__class__.__name__ == "_Element":
 
                 if not child.tag == "property":
-
                     self._create_renderables(child, view)
 
         return view
@@ -155,6 +153,10 @@ class XMLFormFactory(object):
 
         kwargs = {}
 
+        for attrib in child.keys():
+            if attrib in kwargs_attrs:
+                kwargs[attrib] = child.get(attrib)
+
         for elt in child.xpath("./property"):
             kwargs[elt.get("name")] = elt.text
 
@@ -166,19 +168,16 @@ class XMLFormFactory(object):
 
             ctrl = cls(child.get("id"),
                        ''.join(child.xpath("./text()")),
-                       bind=child.get("bind"),
                        **kwargs)
 
-        elif cls.__name__ == "Hidden":
+        elif cls == Hidden:
             ctrl = cls(child.get("id"),
-                       bind=child.get("bind"),
                        **kwargs)
 
         elif cls == Submit:
 
             ctrl = cls(child.get("id"),
                        child.find("label").text,
-                       bind=child.get("bind"),
                        **kwargs)
         elif cls == Group:
 
@@ -198,7 +197,6 @@ class XMLFormFactory(object):
 
             ctrl = cls(child.get("id"),
                        label,
-                       bind=child.get("bind"),
                        **kwargs)
         else:
             label = ''
@@ -210,7 +208,6 @@ class XMLFormFactory(object):
 
             ctrl = cls(child.get("id"),
                        label,
-                       bind=child.get("bind"),
                        **kwargs)
 
         if hasattr(ctrl, "addOption") and getattr(ctrl, "addOption"):
@@ -226,7 +223,6 @@ class XMLFormFactory(object):
 
         for subchild in child.xpath("|".join(
                 Registry.get_registered_renderables())):
-
             self._create_renderables(subchild, ctrl)
 
         view.addRenderable(ctrl)

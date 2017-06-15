@@ -14,6 +14,8 @@ DEFAULTS = {'input': {"rows": 1, "cols": 20},
                 "rows": 3, "cols": 2},
             }
 
+kwargs_attrs = ['bind', 'msgid']
+
 renderable_attrs = [
     'extra_classes', 'format', 'dateFormat', 'timeFormat',
     'data_options', 'vocab', 'addOption', 'cols', 'getRenderables', 'rows',
