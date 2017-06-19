@@ -1,12 +1,11 @@
-from zope.interface import implements
+from zope.interface import implementer
 from w20e.forms.interfaces import IControlGroup
 from w20e.forms.formview import RenderableContainer
-from renderables import Renderable
+from .renderables import Renderable
 
 
+@implementer(IControlGroup)
 class Group(RenderableContainer, Renderable):
-
-    implements(IControlGroup)
 
     def __init__(self, group_id, label="", **props):
 

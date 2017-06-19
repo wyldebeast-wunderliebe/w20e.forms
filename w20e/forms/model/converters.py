@@ -5,7 +5,7 @@ Any datatype converters that are not yet standard python should go here...
 from datetime import datetime
 import dateutil.parser
 from w20e.forms.registry import Registry
-from types import ListType
+import collections
 
 
 def to_date(value, format=None):
@@ -49,7 +49,7 @@ def to_bool(value):
 def to_list(value):
 
     # convert to list
-    if type(value) != ListType:
+    if not isinstance(value, collections.Sequence):
         return [value]
 
     return value

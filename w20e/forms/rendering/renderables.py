@@ -1,5 +1,5 @@
 from w20e.forms.interfaces import IRenderable
-from zope.interface import implements
+from zope.interface import implementer
 from w20e.forms.registry import Registry
 
 DEFAULTS = {'input': {"rows": 1, "cols": 20},
@@ -22,10 +22,9 @@ renderable_attrs = [
 ]
 
 
+@implementer(IRenderable)
 class Renderable(object):
     """ Base class for controls """
-
-    implements(IRenderable)
 
     def __init__(self, id, **props):
 
@@ -36,7 +35,7 @@ class Renderable(object):
         defaults.update(props)
         self._custom_props = props.keys()
 
-        self.property_keys = defaults.keys()
+        self.property_keys = list(defaults.keys())
         self.property_keys += ['id', 'type', ]
 
         self.__dict__.update(defaults)
@@ -116,8 +115,8 @@ class Submit(Renderable):
         self.property_keys += ['bind', 'label', ]
 
 
+@implementer(IRenderable)
 class Cancel(Renderable):
-    implements(IRenderable)
 
     def __init__(self, id, label, bind=None, **props):
         Renderable.__init__(self, id, **props)
@@ -126,8 +125,8 @@ class Cancel(Renderable):
         self.property_keys += ['bind', 'label', ]
 
 
+@implementer(IRenderable)
 class Reset(Renderable):
-    implements(IRenderable)
 
     def __init__(self, id, label, bind=None, **props):
         Renderable.__init__(self, id, **props)

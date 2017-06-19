@@ -1,5 +1,5 @@
 """ Being there """
-import submission # make sure the submissions are registered
+from . import submission # make sure the submissions are registered
 
 submission # make syntax checker happy
-import monkey
+from . import monkey

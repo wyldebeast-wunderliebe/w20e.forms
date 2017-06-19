@@ -1,7 +1,7 @@
 from BTrees.OOBTree import OOBTree
 from ZODB.blob import Blob
-from blob import TheBlob
-from submission import SubmissionBase
+from .blob import TheBlob
+from .submission import SubmissionBase
 from w20e.forms.formdata import FormData
 from w20e.forms.data.field import Field
 
@@ -46,7 +46,7 @@ class AttrStorage(SubmissionBase):
         else:
             # only if we get raw filedata store it in a blob..
             #if it's already a blob,it hasn't changed, so no need to store
-            if isinstance(field.value['data'], str):
+            if isinstance(field.value['data'], bytes):
                 # we have data, store as Blob
                 compress = field.id in self._use_compression_for
                 container = storage.get(field.id) or \

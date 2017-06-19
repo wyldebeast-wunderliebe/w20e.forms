@@ -1,5 +1,5 @@
-from zope.interface import implements
-from interfaces import IForm
+from zope.interface import implementer
+from .interfaces import IForm
 
 
 class FormValidationError(Exception):
@@ -28,13 +28,12 @@ class FormValidationError(Exception):
         self._errors[fieldId].append(error)
 
 
+@implementer(IForm)
 class Form(object):
 
     """ Basic form implementation class. This class basically holds a
     data object, a model and a view.
     """
-
-    implements(IForm)
 
     def __init__(
             self, id, data, model, view, submission, set_defaults=True,

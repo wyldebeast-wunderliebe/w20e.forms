@@ -4,6 +4,7 @@ Any datatype validators should go here...
 
 from datetime import datetime
 from w20e.forms.registry import Registry
+from io import IOBase
 
 
 class CheckInstance(object):
@@ -22,7 +23,7 @@ def validate_string(value):
 
 def validate_file(value):
     """ is the value a file type """
-    ftype = isinstance(value, file)
+    ftype = isinstance(value, IOBase)
 
     if ftype:
         return True

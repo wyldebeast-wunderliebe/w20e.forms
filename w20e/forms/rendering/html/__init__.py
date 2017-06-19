@@ -1,20 +1,20 @@
 """ Register renderers """
 
 from w20e.forms.registry import Registry
-from select import SelectRenderer
-from checkbox import CheckboxRenderer
-from input import InputRenderer
-from password import PasswordRenderer
-from hidden import HiddenRenderer
-from text import TextRenderer
-from cardgroup import CardGroupRenderer
-from flowgroup import FlowGroupRenderer
-from stepgroup import StepGroupRenderer
-from submit import SubmitRenderer
-from cancel import CancelRenderer
-from reset import ResetRenderer
-from richtext import RichTextRenderer
-from file import FileRenderer
+from .select import SelectRenderer
+from .checkbox import CheckboxRenderer
+from .input import InputRenderer
+from .password import PasswordRenderer
+from .hidden import HiddenRenderer
+from .text import TextRenderer
+from .cardgroup import CardGroupRenderer
+from .flowgroup import FlowGroupRenderer
+from .stepgroup import StepGroupRenderer
+from .submit import SubmitRenderer
+from .cancel import CancelRenderer
+from .reset import ResetRenderer
+from .richtext import RichTextRenderer
+from .file import FileRenderer
 
 
 Registry.register_renderer("submit", "html", SubmitRenderer)

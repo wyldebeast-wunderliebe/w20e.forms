@@ -1,4 +1,5 @@
-from submission import SubmissionBase
+from .submission import SubmissionBase
+import collections
 
 
 class MethodCall(SubmissionBase):
@@ -31,7 +32,7 @@ class MethodCall(SubmissionBase):
                 func = getattr(ctx, part)
                 ctx = func
                 
-            if callable(func):
+            if isinstance(func, collections.Callable):
                 func(form, *args)
 
 
@@ -46,7 +47,7 @@ class MethodCall(SubmissionBase):
                 func = getattr(ctx, part)
                 ctx = func
 
-            if callable(func):
+            if isinstance(func, collections.Callable):
                 return func(form, *args)
 
         return None

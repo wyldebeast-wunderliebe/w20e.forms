@@ -1,4 +1,4 @@
-from zope.interface import implements
+from zope.interface import implementer
 from w20e.forms.interfaces import IFieldProperties
 
 REPR = u"""FieldProperties {id} for {bind}:
@@ -12,11 +12,10 @@ REPR = u"""FieldProperties {id} for {bind}:
   """
 
 
+@implementer(IFieldProperties)
 class FieldProperties(object):
 
     """ Properties implementation class """
-
-    implements(IFieldProperties)
 
     def __repr__(self):
 

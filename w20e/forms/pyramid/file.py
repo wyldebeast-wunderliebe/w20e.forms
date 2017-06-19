@@ -24,14 +24,14 @@ class PyramidFile(File):
 
         present = self.id in data
 
-        if not present or data[self.id] is None or data[self.id] == '':
+        if not present or data[self.id] is None or data[self.id] == b'':
             raise ProcessingException("no file. skip it")
 
         if data[self.id] == '1':
             fieldstorage = data.get("%s-new" % self.id, None)
             # comparing the fieldstorage with the unary 'not'
             # operator doesn't work.. so weird looking check:
-            if fieldstorage == '' or fieldstorage is None:
+            if fieldstorage == b'' or fieldstorage is None:
                 raise ProcessingException("empty file. Skip this!")
 
         if data.get("%s-new" % self.id, None) is not None:

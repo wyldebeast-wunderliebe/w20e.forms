@@ -12,7 +12,7 @@ def get_template(tpl_type):
     """ Return a template for the given type. If template path is set, try
     that, but fall back on default template."""
 
-    if tpl_type in TPL_CACHE.keys():
+    if tpl_type in list(TPL_CACHE.keys()):
         return TPL_CACHE[tpl_type]
 
     tpl_paths = Registry.get_html_template_path()

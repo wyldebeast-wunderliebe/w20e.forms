@@ -1,10 +1,11 @@
 from collections import OrderedDict
-from model.fieldproperties import FieldProperties
-from model import converters, validators
-from registry import Registry
+from .model.fieldproperties import FieldProperties
+from .model import converters, validators
+from .registry import Registry
 import types
-import evaluator
+from . import evaluator
 import math
+import collections
 
 converters.register()
 validators.register()
@@ -23,10 +24,11 @@ class FormModel(object):
 
         reprlist = ["FormModel:", ""]
 
-        for prop in self._props.keys():
+        for prop in list(self._props.keys()):
             reprlist.append(self._props[prop].__repr__())
 
-        return "\n".join(reprlist)
+        #return "\n".join(reprlist)
+        return "moiie"
 
     def __json__(self, request):
         return {
@@ -44,7 +46,7 @@ class FormModel(object):
 
         self._props[prop.id] = prop
         binds = prop.bind
-        if isinstance(binds, basestring):
+        if isinstance(binds, str):
             binds = [binds]
         for binding in binds:
 
@@ -55,7 +57,7 @@ class FormModel(object):
 
     def getAllFieldProperties(self):
 
-        return self._props.values()
+        return list(self._props.values())
 
     def getFieldProperties(self, binding):
 
@@ -88,7 +90,7 @@ class FormModel(object):
 
         for sub in group.getRenderables():
 
-            if hasattr(sub, 'getRenderables') and callable(sub.getRenderables):
+            if hasattr(sub, 'getRenderables') and isinstance(sub.getRenderables, collections.Callable):
                 if self.isGroupRelevant(sub, data):
                     return True
             else:
@@ -286,7 +288,7 @@ class FormModel(object):
         class Collector:
 
             def __init__(self, bind):
-                if not isinstance(bind, types.ListType):
+                if not isinstance(bind, list):
                     bind = [bind]
                 self._bind = bind
 
@@ -297,7 +299,7 @@ class FormModel(object):
 
                 fields[name].extend(self._bind)
 
-        for prop in self._props.values():
+        for prop in list(self._props.values()):
 
             for rule in ["_constraint", "_relevant", "_required", "_readonly",
                          "_calculate", "_default"]:
@@ -313,7 +315,7 @@ class FormModel(object):
                     # the value, so just add the current field to the efferent
                     # list, so the caller can at least process this fields
                     bind = prop.bind
-                    if not isinstance(bind, types.ListType):
+                    if not isinstance(bind, list):
                         bind = [bind]
                     for name in bind:
                         if name not in fields:

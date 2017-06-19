@@ -1,8 +1,8 @@
 """ Being there """
 
-from control import *
+from .control import *
 #from group import Group
-from renderables import *
+from .renderables import *
 from w20e.forms.registry import Registry
 
 

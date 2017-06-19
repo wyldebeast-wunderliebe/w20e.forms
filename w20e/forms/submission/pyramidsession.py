@@ -1,4 +1,4 @@
-from submission import SubmissionBase
+from .submission import SubmissionBase
 
 DATA_ATTR_NAME = "survey"
 

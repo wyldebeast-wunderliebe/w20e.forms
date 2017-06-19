@@ -1,9 +1,10 @@
-from zope.interface import implements
+from zope.interface import implementer
 from w20e.forms.interfaces import IControl
-from renderables import Renderable
+from .renderables import Renderable
 from w20e.forms.registry import Registry
 import json
 from numbers import Number
+import collections
 
 REPR = """%(type)s %(id)s, bound to '%(bind)s':
   label: %(label)s
@@ -13,10 +14,9 @@ REPR = """%(type)s %(id)s, bound to '%(bind)s':
   """
 
 
+@implementer(IControl)
 class Control(Renderable):
     """ Base class for controls """
-
-    implements(IControl)
 
     def __init__(self, id, label, bind=None, hint="", help="", alert="",
                  **props):
@@ -249,7 +249,7 @@ class Select(Control):
             if self.vocab_args:
                 args = self.vocab_args.split(",")
 
-            if callable(vocab):
+            if isinstance(vocab, collections.Callable):
                 options = vocab(*args, **kwargs)
 
         options.extend(self.options)
