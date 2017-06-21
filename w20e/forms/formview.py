@@ -229,7 +229,9 @@ class FormView(RenderableContainer):
 
             if callable(renderable.processInput):
 
-                fld = form.data.getField(renderable.bind)
+                bind = getattr(renderable, 'bind', None)
+
+                fld = bind and form.data.getField(bind)
 
                 if fld:  # could be a flowgroup e.g.
 
