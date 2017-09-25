@@ -39,9 +39,9 @@ def eval_javascript(expression, _globals, _locals=None):
 
     # not that the expression sometimes comes in as unicode. pyduktape
     # doesn't seem t like this, so make it a bytestring instead
-    if isinstance(expression, unicode):
-        expression = expression.encode('utf-8')
-
+    # if isinstance(expression, unicode):
+    #     expression = expression.encode('utf-8')
+    # update: pyduktape 0.6 does the encoding of unicode now
 
     # convert the statement to an expression or the other way around :)
     expression = 'new Function("with(this) { return ' + expression + ' }")()'

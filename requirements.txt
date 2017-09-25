@@ -5,4 +5,4 @@ zope.interface
 ordereddict
 python-dateutil
 Chameleon
-pyduktape
+pyduktape>=0.0.6
