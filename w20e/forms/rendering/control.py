@@ -286,6 +286,15 @@ class Range(Select):
         self.end = end
         self.step = step
 
+        try:
+            self.start = int(start)
+            self.end = int(end)
+            self.step = int(step)
+        except:
+            # probably no integers: just fail silently and return empty
+            # option list.
+            pass
+
         opts = []
 
         if (isinstance(self.start, Number) and
