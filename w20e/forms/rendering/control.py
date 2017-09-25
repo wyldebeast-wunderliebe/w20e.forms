@@ -282,6 +282,10 @@ class Range(Select):
     def __init__(self, control_id, label, bind=None, start=0,
                  end=0, step=1, reverse=False, **properties):
 
+        self.start = start
+        self.end = end
+        self.step = step
+
         try:
             self.start = int(start)
             self.end = int(end)
