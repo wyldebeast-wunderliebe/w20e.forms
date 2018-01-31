@@ -267,12 +267,8 @@ class FormModel(object):
 
             if datatype:
 
-                try:
-                    converter = Registry.get_converter(datatype)
-                    value = converter(value)
-                    break
-                except:
-                    pass
+                converter = Registry.get_converter(datatype)
+                value = converter(value)
 
         return value
 
