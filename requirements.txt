@@ -1,6 +1,6 @@
 setuptools
 ZODB3
-lxml==3.4.0
+lxml
 zope.interface
 ordereddict
 python-dateutil
