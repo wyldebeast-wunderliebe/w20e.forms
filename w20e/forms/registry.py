@@ -82,7 +82,8 @@ class Registry:
     @staticmethod
     def get_converter(name):
 
-        return Registry.converters[name]
+        if name in Registry.converters:
+            return Registry.converters[name]
 
     @staticmethod
     def register_validator(name, validator):
@@ -92,4 +93,5 @@ class Registry:
     @staticmethod
     def get_validator(name):
 
-        return Registry.validators[name]
+        if name in Registry.validators:
+            return Registry.validators[name]

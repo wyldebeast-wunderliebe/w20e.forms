@@ -237,9 +237,10 @@ class FormModel(object):
 
                 try:
                     validator = Registry.get_validator(datatype)
-                    valid = validator(value)
-                    if not valid:
-                        break
+                    if validator:
+                        valid = validator(value)
+                        if not valid:
+                            break
                 except:
                     valid = False
                     break
@@ -268,7 +269,8 @@ class FormModel(object):
             if datatype:
 
                 converter = Registry.get_converter(datatype)
-                value = converter(value)
+                if converter:
+                    value = converter(value)
 
         return value
 
