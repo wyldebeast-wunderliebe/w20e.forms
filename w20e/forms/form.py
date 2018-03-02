@@ -76,7 +76,6 @@ class Form(object):
                     if found:
                         self.data[bind] = value
 
-
     def setDefaults(self, overwrite=False):
         """ set the default values from the model field properties.
             if overwrite is true, then values will be overwritten
@@ -139,8 +138,15 @@ class Form(object):
             if value:
                 # NOTE: we check the converted value, since e.g. int types
                 # will always be passed in as string by HTML submit
-                converted = self.model.convert(field, value)
-                if not self.model.checkDatatype(field, converted, self.data):
+                error = False
+                try:
+                    converted = self.model.convert(field, value)
+                except ValueError:
+                    error = True
+                if not error:
+                    error = not self.model.checkDatatype(
+                        field, converted, self.data)
+                if error:
                     field_errors.append("datatype")
 
             # Constraint checking...
