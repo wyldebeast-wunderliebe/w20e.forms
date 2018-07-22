@@ -141,7 +141,7 @@ class Form(object):
                 error = False
                 try:
                     converted = self.model.convert(field, value)
-                except ValueError:
+                except (ValueError, ArithmeticError) as e:
                     error = True
                 if not error:
                     error = not self.model.checkDatatype(
