@@ -63,7 +63,7 @@ class Control(Renderable):
             #     val = newval
             # else:
             #     val = converter(val)
-        except:
+        except:  # noqa
             pass
 
         return val
@@ -107,7 +107,7 @@ class Date(Control):
             converter = Registry.get_converter(datatype)
 
             val = converter(val.strip(), self.format)
-        except:
+        except:  # noqa
             pass
 
         return val
@@ -158,7 +158,7 @@ class DateTime(Control):
             converter = Registry.get_converter(datatype)
 
             val = converter(val.strip(), self.format)
-        except:
+        except:  # noqa
             pass
 
         return val
@@ -282,6 +282,9 @@ class Range(Select):
     def __init__(self, control_id, label, bind=None, start=0,
                  end=0, step=1, reverse=False, **properties):
 
+        # options that are outside the auto generated start + end range
+        self._added_options = []
+
         self.start = start
         self.end = end
         self.step = step
@@ -290,7 +293,7 @@ class Range(Select):
             self.start = int(start)
             self.end = int(end)
             self.step = int(step)
-        except:
+        except:  # noqa
             # probably no integers: just fail silently and return empty
             # option list.
             pass
@@ -312,3 +315,24 @@ class Range(Select):
                         bind=bind, **properties)
 
         self.property_keys += ['start', 'end', 'step', 'reverse', ]
+
+    def addOption(self, option):
+
+        """ Add single option """
+
+        super(Range, self).addOption(option)
+        self._added_options.append(option)
+
+    def addOptions(self, options):
+
+        """ Add list of options """
+
+        super(Range, self).addOptions(options)
+        self._added_options = self._added_options + options[:]
+
+    def __json__(self, request):
+        json = super(Range, self).__json__(request)
+        # only add the _extra_ specified options, not the ones that are in the
+        # start + end range
+        json['options'] = self._added_options
+        return json
