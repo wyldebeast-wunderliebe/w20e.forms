@@ -18,10 +18,13 @@ class Control(Renderable):
 
     implements(IControl)
 
-    def __init__(self, id, label, bind=None, hint="", help="", alert="",
+    def __init__(self, _id, label, bind=None, hint="", help="", alert="",
                  **props):
 
-        Renderable.__init__(self, id, **props)
+        if _id is None:
+            _id = bind
+
+        Renderable.__init__(self, _id, **props)
 
         self.bind = bind
         self.label = label
