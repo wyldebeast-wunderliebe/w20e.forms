@@ -217,6 +217,6 @@ class Form(object):
                 val = self.model.convert(name, val)
 
                 return self.view.getRenderableByBind(name).lexVal(
-                    val, **kwargs)
+                    val, data=self.data, **kwargs)
             except:
                 return val

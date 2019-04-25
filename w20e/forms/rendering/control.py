@@ -115,7 +115,7 @@ class Date(Control):
 
         return val
 
-    def lexVal(self, value):
+    def lexVal(self, value, **kwargs):
 
         return value.strftime(self.format)
 
@@ -166,7 +166,7 @@ class DateTime(Control):
 
         return val
 
-    def lexVal(self, value):
+    def lexVal(self, value, **kwargs):
 
         return value.strftime(self.format)
 

@@ -41,7 +41,7 @@ class PyramidFile(File):
 
         return {'data': _file.value, 'name': _file.filename}
 
-    def lexVal(self, value):
+    def lexVal(self, value, **kwargs):
 
         if isinstance(value, dict):
             return value.get("name", "")

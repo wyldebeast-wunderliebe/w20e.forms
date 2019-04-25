@@ -45,7 +45,7 @@ class PloneFile(File):
 
         return value
 
-    def lexVal(self, value):
+    def lexVal(self, value, **kwargs):
 
         if type(value) == type({}):
             return value.get("name", "")
