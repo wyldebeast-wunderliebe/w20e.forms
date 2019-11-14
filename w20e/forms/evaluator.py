@@ -44,6 +44,7 @@ def eval_javascript(expression, _globals, _locals=None):
     # update: pyduktape 0.6 does the encoding of unicode now
 
     # convert the statement to an expression or the other way around :)
+    expression = expression.replace('"', "'")  # TODO: danger, not good..
     expression = 'new Function("with(this) { return ' + expression + ' }")()'
 
     result = context.eval_js(expression)
