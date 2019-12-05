@@ -3,13 +3,12 @@ from __future__ import absolute_import
 from builtins import str
 from builtins import object
 from w20e.forms.rendering.interfaces import IControlRenderer
-from zope.interface import implements
+from zope.interface import implementer
 from .templates import get_template
 
 
+@implementer(IControlRenderer)
 class InputRenderer(object):
-
-    implements(IControlRenderer)
 
     def render(self, renderer, form, renderable, out, **kwargs):
 
@@ -18,7 +17,7 @@ class InputRenderer(object):
         fmtmap = renderer.createFormatMap(form, renderable, **kwargs)
 
         # the input renderer is also used for date + datetime classes
-        # in that case we can use the html capable browser to set the 
+        # in that case we can use the html capable browser to set the
         # input type to 'date' or 'datetime'
         fmtmap['input_type'] = 'text'
         if fmtmap['type'] in ('date', 'datetime', 'month'):

@@ -2,13 +2,13 @@ from __future__ import absolute_import
 from future import standard_library
 standard_library.install_aliases()
 from builtins import object
-from zope.interface import implements
+from zope.interface import implementer
 from .interfaces import IFormView
 from .rendering.html.renderer import HTMLRenderer
 from io import StringIO
 import codecs
 from .config import PAGE_ID
-from ordereddict import OrderedDict
+from collections import OrderedDict
 from w20e.forms.form import FormValidationError
 from w20e.forms.exceptions import ProcessingException
 
@@ -95,12 +95,11 @@ class RenderableContainer(object):
         return found
 
 
+@implementer(IFormView)
 class FormView(RenderableContainer):
     """ Visible part of the form, that holds controls and groups and
     handles rendering logic.
     """
-
-    implements(IFormView)
 
     def __init__(self, renderer=HTMLRenderer, **opts):
 

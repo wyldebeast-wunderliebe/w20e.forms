@@ -7,12 +7,11 @@ from .templates import get_template
 from io import StringIO
 import codecs
 from w20e.forms.rendering.interfaces import IControlRenderer
-from zope.interface import implements
+from zope.interface import implementer
 
 
+@implementer(IControlRenderer)
 class StepGroupRenderer(object):
-
-    implements(IControlRenderer)
 
     def render(self, renderer, form, renderable, out, **kwargs):
 

@@ -1,10 +1,10 @@
 from builtins import object
 from w20e.forms.submission.interfaces import ISubmission
-from zope.interface import implements
+from zope.interface import implementer
 
 
+@implementer(ISubmission)
 class SubmissionBase(object):
-    implements(ISubmission)
 
     def __init__(self, **props):
         """ Initialize base submission. """

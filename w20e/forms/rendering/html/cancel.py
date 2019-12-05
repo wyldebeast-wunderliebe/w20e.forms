@@ -3,12 +3,11 @@ from __future__ import absolute_import
 from builtins import object
 from .templates import get_template
 from w20e.forms.rendering.interfaces import IControlRenderer
-from zope.interface import implements
+from zope.interface import implementer
 
 
+@implementer(IControlRenderer)
 class CancelRenderer(object):
-
-    implements(IControlRenderer)
 
     def render(self, renderer, form, renderable, out, **kwargs):
 

@@ -13,15 +13,14 @@ from w20e.forms.rendering.group import *
 from w20e.forms.rendering.renderables import *
 from w20e.forms.interfaces import IFormFactory
 from w20e.forms.registry import Registry
-from zope.interface import implements
+from zope.interface import implementer
 
 
+@implementer(IFormFactory)
 class XMLFormFactory(object):
     """ The XMLFormFactory uses lxml to generate a form from an XML
     definition.
     """
-
-    implements(IFormFactory)
 
     # Define specific element/class mappings here
     controlClasses = {}
@@ -42,7 +41,12 @@ class XMLFormFactory(object):
 
         # Try parsing as string first, then go for other options...
         # TODO: parsing the first line and look for <?xml sucks
-        if self.xml.splitlines()[0].strip().find("<?xml") > -1:
+        try:
+            xml_found = self.xml.splitlines()[0].strip().find(b"<?xml") > -1
+        except TypeError:
+            xml_found = None
+
+        if xml_found:
             root = etree.fromstring(self.xml)
         else:
             tree = etree.parse(self.xml)

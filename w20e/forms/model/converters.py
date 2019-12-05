@@ -7,7 +7,6 @@ from past.builtins import basestring
 from datetime import datetime
 import dateutil.parser
 from w20e.forms.registry import Registry
-from types import ListType
 
 
 def to_date(value, format=None):
@@ -51,7 +50,7 @@ def to_bool(value):
 def to_list(value):
 
     # convert to list
-    if type(value) != ListType:
+    if type(value) != list:
         return [value]
 
     return value

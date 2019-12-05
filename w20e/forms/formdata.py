@@ -1,13 +1,13 @@
 from __future__ import absolute_import
 from builtins import object
-from zope.interface import implements
+from zope.interface import implementer
 from .interfaces import IFormData
 from .data.field import Field
-from ordereddict import OrderedDict
+from collections import OrderedDict
 
 
+@implementer(IFormData)
 class FormData(object):
-    implements(IFormData)
 
     def __init__(self, data=None):
 

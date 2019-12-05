@@ -2,16 +2,15 @@ from __future__ import print_function
 from __future__ import absolute_import
 from builtins import str
 from builtins import object
+from zope.interface import implementer
+
 from .templates import get_template
 from w20e.forms.rendering.interfaces import IControlRenderer
-from zope.interface import implements
 from w20e.forms.registry import Registry
-from types import ListType
 
 
+@implementer(IControlRenderer)
 class SelectRenderer(object):
-
-    implements(IControlRenderer)
 
     def render(self, renderer, form, renderable, out, **kwargs):
 
@@ -39,7 +38,7 @@ class SelectRenderer(object):
         # plain old type (int) and we expect a list of strings in the template
         if fmtmap['multiple'] and fmtmap['multiple'].lower() == 'true':
             value = form.getFieldValue(renderable.id, lexical=False)
-            if type(value) == ListType:  # just to be sure?
+            if type(value) == list:  # just to be sure?
                 value = [str(val) for val in value]
 
         if renderable.format == "full":

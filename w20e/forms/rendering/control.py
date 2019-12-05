@@ -2,7 +2,7 @@ from __future__ import absolute_import
 from builtins import str
 from builtins import range
 from builtins import object
-from zope.interface import implements
+from zope.interface import implements, implementer
 from w20e.forms.interfaces import IControl
 from .renderables import Renderable
 from w20e.forms.registry import Registry
@@ -17,10 +17,9 @@ REPR = """%(type)s %(id)s, bound to '%(bind)s':
   """
 
 
+@implementer(IControl)
 class Control(Renderable):
     """ Base class for controls """
-
-    implements(IControl)
 
     def __init__(self, _id, label, bind=None, hint="", help="", alert="",
                  **props):
