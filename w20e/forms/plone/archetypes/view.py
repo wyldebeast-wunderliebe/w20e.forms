@@ -44,7 +44,7 @@ class FormView(BrowserView):
             form.submission.submit(form, self.context, self.request.form)
             status = 'stored'
 
-        except FormValidationError, fve:
+        except FormValidationError as fve:
             errors = fve.errors
             status = 'error'
 

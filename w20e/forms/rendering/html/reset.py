@@ -1,4 +1,6 @@
-from templates import get_template
+from __future__ import print_function
+from __future__ import absolute_import
+from .templates import get_template
 from w20e.forms.rendering.interfaces import IControlRenderer
 from zope.interface import implements
 
@@ -11,7 +13,7 @@ class ResetRenderer:
 
         fmtmap = renderer.createFormatMap(form, renderable, **kwargs)
 
-        print >> out, get_template('reset')(
+        print(get_template('reset')(
             control=renderable,
             fmtmap=fmtmap
-            )
+            ), file=out)

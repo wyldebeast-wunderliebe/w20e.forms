@@ -1,9 +1,10 @@
+from __future__ import absolute_import
 from zope.interface import implements
-from interfaces import IFormView
-from rendering.html.renderer import HTMLRenderer
+from .interfaces import IFormView
+from .rendering.html.renderer import HTMLRenderer
 from StringIO import StringIO
 import codecs
-from config import PAGE_ID
+from .config import PAGE_ID
 from ordereddict import OrderedDict
 from w20e.forms.form import FormValidationError
 from w20e.forms.exceptions import ProcessingException
@@ -316,7 +317,7 @@ class FormView(RenderableContainer):
                     form.validate(fields=fields)
                     status = 'valid'
 
-            except FormValidationError, fve:
+            except FormValidationError as fve:
                 errors = fve.errors
                 status = 'error'
 

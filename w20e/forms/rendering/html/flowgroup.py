@@ -1,6 +1,8 @@
+from __future__ import print_function
+from __future__ import absolute_import
 from StringIO import StringIO
 import codecs
-from templates import get_template
+from .templates import get_template
 from w20e.forms.rendering.interfaces import IControlRenderer
 from zope.interface import implements
 
@@ -21,8 +23,8 @@ class FlowGroupRenderer:
         for sub_renderable in renderable.getRenderables():
             renderer.render(form, sub_renderable, sub_out, **kwargs)
 
-        print >> out, get_template('flowgroup')(
+        print(get_template('flowgroup')(
             group=renderable,
             content=str_out.getvalue().decode("utf-8"),
             fmtmap=fmtmap
-            )
+            ), file=out)

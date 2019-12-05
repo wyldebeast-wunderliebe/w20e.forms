@@ -1,4 +1,6 @@
-from templates import get_template
+from __future__ import print_function
+from __future__ import absolute_import
+from .templates import get_template
 from w20e.forms.rendering.interfaces import IControlRenderer
 from zope.interface import implements
 
@@ -21,9 +23,9 @@ class CheckboxRenderer:
 
         value = "1"
 
-        print >> out, get_template("checkbox")(
+        print(get_template("checkbox")(
             control=renderable,
             value=value,
             checked=checked,
             fmtmap=fmtmap,
-            )
+            ), file=out)

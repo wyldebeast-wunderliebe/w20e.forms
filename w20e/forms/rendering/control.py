@@ -1,6 +1,7 @@
+from __future__ import absolute_import
 from zope.interface import implements
 from w20e.forms.interfaces import IControl
-from renderables import Renderable
+from .renderables import Renderable
 from w20e.forms.registry import Registry
 import json
 from numbers import Number

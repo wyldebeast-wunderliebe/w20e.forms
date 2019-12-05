@@ -1,5 +1,6 @@
+from __future__ import absolute_import
 from zope.interface import implements
-from interfaces import IForm
+from .interfaces import IForm
 
 
 class FormValidationError(Exception):

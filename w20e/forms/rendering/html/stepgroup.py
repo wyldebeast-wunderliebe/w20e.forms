@@ -1,4 +1,6 @@
-from templates import get_template
+from __future__ import print_function
+from __future__ import absolute_import
+from .templates import get_template
 from StringIO import StringIO
 import codecs
 from w20e.forms.rendering.interfaces import IControlRenderer
@@ -35,9 +37,9 @@ class StepGroupRenderer:
 
         fmtmap = renderer.createFormatMap(form, renderable, **kwargs)
 
-        print >> out, get_template('stepgroup')(
+        print(get_template('stepgroup')(
             group=renderable,
             steps=steps,
             content=str_out.getvalue().decode("utf-8"),
             fmtmap=fmtmap
-            )
+            ), file=out)

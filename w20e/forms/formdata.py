@@ -1,6 +1,7 @@
+from __future__ import absolute_import
 from zope.interface import implements
-from interfaces import IFormData
-from data.field import Field
+from .interfaces import IFormData
+from .data.field import Field
 from ordereddict import OrderedDict
 
 

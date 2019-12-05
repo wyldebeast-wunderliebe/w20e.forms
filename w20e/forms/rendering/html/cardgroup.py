@@ -1,4 +1,6 @@
-from templates import get_template
+from __future__ import print_function
+from __future__ import absolute_import
+from .templates import get_template
 from StringIO import StringIO
 import codecs
 from w20e.forms.rendering.interfaces import IControlRenderer
@@ -21,8 +23,8 @@ class CardGroupRenderer:
             renderer.render(form, sub, out, **kwargs)
             return out.getvalue().decode('utf-8')
 
-        print >> out, get_template('cardgroup')(
+        print(get_template('cardgroup')(
             group=renderable,
             fmtmap=fmtmap,
             render_subs = render_subs
-            )
+            ), file=out)

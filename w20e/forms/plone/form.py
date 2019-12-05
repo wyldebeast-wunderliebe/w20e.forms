@@ -86,7 +86,7 @@ class FormView(BrowserView):
             self.store_form_context(form_context)
             status = 'stored'
 
-        except FormValidationError, fve:
+        except FormValidationError as fve:
             errors = fve.errors
             status = 'error'
 

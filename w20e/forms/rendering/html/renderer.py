@@ -1,5 +1,7 @@
+from __future__ import print_function
+from __future__ import absolute_import
 from zope.interface import implements
-from templates import get_template
+from .templates import get_template
 from w20e.forms.rendering.interfaces import IRenderer
 from w20e.forms.rendering.baserenderer import BaseRenderer
 
@@ -42,17 +44,17 @@ class HTMLRenderer(BaseRenderer):
                                                kwargs.get('status', '')
                                                )
 
-        print >> out, get_template('frontmatter')(
+        print(get_template('frontmatter')(
             form_id=form.id,
             **kwargs
-            )
+            ), file=out)
 
         #if errors:
         #    print >> out, """<div class="alert alert-warning"></div>"""
 
     def renderBackMatter(self, form, out, errors=None, **opts):
 
-        print >> out, "</form>"
+        print("</form>", file=out)
 
     def render(self, form, renderable, out, errors=None, **kwargs):
 

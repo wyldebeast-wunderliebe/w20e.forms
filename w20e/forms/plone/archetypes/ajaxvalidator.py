@@ -76,7 +76,7 @@ class AjaxValidator(BrowserView):
 
         for control in ctls:
 
-            if error and error.errors.has_key(control.bind):
+            if error and control.bind in error.errors:
                 errors.append((control.id, control.alert or "Invalid value"))
             else:
                 errors.append((control.id, ""))

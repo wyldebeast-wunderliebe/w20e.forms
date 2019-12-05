@@ -1,7 +1,8 @@
+from __future__ import absolute_import
 from BTrees.OOBTree import OOBTree
 from ZODB.blob import Blob
-from blob import TheBlob
-from submission import SubmissionBase
+from .blob import TheBlob
+from .submission import SubmissionBase
 from w20e.forms.formdata import FormData
 from w20e.forms.data.field import Field
 

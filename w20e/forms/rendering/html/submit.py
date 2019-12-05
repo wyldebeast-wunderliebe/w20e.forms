@@ -1,4 +1,6 @@
-from templates import get_template
+from __future__ import print_function
+from __future__ import absolute_import
+from .templates import get_template
 from w20e.forms.rendering.interfaces import IControlRenderer
 from zope.interface import implements
 
@@ -14,7 +16,7 @@ class SubmitRenderer:
         if 'name' not in fmtmap:
             fmtmap['name'] = 'submit'  # default name
 
-        print >> out, get_template("submit")(
+        print(get_template("submit")(
             control=renderable,
             fmtmap=fmtmap
-            )
+            ), file=out)

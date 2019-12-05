@@ -1,4 +1,6 @@
-from templates import get_template
+from __future__ import print_function
+from __future__ import absolute_import
+from .templates import get_template
 from w20e.forms.rendering.interfaces import IControlRenderer
 from zope.interface import implements
 
@@ -32,8 +34,8 @@ class TextRenderer:
                 except:
                     pass
 
-        print >> out, get_template("text")(
+        print(get_template("text")(
             control=renderable,
             text=fmtmap['text'],
             fmtmap=fmtmap
-            )
+            ), file=out)

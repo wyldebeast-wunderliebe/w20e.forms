@@ -1,9 +1,10 @@
+from __future__ import absolute_import
 from collections import OrderedDict
-from model.fieldproperties import FieldProperties
-from model import converters, validators
-from registry import Registry
+from .model.fieldproperties import FieldProperties
+from .model import converters, validators
+from .registry import Registry
 import types
-import evaluator
+from . import evaluator
 import math
 
 converters.register()
@@ -284,7 +285,7 @@ class FormModel(object):
         class Collector:
 
             def __init__(self, bind):
-                if not isinstance(bind, types.ListType):
+                if not isinstance(bind, list):
                     bind = [bind]
                 self._bind = bind
 
@@ -311,7 +312,7 @@ class FormModel(object):
                     # the value, so just add the current field to the efferent
                     # list, so the caller can at least process this fields
                     bind = prop.bind
-                    if not isinstance(bind, types.ListType):
+                    if not isinstance(bind, list):
                         bind = [bind]
                     for name in bind:
                         if name not in fields:

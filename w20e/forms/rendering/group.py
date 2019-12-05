@@ -1,7 +1,8 @@
+from __future__ import absolute_import
 from zope.interface import implements
 from w20e.forms.interfaces import IControlGroup
 from w20e.forms.formview import RenderableContainer
-from renderables import Renderable
+from .renderables import Renderable
 
 
 class Group(RenderableContainer, Renderable):

@@ -1,6 +1,8 @@
+from __future__ import print_function
+from __future__ import absolute_import
 from w20e.forms.rendering.interfaces import IControlRenderer
 from zope.interface import implements
-from templates import get_template
+from .templates import get_template
 
 
 class InputRenderer(object):
@@ -37,8 +39,8 @@ class InputRenderer(object):
         else:
             tpl = get_template("input")
 
-        print >> out, tpl(
+        print(tpl(
             control=renderable,
             value=value,
             fmtmap=fmtmap
-            )
+            ), file=out)
