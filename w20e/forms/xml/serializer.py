@@ -1,3 +1,6 @@
+from builtins import str
+from past.builtins import basestring
+from builtins import object
 from lxml import etree
 import base64
 
@@ -6,7 +9,7 @@ from w20e.forms.rendering.renderables import DEFAULTS
 BASE_PROPS = ["label", "hint", "help", "alert", "placeholder"]
 
 
-class XMLSerializer:
+class XMLSerializer(object):
 
     def serialize(self, form):
 

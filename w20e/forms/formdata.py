@@ -1,4 +1,5 @@
 from __future__ import absolute_import
+from builtins import object
 from zope.interface import implements
 from .interfaces import IFormData
 from .data.field import Field
@@ -20,7 +21,7 @@ class FormData(object):
 
         reprlist = ["FormData:", ""]
 
-        for field in self._fields.keys():
+        for field in list(self._fields.keys()):
 
             value = self._fields[field].value
 
@@ -29,9 +30,9 @@ class FormData(object):
                 if 'name' in value:
                     value = value['name']
 
-            if isinstance(field, unicode):
+            if isinstance(field, str):
                 field = field.encode('utf-8')
-            if isinstance(value, unicode):
+            if isinstance(value, str):
                 value = value.encode('utf-8')
 
             reprlist.append("%s: %s\n" % (field, value))
@@ -73,7 +74,7 @@ class FormData(object):
 
     def getFields(self):
 
-        return self._fields.keys()
+        return list(self._fields.keys())
 
     def update(self, data, ignore_missing=True):
 
@@ -91,7 +92,7 @@ class FormData(object):
 
         res = {}
 
-        for field_id in self._fields.keys():
+        for field_id in list(self._fields.keys()):
             res[field_id] = self._fields[field_id].value
 
         return res
@@ -101,7 +102,7 @@ class FormData(object):
         """ Set the form fields and values from a dict """
         self.clear()
         if data:
-            for key, val in data.items():
+            for key, val in list(data.items()):
                 if create_missing_fields:
                     self[key] = val
                 else:

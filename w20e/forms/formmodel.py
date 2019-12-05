@@ -1,4 +1,6 @@
 from __future__ import absolute_import
+from past.builtins import basestring
+from builtins import object
 from collections import OrderedDict
 from .model.fieldproperties import FieldProperties
 from .model import converters, validators
@@ -24,7 +26,7 @@ class FormModel(object):
 
         reprlist = ["FormModel:", ""]
 
-        for prop in self._props.keys():
+        for prop in list(self._props.keys()):
             reprlist.append(self._props[prop].__repr__())
 
         return "\n".join(reprlist)
@@ -56,7 +58,7 @@ class FormModel(object):
 
     def getAllFieldProperties(self):
 
-        return self._props.values()
+        return list(self._props.values())
 
     def getFieldProperties(self, binding):
 
@@ -282,7 +284,7 @@ class FormModel(object):
 
         fields = {}
 
-        class Collector:
+        class Collector(object):
 
             def __init__(self, bind):
                 if not isinstance(bind, list):
@@ -296,7 +298,7 @@ class FormModel(object):
 
                 fields[name].extend(self._bind)
 
-        for prop in self._props.values():
+        for prop in list(self._props.values()):
 
             for rule in ["_constraint", "_relevant", "_required", "_readonly",
                          "_calculate", "_default"]:

@@ -1,5 +1,6 @@
 """ Factory class to generate forms from XML """
 
+from builtins import object
 from lxml import etree
 from w20e.forms.formdata import FormData
 from w20e.forms.formview import FormView
@@ -91,7 +92,7 @@ class XMLFormFactory(object):
 
         kwargs = {}
 
-        for k, v in root.items():
+        for k, v in list(root.items()):
             kwargs[k] = v
 
         model = FormModel(**kwargs)
@@ -153,7 +154,7 @@ class XMLFormFactory(object):
 
         kwargs = {}
 
-        for attrib in child.keys():
+        for attrib in list(child.keys()):
             if attrib in kwargs_attrs:
                 kwargs[attrib] = child.get(attrib)
 

@@ -1,4 +1,7 @@
 from __future__ import absolute_import
+from builtins import str
+from builtins import range
+from builtins import object
 from zope.interface import implements
 from w20e.forms.interfaces import IControl
 from .renderables import Renderable
@@ -188,7 +191,7 @@ class RichText(Control):
     """ Base input """
 
 
-class Option:
+class Option(object):
     def __init__(self, value, label):
         self.value = value
         self.label = label

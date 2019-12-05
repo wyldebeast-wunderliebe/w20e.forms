@@ -1,13 +1,16 @@
 from __future__ import print_function
 from __future__ import absolute_import
-from StringIO import StringIO
+from future import standard_library
+standard_library.install_aliases()
+from builtins import object
+from io import StringIO
 import codecs
 from .templates import get_template
 from w20e.forms.rendering.interfaces import IControlRenderer
 from zope.interface import implements
 
 
-class FlowGroupRenderer:
+class FlowGroupRenderer(object):
 
     implements(IControlRenderer)
 

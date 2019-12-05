@@ -61,7 +61,7 @@ class AjaxValidator(BrowserView):
             state[field]['after']['required']= form.model.isRequired(field, data)
 
         errors = []
-        ctls = [form.view.getRenderable(key) for key in request.form.keys()]
+        ctls = [form.view.getRenderable(key) for key in list(request.form.keys())]
         ctls = [c for c in ctls if c]
         error = None
 

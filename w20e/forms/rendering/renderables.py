@@ -1,3 +1,4 @@
+from builtins import object
 from w20e.forms.interfaces import IRenderable
 from zope.interface import implements
 from w20e.forms.registry import Registry
@@ -36,9 +37,9 @@ class Renderable(object):
 
         defaults = DEFAULTS.get(self.type, {}).copy()
         defaults.update(props)
-        self._custom_props = props.keys()
+        self._custom_props = list(props.keys())
 
-        self.property_keys = defaults.keys()
+        self.property_keys = list(defaults.keys())
         self.property_keys += ['id', 'type', ]
 
         self.__dict__.update(defaults)

@@ -1,5 +1,7 @@
 from __future__ import print_function
 from __future__ import absolute_import
+from builtins import str
+from builtins import object
 from w20e.forms.rendering.interfaces import IControlRenderer
 from zope.interface import implements
 from .templates import get_template
@@ -26,7 +28,7 @@ class InputRenderer(object):
             value = form.getFieldValue(renderable.bind, lexical=True)
             # TODO: not sure about this string conversion..
             # leave unicode values intact.
-            if not isinstance(value, unicode):
+            if not isinstance(value, str):
                 value = str(value)
             if isinstance(value, str):
                 value = value.decode('utf-8')

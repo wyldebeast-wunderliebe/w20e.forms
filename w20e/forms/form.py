@@ -1,4 +1,5 @@
 from __future__ import absolute_import
+from builtins import object
 from zope.interface import implements
 from .interfaces import IForm
 
