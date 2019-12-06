@@ -12,6 +12,9 @@ from collections import OrderedDict
 from w20e.forms.form import FormValidationError
 from w20e.forms.exceptions import ProcessingException
 
+import logging
+logger = logging.getLogger(__name__)
+
 
 class RenderableContainer(object):
     is_group = True

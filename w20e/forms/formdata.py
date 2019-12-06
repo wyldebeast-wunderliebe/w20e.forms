@@ -5,6 +5,9 @@ from .interfaces import IFormData
 from .data.field import Field
 from collections import OrderedDict
 
+import logging
+logger = logging.getLogger(__name__)
+
 
 @implementer(IFormData)
 class FormData(object):
@@ -52,6 +55,7 @@ class FormData(object):
         try:
             return self._fields[fieldId].value
         except:
+            logger.exception('Could not retrieve value from field')
             return None
 
     def __setitem__(self, fieldId, val):

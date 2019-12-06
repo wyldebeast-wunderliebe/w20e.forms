@@ -23,19 +23,13 @@ class InputRenderer(object):
         if fmtmap['type'] in ('date', 'datetime', 'month'):
             fmtmap['input_type'] = fmtmap['type']
 
-        try:
-            value = form.getFieldValue(renderable.bind, lexical=True)
-            # TODO: not sure about this string conversion..
-            # leave unicode values intact.
-            if not isinstance(value, str):
-                value = str(value)
-            if isinstance(value, str):
-                value = value.decode('utf-8')
-        except:
-            value = u''
+        value = form.getFieldValue(renderable.bind, lexical=True)
+
+        # TODO: not sure about this string conversion..
+        if not isinstance(value, str):
+            value = str(value)
 
         if renderable.rows > 1:
-
             tpl = get_template("textarea")
         else:
             tpl = get_template("input")
@@ -46,4 +40,3 @@ class InputRenderer(object):
             fmtmap=fmtmap
         )
         out.write(html)
-        # print(, file=out)

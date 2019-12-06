@@ -47,7 +47,7 @@ class AttrStorage(SubmissionBase):
         else:
             # only if we get raw filedata store it in a blob..
             #if it's already a blob,it hasn't changed, so no need to store
-            if isinstance(field.value['data'], str):
+            if isinstance(field.value['data'], bytes):
                 # we have data, store as Blob
                 compress = field.id in self._use_compression_for
                 container = storage.get(field.id) or \
@@ -60,7 +60,7 @@ class AttrStorage(SubmissionBase):
         data = storage.get(field_id)
 
         # check for non-blob storage file, and migrate on-the-fly if necessary
-        if data and (isinstance(data['data'], str) or
+        if data and (isinstance(data['data'], bytes) or
                 isinstance(data['data'], Blob)):
             self._migrate_blob(storage, field_id)
             context._p_changed = 1  # trigger update

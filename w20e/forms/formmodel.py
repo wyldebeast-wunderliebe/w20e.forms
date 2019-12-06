@@ -9,6 +9,9 @@ import types
 from . import evaluator
 import math
 
+import logging
+logger = logging.getLogger(__name__)
+
 converters.register()
 validators.register()
 
@@ -77,11 +80,13 @@ class FormModel(object):
             if not found:
                 val = data.getField(name).value
         except:
+            logger.exception('Could not retrieve value from field')
             pass
 
         try:
             return self.convert(name, val)
         except:
+            logger.exception('Could convert value')
             return None
 
     def isGroupRelevant(self, group, data):
@@ -115,6 +120,7 @@ class FormModel(object):
                         {"data": data, "model": self}, Registry.funcs):
                     return False
             except:
+                logger.exception('Could not check if field is relevant')
                 return True
 
         return True
@@ -245,6 +251,7 @@ class FormModel(object):
                         if not valid:
                             break
                 except:
+                    logger.exception('Validator returned an exception')
                     valid = False
                     break
 
