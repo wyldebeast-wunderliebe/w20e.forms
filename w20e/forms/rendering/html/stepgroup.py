@@ -4,7 +4,7 @@ from future import standard_library
 standard_library.install_aliases()
 from builtins import object
 from .templates import get_template
-from io import StringIO
+from io import BytesIO
 import codecs
 from w20e.forms.rendering.interfaces import IControlRenderer
 from zope.interface import implementer
@@ -17,7 +17,7 @@ class StepGroupRenderer(object):
 
         currentpage = kwargs.get('currentpage', None)
 
-        str_out = StringIO()
+        str_out = BytesIO()
         sub_out = codecs.getwriter('utf-8')(str_out)
 
         for sub_renderable in renderable.getRenderables():

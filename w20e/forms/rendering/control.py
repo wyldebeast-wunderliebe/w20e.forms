@@ -82,6 +82,9 @@ class Control(Renderable):
 class Input(Control):
     """ Base input """
 
+    @property
+    def rows(self):
+        return int(self.__dict__['rows'])
 
 class Date(Control):
     """ Date widget """

@@ -1,9 +1,11 @@
 from __future__ import print_function
 from __future__ import absolute_import
+
+from io import BytesIO
+
 from future import standard_library
 standard_library.install_aliases()
 from builtins import object
-from io import StringIO
 import codecs
 from .templates import get_template
 from w20e.forms.rendering.interfaces import IControlRenderer
@@ -19,7 +21,7 @@ class FlowGroupRenderer(object):
 
         fmtmap = renderer.createFormatMap(form, renderable, **kwargs)
 
-        str_out = StringIO()
+        str_out = BytesIO()
         sub_out = codecs.getwriter('utf-8')(str_out)
 
         for sub_renderable in renderable.getRenderables():

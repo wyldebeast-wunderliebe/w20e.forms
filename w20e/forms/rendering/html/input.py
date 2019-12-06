@@ -40,8 +40,10 @@ class InputRenderer(object):
         else:
             tpl = get_template("input")
 
-        print(tpl(
+        html = tpl(
             control=renderable,
             value=value,
             fmtmap=fmtmap
-            ), file=out)
+        )
+        out.write(html)
+        # print(, file=out)

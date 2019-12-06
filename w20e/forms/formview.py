@@ -5,7 +5,7 @@ from builtins import object
 from zope.interface import implementer
 from .interfaces import IFormView
 from .rendering.html.renderer import HTMLRenderer
-from io import StringIO
+from io import BytesIO
 import codecs
 from .config import PAGE_ID
 from collections import OrderedDict
@@ -167,7 +167,7 @@ class FormView(RenderableContainer):
         """ Render all (front, content and back). Calling code should
         take care of the case where there is nothing to render..."""
 
-        str_out = StringIO()
+        str_out = BytesIO()
         out = codecs.getwriter('utf-8')(str_out)
 
         direction = "next"
