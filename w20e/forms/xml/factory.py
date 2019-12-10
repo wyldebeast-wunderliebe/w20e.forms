@@ -41,13 +41,14 @@ class XMLFormFactory(object):
 
         # Try parsing as string first, then go for other options...
         # TODO: parsing the first line and look for <?xml sucks
+
         try:
-            xml_found = self.xml.splitlines()[0].strip().find(b"<?xml") > -1
+            xml_found = self.xml.splitlines()[0].strip().find("<?xml") > -1
         except TypeError:
             xml_found = None
 
         if xml_found:
-            root = etree.fromstring(self.xml)
+            root = etree.fromstring(self.xml.encode('utf-8'))
         else:
             tree = etree.parse(self.xml)
             root = tree.getroot()

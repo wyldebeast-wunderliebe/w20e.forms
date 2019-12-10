@@ -54,6 +54,8 @@ class FormData(object):
 
         try:
             return self._fields[fieldId].value
+        except KeyError:
+            return None
         except:
             logger.exception('Could not retrieve value from field')
             return None
