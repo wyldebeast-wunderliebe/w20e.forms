@@ -50,7 +50,7 @@ class XMLFormFactory(object):
                 xml_found = None
 
         if xml_found:
-            root = etree.fromstring(self.xml.encode('utf-8'))
+            root = etree.fromstring(self.xml)
         else:
             tree = etree.parse(self.xml)
             root = tree.getroot()
