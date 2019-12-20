@@ -36,16 +36,18 @@ class XMLFormFactory(object):
         TODO: make view type configurable
         """
 
-        tree = None
-        root = None
-
         # Try parsing as string first, then go for other options...
         # TODO: parsing the first line and look for <?xml sucks
+        first_line = self.xml.splitlines()[0].strip()
 
         try:
-            xml_found = self.xml.splitlines()[0].strip().find("<?xml") > -1
+            xml_found = first_line.find(b"<?xml") > -1
         except TypeError:
-            xml_found = None
+            try:
+                xml_found = first_line.find("<?xml") > -1
+                self.xml = self.xml.encode('utf-8')
+            except (TypeError, AttributeError):
+                xml_found = None
 
         if xml_found:
             root = etree.fromstring(self.xml.encode('utf-8'))

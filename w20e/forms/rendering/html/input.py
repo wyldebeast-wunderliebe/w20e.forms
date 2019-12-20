@@ -29,7 +29,7 @@ class InputRenderer(object):
         if not isinstance(value, str):
             value = str(value)
 
-        if renderable.rows > 1:
+        if renderable.rows and renderable.rows > 1:
             tpl = get_template("textarea")
         else:
             tpl = get_template("input")
