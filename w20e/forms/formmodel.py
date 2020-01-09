@@ -113,6 +113,10 @@ class FormModel(object):
         """
 
         for props in self.getFieldProperties(field_id):
+            if not self._eval(
+                    props.getRelevant(),
+                    {"data": data, "model": self}, Registry.funcs):
+                return False
 
             try:
                 if not self._eval(
@@ -120,7 +124,7 @@ class FormModel(object):
                         {"data": data, "model": self}, Registry.funcs):
                     return False
             except:
-                logger.exception('Could not check if field is relevant')
+                logger.exception('Could not check if field is relevant: {}'.format(props.getRelevant()))
                 return True
 
         return True
