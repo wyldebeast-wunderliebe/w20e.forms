@@ -1,7 +1,9 @@
-from zope.interface import implements
+from builtins import object
+from zope.interface import implementer
 from ...interfaces import IControlGroup
 
 
-class ControlGroup:
+@implementer(IControlGroup)
+class ControlGroup(object):
+    pass
 
-    implements(IControlGroup)

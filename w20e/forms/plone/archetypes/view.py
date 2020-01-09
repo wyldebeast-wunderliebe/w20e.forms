@@ -1,3 +1,4 @@
+from builtins import str
 from Products.Five.browser import BrowserView
 from w20e.forms.xml.factory import XMLFormFactory
 from xml.dom.minidom import Document
@@ -16,7 +17,7 @@ class FormView(BrowserView):
         try:
             self.form.data = self.form.submission.retrieve(form, self.context)
         except:
-            for key in context.formdefaults.keys():
+            for key in list(context.formdefaults.keys()):
                 try:
                     self.form.data.getField(key).value = \
                             context.formdefaults[key]
@@ -27,7 +28,7 @@ class FormView(BrowserView):
 
         """ Render the view, using the context's form """
 
-        return unicode(self.form.view.render(self.form, errors=errors),
+        return str(self.form.view.render(self.form, errors=errors),
                 "utf-8")
 
     def handle_form(self):
@@ -44,7 +45,7 @@ class FormView(BrowserView):
             form.submission.submit(form, self.context, self.request.form)
             status = 'stored'
 
-        except FormValidationError, fve:
+        except FormValidationError as fve:
             errors = fve.errors
             status = 'error'
 
@@ -107,7 +108,7 @@ class FormView(BrowserView):
         efferent = model.collectEfferentFields()
 
         ctls = [form.view.getRenderable(key) for key in \
-                self.request.form.keys()]
+                list(self.request.form.keys())]
         ctls = [c for c in ctls if c]
 
         for ctl in ctls:
@@ -153,7 +154,7 @@ class FormView(BrowserView):
         doc.appendChild(root)
 
         # Let's send back changes
-        for f in state.keys():
+        for f in list(state.keys()):
 
             for cmd in ['required', 'relevant', 'readonly']:
 

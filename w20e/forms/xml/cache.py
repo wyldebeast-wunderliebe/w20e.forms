@@ -1,4 +1,5 @@
-class XMLFormCache:
+from builtins import object
+class XMLFormCache(object):
 
     def __init__(self):
 

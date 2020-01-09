@@ -2,13 +2,31 @@
 Any datatype converters that are not yet standard python should go here...
 """
 
-from datetime import datetime
+from builtins import str
+from past.builtins import basestring
+from datetime import datetime, date
 import dateutil.parser
 from w20e.forms.registry import Registry
-from types import ListType
 
 
 def to_date(value, format=None):
+
+    if isinstance(value, basestring):
+        # return empty string is empty string was passed in..
+        if not (value and value.strip()):
+            return ''
+
+        if format:
+            return datetime.strptime(value, format).date()
+
+        else:
+            # converting datetime sucks.. fingers crossed for dateutil
+            return dateutil.parser.parse(value).date()
+
+    return value
+
+
+def to_datetime(value, format=None):
 
     if isinstance(value, basestring):
         # return empty string is empty string was passed in..
@@ -26,7 +44,7 @@ def to_date(value, format=None):
 
 
 def to_str(value):
-    if isinstance(value, unicode) or isinstance(value, str):
+    if isinstance(value, str) or isinstance(value, str):
         return value
 
     if value is None:
@@ -49,7 +67,7 @@ def to_bool(value):
 def to_list(value):
 
     # convert to list
-    if type(value) != ListType:
+    if type(value) != list:
         return [value]
 
     return value
@@ -63,5 +81,5 @@ def register():
     Registry.register_converter("bool", to_bool)
     Registry.register_converter("float", float)
     Registry.register_converter("date", to_date)
-    Registry.register_converter("datetime", to_date)
+    Registry.register_converter("datetime", to_datetime)
     Registry.register_converter("list", to_list)

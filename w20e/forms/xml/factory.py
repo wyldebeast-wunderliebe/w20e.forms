@@ -1,5 +1,6 @@
 """ Factory class to generate forms from XML """
 
+from builtins import object
 from lxml import etree
 from w20e.forms.formdata import FormData
 from w20e.forms.formview import FormView
@@ -12,15 +13,14 @@ from w20e.forms.rendering.group import *
 from w20e.forms.rendering.renderables import *
 from w20e.forms.interfaces import IFormFactory
 from w20e.forms.registry import Registry
-from zope.interface import implements
+from zope.interface import implementer
 
 
+@implementer(IFormFactory)
 class XMLFormFactory(object):
     """ The XMLFormFactory uses lxml to generate a form from an XML
     definition.
     """
-
-    implements(IFormFactory)
 
     # Define specific element/class mappings here
     controlClasses = {}
@@ -36,12 +36,20 @@ class XMLFormFactory(object):
         TODO: make view type configurable
         """
 
-        tree = None
-        root = None
-
         # Try parsing as string first, then go for other options...
         # TODO: parsing the first line and look for <?xml sucks
-        if self.xml.splitlines()[0].strip().find("<?xml") > -1:
+        first_line = self.xml.splitlines()[0].strip()
+
+        try:
+            xml_found = first_line.find(b"<?xml") > -1
+        except TypeError:
+            try:
+                xml_found = first_line.find("<?xml") > -1
+                self.xml = self.xml.encode('utf-8')
+            except (TypeError, AttributeError):
+                xml_found = None
+
+        if xml_found:
             root = etree.fromstring(self.xml)
         else:
             tree = etree.parse(self.xml)
@@ -91,7 +99,7 @@ class XMLFormFactory(object):
 
         kwargs = {}
 
-        for k, v in root.items():
+        for k, v in list(root.items()):
             kwargs[k] = v
 
         model = FormModel(**kwargs)
@@ -153,7 +161,7 @@ class XMLFormFactory(object):
 
         kwargs = {}
 
-        for attrib in child.keys():
+        for attrib in list(child.keys()):
             if attrib in kwargs_attrs:
                 kwargs[attrib] = child.get(attrib)
 

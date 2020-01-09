@@ -1,4 +1,5 @@
-class Registry:
+from builtins import object
+class Registry(object):
 
     """ Global registry for forms """
 
@@ -49,7 +50,7 @@ class Registry:
     @staticmethod
     def get_registered_renderables():
 
-        return Registry.rendering_types.keys()
+        return list(Registry.rendering_types.keys())
 
     @staticmethod
     def register_renderer(name, tpe, factory):

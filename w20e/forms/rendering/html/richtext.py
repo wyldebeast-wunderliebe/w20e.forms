@@ -1,11 +1,13 @@
-from templates import get_template
+from __future__ import print_function
+from __future__ import absolute_import
+from builtins import object
+from .templates import get_template
 from w20e.forms.rendering.interfaces import IControlRenderer
-from zope.interface import implements
+from zope.interface import implementer
 
 
-class RichTextRenderer:
-
-    implements(IControlRenderer)
+@implementer(IControlRenderer)
+class RichTextRenderer(object):
 
     def render(self, renderer, form, renderable, out, **kwargs):
 
@@ -23,6 +25,6 @@ class RichTextRenderer:
         if not 'cols' in fmtmap:
             fmtmap['cols'] = '30'
 
-        print >> out, get_template('richtext')(
+        print(get_template('richtext')(
             control=renderable,
-            fmtmap=fmtmap)
+            fmtmap=fmtmap), file=out)

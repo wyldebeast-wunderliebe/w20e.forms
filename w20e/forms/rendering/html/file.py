@@ -1,11 +1,13 @@
-from templates import get_template
+from __future__ import print_function
+from __future__ import absolute_import
+from builtins import object
+from .templates import get_template
 from w20e.forms.rendering.interfaces import IControlRenderer
-from zope.interface import implements
+from zope.interface import implementer
 
 
-class FileRenderer:
-
-    implements(IControlRenderer)
+@implementer(IControlRenderer)
+class FileRenderer(object):
 
     def render(self, renderer, form, renderable, out, **kwargs):
 
@@ -15,8 +17,8 @@ class FileRenderer:
 
         fmtmap['value'] = renderable.lexVal(form.data[renderable.bind])
 
-        print >> out, get_template("file")(
+        print(get_template("file")(
             control=renderable,
             fmtmap=fmtmap,
             form_id=form.id
-            )
+            ), file=out)

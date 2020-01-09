@@ -1,6 +1,10 @@
-from zope.interface import implements
+from __future__ import absolute_import
+from builtins import str
+from builtins import range
+from builtins import object
+from zope.interface import implements, implementer
 from w20e.forms.interfaces import IControl
-from renderables import Renderable
+from .renderables import Renderable
 from w20e.forms.registry import Registry
 import json
 from numbers import Number
@@ -13,10 +17,9 @@ REPR = """%(type)s %(id)s, bound to '%(bind)s':
   """
 
 
+@implementer(IControl)
 class Control(Renderable):
     """ Base class for controls """
-
-    implements(IControl)
 
     def __init__(self, _id, label, bind=None, hint="", help="", alert="",
                  **props):
@@ -79,6 +82,9 @@ class Control(Renderable):
 class Input(Control):
     """ Base input """
 
+    @property
+    def rows(self):
+        return int(self.__dict__['rows'])
 
 class Date(Control):
     """ Date widget """
@@ -187,7 +193,7 @@ class RichText(Control):
     """ Base input """
 
 
-class Option:
+class Option(object):
     def __init__(self, value, label):
         self.value = value
         self.label = label

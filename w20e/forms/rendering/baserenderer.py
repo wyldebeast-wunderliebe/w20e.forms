@@ -1,3 +1,5 @@
+from builtins import str
+from builtins import object
 import re
 from w20e.forms.registry import Registry
 
@@ -17,7 +19,7 @@ def cache(func):
     return get_renderer
 
 
-class BaseRenderer:
+class BaseRenderer(object):
     def __init__(self, **kwargs):
 
         """ Initialize renderer, given global options """
@@ -58,7 +60,7 @@ class BaseRenderer:
                 else:
                     value = form.getFieldValue(var) or ''
 
-                if not isinstance(value, unicode):
+                if not isinstance(value, str):
                     if not hasattr(value, "decode"):
                         value = str(value)
                     value = value.decode('utf-8')
@@ -123,11 +125,11 @@ class BaseRenderer:
         if "extra_classes" in fmtmap:
             fmtmap['extra_classes'] = " ".join([fmtmap['extra_classes']] + \
                                                [key for key in
-                                                extra_classes.keys()
+                                                list(extra_classes.keys())
                                                 if extra_classes[key]])
         else:
             fmtmap['extra_classes'] = " ".join([key for key in
-                                                extra_classes.keys() if
+                                                list(extra_classes.keys()) if
                                                 extra_classes[key]])
 
         fmtmap['type'] = self.getType(renderable)

@@ -1,3 +1,5 @@
+from builtins import str
+from builtins import object
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.Five.browser import BrowserView
 
@@ -6,7 +8,7 @@ from w20e.forms.xml.factory import XMLFormFactory
 from w20e.forms.form import FormValidationError
 
 
-class FormContext:
+class FormContext(object):
 
     """ An object that holds form data """
 
@@ -67,7 +69,7 @@ class FormView(BrowserView):
 
         rendered = self.form.view.render(self.form, errors=errors,
                 request=self.request, context=self.context)
-        return unicode(rendered, "utf-8")
+        return str(rendered, "utf-8")
 
     def handle_form(self):
 
@@ -86,7 +88,7 @@ class FormView(BrowserView):
             self.store_form_context(form_context)
             status = 'stored'
 
-        except FormValidationError, fve:
+        except FormValidationError as fve:
             errors = fve.errors
             status = 'error'
 
@@ -127,7 +129,7 @@ class FormView(BrowserView):
         try:
             form.data = form.submission.retrieve(form, form_context)
         except:
-            for key in form_context.formdefaults.keys():
+            for key in list(form_context.formdefaults.keys()):
                 try:
                     form.data.getField(key).value = \
                             form_context.formdefaults[key]

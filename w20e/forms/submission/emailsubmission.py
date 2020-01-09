@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 import smtplib
 import re
 from email.mime.multipart import MIMEMultipart
@@ -6,7 +7,7 @@ from email.mime.text import MIMEText
 from email.Utils import COMMASPACE, formatdate
 from email import Encoders
 
-from submission import SubmissionBase
+from .submission import SubmissionBase
 
 
 class EmailSubmission(SubmissionBase):

@@ -1,12 +1,19 @@
-from zope.interface import implements
-from interfaces import IFormView
-from rendering.html.renderer import HTMLRenderer
-from StringIO import StringIO
+from __future__ import absolute_import
+from future import standard_library
+standard_library.install_aliases()
+from builtins import object
+from zope.interface import implementer
+from .interfaces import IFormView
+from .rendering.html.renderer import HTMLRenderer
+from io import BytesIO
 import codecs
-from config import PAGE_ID
-from ordereddict import OrderedDict
+from .config import PAGE_ID
+from collections import OrderedDict
 from w20e.forms.form import FormValidationError
 from w20e.forms.exceptions import ProcessingException
+
+import logging
+logger = logging.getLogger(__name__)
 
 
 class RenderableContainer(object):
@@ -50,8 +57,8 @@ class RenderableContainer(object):
         also return all renderables from the children recursively """
 
         if recursive:
-            result = self._componentmap.values()
-            for r in self._componentmap.values():
+            result = list(self._componentmap.values())
+            for r in list(self._componentmap.values()):
                 try:
                     result += r.getRenderables(recursive)
                 except:
@@ -91,12 +98,11 @@ class RenderableContainer(object):
         return found
 
 
+@implementer(IFormView)
 class FormView(RenderableContainer):
     """ Visible part of the form, that holds controls and groups and
     handles rendering logic.
     """
-
-    implements(IFormView)
 
     def __init__(self, renderer=HTMLRenderer, **opts):
 
@@ -164,7 +170,7 @@ class FormView(RenderableContainer):
         """ Render all (front, content and back). Calling code should
         take care of the case where there is nothing to render..."""
 
-        str_out = StringIO()
+        str_out = BytesIO()
         out = codecs.getwriter('utf-8')(str_out)
 
         direction = "next"
@@ -303,7 +309,7 @@ class FormView(RenderableContainer):
             status = 'processed'
 
             # process the calculate model properties
-            for fieldid in form.data._fields.keys():
+            for fieldid in list(form.data._fields.keys()):
                 (val, found) = form.model.getCalculate(fieldid, form.data)
                 if found:
                     form.data[fieldid] = val
@@ -316,7 +322,7 @@ class FormView(RenderableContainer):
                     form.validate(fields=fields)
                     status = 'valid'
 
-            except FormValidationError, fve:
+            except FormValidationError as fve:
                 errors = fve.errors
                 status = 'error'
 

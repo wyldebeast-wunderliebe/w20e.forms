@@ -1,3 +1,4 @@
+from __future__ import print_function
 from setuptools import setup, find_packages
 import os
 from distutils.core import Command
@@ -39,7 +40,7 @@ class TestCommand(Command):
                     ['tests', splitext(basename(t))[0]])
                 )
 
-        print testfiles
+        print(testfiles)
 
         tests = TestLoader().loadTestsFromNames(testfiles)
         t = TextTestRunner(verbosity=1)

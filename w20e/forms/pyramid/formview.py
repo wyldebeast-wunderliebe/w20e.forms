@@ -1,3 +1,5 @@
+from builtins import str
+from builtins import object
 from xml.dom.minidom import Document
 
 from w20e.forms.form import FormValidationError
@@ -32,7 +34,7 @@ class formview(object):
                 pass
 
         if defaults:
-            for key in defaults.keys():
+            for key in list(defaults.keys()):
                 self.form.data.getField(key).value = defaults[key]
 
     def renderform(self, errors=None, status=None, **opts):
@@ -49,7 +51,7 @@ class formview(object):
         rendered = self.form.view.render(
             self.form, errors=errors, status=status,
             data=params, context=self.context, **opts)
-        rendered = unicode(rendered, "utf-8")
+        rendered = str(rendered, "utf-8")
         # remove empty lines
         filtered = '\n'.join([l for l in rendered.splitlines() if l.strip()])
         return filtered
@@ -74,7 +76,7 @@ class formview(object):
             form.submission.submit(form, self.context, self.request)
             status = 'stored'
 
-        except FormValidationError, fve:
+        except FormValidationError as fve:
             errors = fve.errors
             status = 'error'
 
@@ -100,7 +102,7 @@ class formview(object):
         if params.get("cancel", None):
             status = "cancelled"
 
-        elif submissions.intersection(params.keys()):
+        elif submissions.intersection(list(params.keys())):
             status, errors = self.form.view.handle_form(self.form,
                     params)
 
@@ -165,7 +167,7 @@ class formview(object):
         # all fields are serialized by jquery (e.g. empty multiselect)
         if requested_params_only:
             ctls = [form.view.getRenderable(key) for key in
-                    params.keys()]
+                    list(params.keys())]
         else:
             ctls = form.view.getRenderables(recursive=True)
             ctls = [_c for _c in ctls if hasattr(_c, 'bind')]
@@ -216,7 +218,7 @@ class formview(object):
         doc.appendChild(root)
 
         # Let's send back changes
-        for f in state.keys():
+        for f in list(state.keys()):
 
             for cmd in ['required', 'relevant', 'readonly', 'calculate']:
 

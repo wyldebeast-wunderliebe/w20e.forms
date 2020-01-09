@@ -51,11 +51,11 @@ def eval_javascript(expression, _globals, _locals=None):
 
     # clean up globals (since it's being reused in threadlocal)
     # there is no way to unset a global variable so just set all to null
-    for k, v in _globals.items():
+    for k, v in list(_globals.items()):
         context.set_globals(k=None)
 
     if _locals:
-        for k, v in _locals.items():
+        for k, v in list(_locals.items()):
             context.set_globals(k=None)
 
     return result

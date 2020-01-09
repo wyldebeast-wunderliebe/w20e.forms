@@ -1,13 +1,19 @@
-from StringIO import StringIO
+from __future__ import print_function
+from __future__ import absolute_import
+
+from io import BytesIO
+
+from future import standard_library
+standard_library.install_aliases()
+from builtins import object
 import codecs
-from templates import get_template
+from .templates import get_template
 from w20e.forms.rendering.interfaces import IControlRenderer
-from zope.interface import implements
+from zope.interface import implementer
 
 
-class FlowGroupRenderer:
-
-    implements(IControlRenderer)
+@implementer(IControlRenderer)
+class FlowGroupRenderer(object):
 
     def render(self, renderer, form, renderable, out, **kwargs):
 
@@ -15,14 +21,14 @@ class FlowGroupRenderer:
 
         fmtmap = renderer.createFormatMap(form, renderable, **kwargs)
 
-        str_out = StringIO()
+        str_out = BytesIO()
         sub_out = codecs.getwriter('utf-8')(str_out)
 
         for sub_renderable in renderable.getRenderables():
             renderer.render(form, sub_renderable, sub_out, **kwargs)
 
-        print >> out, get_template('flowgroup')(
+        print(get_template('flowgroup')(
             group=renderable,
             content=str_out.getvalue().decode("utf-8"),
             fmtmap=fmtmap
-            )
+            ), file=out)

@@ -1,5 +1,7 @@
-from zope.interface import implements
-from templates import get_template
+from __future__ import print_function
+from __future__ import absolute_import
+from zope.interface import implementer
+from .templates import get_template
 from w20e.forms.rendering.interfaces import IRenderer
 from w20e.forms.rendering.baserenderer import BaseRenderer
 
@@ -8,14 +10,13 @@ FORM_HEADER = """<form class="w20e-form %s" method="post" action="%s"
   id="%s" enctype="multipart/form-data">"""
 
 
+@implementer(IRenderer)
 class HTMLRenderer(BaseRenderer):
 
     """ The HTML renderer expects to recive some kind of output
     stream, that can be used to append to. This can obviously be
     sys.stdout, but also a stringIO instance.
     """
-
-    implements(IRenderer)
 
     def __init__(self, **kwargs):
 
@@ -41,21 +42,19 @@ class HTMLRenderer(BaseRenderer):
                                                                       ''),
                                                kwargs.get('status', '')
                                                )
-
-        print >> out, get_template('frontmatter')(
-            form_id=form.id,
-            **kwargs
-            )
+        template = get_template('frontmatter')
+        template_html = template(form_id=form.id, **kwargs)
+        out.write(template_html)
+        # print(template_html, file=out)
 
         #if errors:
         #    print >> out, """<div class="alert alert-warning"></div>"""
 
     def renderBackMatter(self, form, out, errors=None, **opts):
 
-        print >> out, "</form>"
+        print("</form>", file=out)
 
     def render(self, form, renderable, out, errors=None, **kwargs):
-
         rtype = renderable.type
         renderer = self.getRendererForType(rtype, "html")
         renderer.render(self, form, renderable, out, errors=errors,

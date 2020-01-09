@@ -1,10 +1,16 @@
+from __future__ import absolute_import
+from past.builtins import basestring
+from builtins import object
 from collections import OrderedDict
-from model.fieldproperties import FieldProperties
-from model import converters, validators
-from registry import Registry
+from .model.fieldproperties import FieldProperties
+from .model import converters, validators
+from .registry import Registry
 import types
-import evaluator
+from . import evaluator
 import math
+
+import logging
+logger = logging.getLogger(__name__)
 
 converters.register()
 validators.register()
@@ -23,7 +29,7 @@ class FormModel(object):
 
         reprlist = ["FormModel:", ""]
 
-        for prop in self._props.keys():
+        for prop in list(self._props.keys()):
             reprlist.append(self._props[prop].__repr__())
 
         return "\n".join(reprlist)
@@ -55,7 +61,7 @@ class FormModel(object):
 
     def getAllFieldProperties(self):
 
-        return self._props.values()
+        return list(self._props.values())
 
     def getFieldProperties(self, binding):
 
@@ -74,11 +80,13 @@ class FormModel(object):
             if not found:
                 val = data.getField(name).value
         except:
+            logger.exception('Could not retrieve value from field')
             pass
 
         try:
             return self.convert(name, val)
         except:
+            logger.exception('Could convert value')
             return None
 
     def isGroupRelevant(self, group, data):
@@ -105,6 +113,10 @@ class FormModel(object):
         """
 
         for props in self.getFieldProperties(field_id):
+            if not self._eval(
+                    props.getRelevant(),
+                    {"data": data, "model": self}, Registry.funcs):
+                return False
 
             try:
                 if not self._eval(
@@ -112,6 +124,7 @@ class FormModel(object):
                         {"data": data, "model": self}, Registry.funcs):
                     return False
             except:
+                logger.exception('Could not check if field is relevant: {}'.format(props.getRelevant()))
                 return True
 
         return True
@@ -242,6 +255,7 @@ class FormModel(object):
                         if not valid:
                             break
                 except:
+                    logger.exception('Validator returned an exception')
                     valid = False
                     break
 
@@ -281,10 +295,10 @@ class FormModel(object):
 
         fields = {}
 
-        class Collector:
+        class Collector(object):
 
             def __init__(self, bind):
-                if not isinstance(bind, types.ListType):
+                if not isinstance(bind, list):
                     bind = [bind]
                 self._bind = bind
 
@@ -295,7 +309,7 @@ class FormModel(object):
 
                 fields[name].extend(self._bind)
 
-        for prop in self._props.values():
+        for prop in list(self._props.values()):
 
             for rule in ["_constraint", "_relevant", "_required", "_readonly",
                          "_calculate", "_default"]:
@@ -311,7 +325,7 @@ class FormModel(object):
                     # the value, so just add the current field to the efferent
                     # list, so the caller can at least process this fields
                     bind = prop.bind
-                    if not isinstance(bind, types.ListType):
+                    if not isinstance(bind, list):
                         bind = [bind]
                     for name in bind:
                         if name not in fields:

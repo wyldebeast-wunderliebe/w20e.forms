@@ -1,10 +1,10 @@
-from zope.interface import implements
+from builtins import object
+from zope.interface import implementer
 from w20e.forms.interfaces import IField
 
 
+@implementer(IField)
 class Field(object):
-
-    implements(IField)
 
     def __init__(self, id, value=None):
 

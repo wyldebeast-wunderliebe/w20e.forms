@@ -2,7 +2,10 @@
 Any datatype validators should go here...
 """
 
+from builtins import object
 from datetime import datetime
+from io import IOBase
+
 from w20e.forms.registry import Registry
 
 
@@ -17,12 +20,12 @@ class CheckInstance(object):
 
 def validate_string(value):
     """ is the value a str or unicode type """
-    return isinstance(value, str) or isinstance(value, unicode)
+    return isinstance(value, str) or isinstance(value, str)
 
 
 def validate_file(value):
     """ is the value a file type """
-    ftype = isinstance(value, file)
+    ftype = isinstance(value, IOBase)
 
     if ftype:
         return True

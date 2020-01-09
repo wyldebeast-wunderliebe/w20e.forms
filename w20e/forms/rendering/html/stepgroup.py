@@ -1,19 +1,23 @@
-from templates import get_template
-from StringIO import StringIO
+from __future__ import print_function
+from __future__ import absolute_import
+from future import standard_library
+standard_library.install_aliases()
+from builtins import object
+from .templates import get_template
+from io import BytesIO
 import codecs
 from w20e.forms.rendering.interfaces import IControlRenderer
-from zope.interface import implements
+from zope.interface import implementer
 
 
-class StepGroupRenderer:
-
-    implements(IControlRenderer)
+@implementer(IControlRenderer)
+class StepGroupRenderer(object):
 
     def render(self, renderer, form, renderable, out, **kwargs):
 
         currentpage = kwargs.get('currentpage', None)
 
-        str_out = StringIO()
+        str_out = BytesIO()
         sub_out = codecs.getwriter('utf-8')(str_out)
 
         for sub_renderable in renderable.getRenderables():
@@ -35,9 +39,9 @@ class StepGroupRenderer:
 
         fmtmap = renderer.createFormatMap(form, renderable, **kwargs)
 
-        print >> out, get_template('stepgroup')(
+        print(get_template('stepgroup')(
             group=renderable,
             steps=steps,
             content=str_out.getvalue().decode("utf-8"),
             fmtmap=fmtmap
-            )
+            ), file=out)

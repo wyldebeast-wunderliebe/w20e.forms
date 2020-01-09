@@ -1,11 +1,13 @@
-from templates import get_template
+from __future__ import print_function
+from __future__ import absolute_import
+from builtins import object
+from .templates import get_template
 from w20e.forms.rendering.interfaces import IControlRenderer
-from zope.interface import implements
+from zope.interface import implementer
 
 
-class PasswordRenderer:
-
-    implements(IControlRenderer)
+@implementer(IControlRenderer)
+class PasswordRenderer(object):
 
     def render(self, renderer, form, renderable, out, **kwargs):
 
@@ -15,8 +17,8 @@ class PasswordRenderer:
 
         fmtmap['value'] = "*****"
 
-        print >> out, get_template('password')(
+        print(get_template('password')(
             control=renderable,
             fmtmap=fmtmap
-            )
+            ), file=out)
 

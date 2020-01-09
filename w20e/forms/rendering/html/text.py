@@ -1,11 +1,14 @@
-from templates import get_template
+from __future__ import print_function
+from __future__ import absolute_import
+from builtins import str
+from builtins import object
+from .templates import get_template
 from w20e.forms.rendering.interfaces import IControlRenderer
-from zope.interface import implements
+from zope.interface import implementer
 
 
-class TextRenderer:
-
-    implements(IControlRenderer)
+@implementer(IControlRenderer)
+class TextRenderer(object):
 
     def render(self, renderer, form, renderable, out, **kwargs):
 
@@ -24,7 +27,7 @@ class TextRenderer:
                     value = form.getFieldValue(renderable.bind, lexical=True)
                     # TODO: not sure about this string conversion..
                     # leave unicode values intact.
-                    if not isinstance(value, unicode):
+                    if not isinstance(value, str):
                         value = str(value)
                     if isinstance(value, str):
                         value = value.decode('utf-8')
@@ -32,8 +35,8 @@ class TextRenderer:
                 except:
                     pass
 
-        print >> out, get_template("text")(
+        print(get_template("text")(
             control=renderable,
             text=fmtmap['text'],
             fmtmap=fmtmap
-            )
+            ), file=out)
