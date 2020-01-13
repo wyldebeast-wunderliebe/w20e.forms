@@ -31,6 +31,17 @@ def eval_javascript(expression, _globals, _locals=None):
         context = pyduktape.DuktapeContext()
         threadLocal.context = context
 
+    # in some edge cases a number is larger then javascript's max number
+    # for those cases just convert them to a string and hope for the best..
+    safe_data = {}
+    JS_MAX_NUM = 9007199254740991  # math.pow(2, 53) -1
+    for (k, v) in _globals['data'].as_dict().items():
+        if isinstance(v, int) and not -JS_MAX_NUM < v < JS_MAX_NUM:
+            safe_data[k] = str(v)
+        else:
+            safe_data[k] = v
+    _globals['data'] = safe_data
+
     context.set_globals(**_globals)
 
     # pyduktape doesn's have locals so insert it into the globals instead

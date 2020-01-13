@@ -27,12 +27,7 @@ class FormModel(object):
 
     def __repr__(self):
 
-        reprlist = ["FormModel:", ""]
-
-        for prop in list(self._props.keys()):
-            reprlist.append(self._props[prop].__repr__())
-
-        return "\n".join(reprlist)
+        return "FormModel ({} properties)".format(len(self._props))
 
     def __json__(self, request):
         return {

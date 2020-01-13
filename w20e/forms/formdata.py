@@ -22,28 +22,13 @@ class FormData(object):
 
     def __repr__(self):
 
-        reprlist = ["FormData:", ""]
-
-        for field in list(self._fields.keys()):
-
-            value = self._fields[field].value
-
-            # small hack for fields that have a dict as value (files)
-            if isinstance(value, dict):
-                if 'name' in value:
-                    value = value['name']
-
-            if isinstance(field, str):
-                field = field.encode('utf-8')
-            if isinstance(value, str):
-                value = value.encode('utf-8')
-
-            reprlist.append("%s: %s\n" % (field, value))
-
-        return "\n".join(reprlist)
+        return "FormData: ({} items)".format(len(self._fields))
 
     def __json__(self, request):
         return self.as_dict()
+
+    def __contains__(self, key):
+        return key in self._fields
 
     def __getitem__(self, fieldId):
 

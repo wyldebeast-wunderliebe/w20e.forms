@@ -2,7 +2,7 @@ from builtins import object
 from zope.interface import implementer
 from w20e.forms.interfaces import IFieldProperties
 
-REPR = u"""FieldProperties {id} for {bind}:
+REPR = """FieldProperties {id} for {bind}:
   required: {_required}
   relevant: {_relevant}
   readonly: {_readonly}
@@ -20,8 +20,7 @@ class FieldProperties(object):
 
     def __repr__(self):
 
-        result = REPR.format(**self.__dict__)
-        return result.encode('utf-8')
+        return REPR.format(**self.__dict__)
 
     def __init__(self, id, bind,
                  required=None,
