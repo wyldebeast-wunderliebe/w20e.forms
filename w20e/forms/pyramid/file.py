@@ -12,7 +12,6 @@ class PyramidFile(File):
         self.type = "file"
 
     def processInput(self, data=None, datatype="file"):
-
         """ File data is stored in value field """
 
         if not data:
@@ -24,7 +23,8 @@ class PyramidFile(File):
 
         present = self.id in data
 
-        if not present or data[self.id] is None or data[self.id] == '':
+        if not present or data[self.id] is None or data[self.id] == '' \
+                or data[self.id] == b'':
             raise ProcessingException("no file. skip it")
 
         if data[self.id] == '1':
