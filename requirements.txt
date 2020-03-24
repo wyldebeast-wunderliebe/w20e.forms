@@ -2,7 +2,6 @@ setuptools
 ZODB3
 lxml
 zope.interface
-ordereddict
 python-dateutil
 Chameleon
 pyduktape>=0.0.6
