@@ -216,6 +216,23 @@ class Select(Control):
     def __json__(self, request):
         json = super(Select, self).__json__(request)
         json['options'] = self._options
+
+        if self.vocab:
+
+            vocab_options = []
+            vocab = Registry.get_vocab(self.vocab)
+
+            args = []
+            if self.vocab_args:
+                args = self.vocab_args.split(",")
+
+            if callable(vocab):
+                # vocab_options = vocab(*args, **kwargs)
+                vocab_options = vocab(*args)
+
+            vocab_options.extend(self.options)
+            json['options'] = vocab_options
+
         return json
 
     @property
