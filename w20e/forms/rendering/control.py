@@ -53,7 +53,10 @@ class Control(Renderable):
             # control name. But for now I need this in pyramid, and the
             # getall method works fine..
             if self.multiple:
-                val = data.getall(self.id)
+                try:
+                    val = data.getall(self.id)
+                except AttributeError:
+                    val = data.get(self.id, None)
             else:
                 val = data.get(self.id, None)
 
