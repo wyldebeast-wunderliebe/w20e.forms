@@ -6,9 +6,11 @@ or use javascript (pyduktape)
 
 import pyduktape
 import threading
+from logging import getLogger
 
 
 threadLocal = threading.local()
+LOGGER = getLogger('w20e.form')
 
 
 def eval_python(expression, _globals, _locals=None):
@@ -26,6 +28,9 @@ def eval_javascript(expression, _globals, _locals=None):
     # workaround is to have one duktapecontext per thread
     # (we can't have 1 global, since pyduktape will raise a
     # DuktapeThreadError, so we get around this using a threadlocal)
+    # update: there seems to be a memory leak fix out but it seems that
+    # keeping the context alive is much faster.
+    # js2py is another library which works, but it's much slower
     context = getattr(threadLocal, 'context', None)
     if context is None:
         context = pyduktape.DuktapeContext()
@@ -58,7 +63,12 @@ def eval_javascript(expression, _globals, _locals=None):
     expression = expression.replace('"', "'")  # TODO: danger, not good..
     expression = 'new Function("with(this) { return ' + expression + ' }")()'
 
-    result = context.eval_js(expression)
+    try:
+        result = context.eval_js(expression)
+    except pyduktape.JSError as err:
+        LOGGER.warning('error evaluating js expression: {}'.format(expression))
+        LOGGER.warning(err)
+        result = None
 
     # clean up globals (since it's being reused in threadlocal)
     # there is no way to unset a global variable so just set all to null

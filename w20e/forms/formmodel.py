@@ -108,11 +108,6 @@ class FormModel(object):
         """
 
         for props in self.getFieldProperties(field_id):
-            if not self._eval(
-                    props.getRelevant(),
-                    {"data": data, "model": self}, Registry.funcs):
-                return False
-
             try:
                 if not self._eval(
                         props.getRelevant(),
