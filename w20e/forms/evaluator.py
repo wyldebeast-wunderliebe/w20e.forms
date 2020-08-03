@@ -40,7 +40,7 @@ def eval_javascript(expression, _globals, _locals=None):
     if match:
         left = _globals["data"][match.group(1)]
         right = match.group(2)
-        return left == right or left == str(right)
+        return left == right or str(left) == str(right)
 
     # like: data['somefield']===1
     match = re.match(r'^ *data\[[\'"](\w+)[\'"]\] *=== *(\d+) *$', expression)
@@ -54,7 +54,7 @@ def eval_javascript(expression, _globals, _locals=None):
     if match:
         left = _globals["data"][match.group(1)]
         right = match.group(2)
-        return left == right or left == str(right)
+        return left == right or str(left) == str(right)
 
     # like: data['somefield']==='value'
     match = re.match(r'^ *data\[[\'"](\w+)[\'"]\] *== *[\'"](\w+)[\'"] *$', expression)
