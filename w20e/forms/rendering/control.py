@@ -267,7 +267,7 @@ class Select(Control):
             for val in value:
                 res.append(self.lexVal(val))
 
-            return res
+            return ', '.join(res)
 
         options = []
 
@@ -284,11 +284,20 @@ class Select(Control):
         options.extend(self.options)
 
         for opt in options:
+            val = value
+            # sometimes the value is a dict with an id and label
+            if isinstance(val, dict) and 'id' in val:
+                val = val['id']
 
-            if self._is_same(opt.value, value):
+            if self._is_same(opt.value, val):
                 return opt.label
 
-        return value
+        # sometimes the value is a dict with an id and label
+        
+        val = value
+        if isinstance(val, dict) and 'label' in val:
+            val = val['label']
+        return val
 
     def _is_same(self, opt_value, value):
 
