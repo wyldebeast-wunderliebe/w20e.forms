@@ -53,6 +53,13 @@ def to_str(value):
         return str(value)
 
 
+def to_int(value):
+    """"convert any value to int.
+     e.g. '123.567' -> 124
+    """
+    return int(round(float(value)))
+
+
 def to_bool(value):
 
     # try to convert "False" and "0" strings
@@ -77,7 +84,7 @@ def register():
 
     Registry.register_converter("string", to_str)
     Registry.register_converter("str", to_str)
-    Registry.register_converter("int", int)
+    Registry.register_converter("int", to_int)
     Registry.register_converter("bool", to_bool)
     Registry.register_converter("float", float)
     Registry.register_converter("date", to_date)
