@@ -4,4 +4,5 @@ lxml
 zope.interface
 python-dateutil
 Chameleon
-pyduktape
+pyduktape @ git+https://github.com/bobpepin/pyduktape.git@b8ac1760950f1301b486fa0a30a219542b61473b#egg=pyduktape
+

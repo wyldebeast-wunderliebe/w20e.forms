@@ -10,7 +10,7 @@ from logging import getLogger
 import re
 
 
-threadLocal = threading.local()
+#threadLocal = threading.local()
 LOGGER = getLogger("w20e.form")
 
 
@@ -76,10 +76,11 @@ def eval_javascript(expression, _globals, _locals=None):
     # update: there seems to be a memory leak fix out but it seems that
     # keeping the context alive is much faster.
     # js2py is another library which works, but it's much slower
-    context = getattr(threadLocal, "context", None)
-    if context is None:
-        context = pyduktape.DuktapeContext()
-        threadLocal.context = context
+    #context = getattr(threadLocal, "context", None)
+    #if context is None:
+    #    context = pyduktape.DuktapeContext()
+    #    threadLocal.context = context
+    context = pyduktape.DuktapeContext()
 
     # in some edge cases a number is larger then javascript's max number
     # for those cases just convert them to a string and hope for the best..
@@ -115,13 +116,13 @@ def eval_javascript(expression, _globals, _locals=None):
         LOGGER.warning(err)
         result = None
 
-    # clean up globals (since it's being reused in threadlocal)
-    # there is no way to unset a global variable so just set all to null
-    for k, v in list(_globals.items()):
-        context.set_globals(k=None)
+    ## clean up globals (since it's being reused in threadlocal)
+    ## there is no way to unset a global variable so just set all to null
+    #for k, v in list(_globals.items()):
+    #    context.set_globals(k=None)
 
-    if _locals:
-        for k, v in list(_locals.items()):
-            context.set_globals(k=None)
+    #if _locals:
+    #    for k, v in list(_locals.items()):
+    #        context.set_globals(k=None)
 
     return result

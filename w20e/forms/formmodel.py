@@ -108,14 +108,15 @@ class FormModel(object):
         """
 
         for props in self.getFieldProperties(field_id):
-            try:
-                if not self._eval(
-                        props.getRelevant(),
-                        {"data": data, "model": self}, Registry.funcs):
-                    return False
-            except:
-                logger.exception('Could not check if field is relevant: {}'.format(props.getRelevant()))
-                return True
+            if props.getRelevant() is not None:
+                try:
+                    if not self._eval(
+                            props.getRelevant(),
+                            {"data": data, "model": self}, Registry.funcs):
+                        return False
+                except:
+                    logger.exception('Could not check if field is relevant: {}'.format(props.getRelevant()))
+                    return True
 
         return True
 
@@ -129,13 +130,14 @@ class FormModel(object):
 
         for props in self.getFieldProperties(field_id):
 
-            try:
-                if self._eval(
-                            props.getRequired(), {"data": data, "model": self},
-                            Registry.funcs):
-                    return True
-            except:
-                return False
+            if props.getRequired() is not None:
+                try:
+                    if self._eval(
+                                props.getRequired(), {"data": data, "model": self},
+                                Registry.funcs):
+                        return True
+                except:
+                    return False
 
         return False
 
@@ -143,13 +145,14 @@ class FormModel(object):
 
         for props in self.getFieldProperties(field_id):
 
-            try:
-                if self._eval(
-                        props.getReadonly(), {"data": data, "model": self},
-                        Registry.funcs):
-                    return True
-            except:
-                return False
+            if props.getReadonly() is not None:
+                try:
+                    if self._eval(
+                            props.getReadonly(), {"data": data, "model": self},
+                            Registry.funcs):
+                        return True
+                except:
+                    return False
 
         return False
 
@@ -160,23 +163,24 @@ class FormModel(object):
 
         for props in self.getFieldProperties(field_id):
 
-            try:
-                val = self._eval(
-                           props.getCalculate(), {"data": data, "model": self},
-                           Registry.funcs)
+            if props.getCalculate() is not None:
+                try:
+                    val = self._eval(
+                               props.getCalculate(), {"data": data, "model": self},
+                               Registry.funcs)
 
-                # is returned value is float, check if it's NaN
-                # if it's NaN we return None, since we can't handle the JSON
-                # response with NaN.. we could also deal with this at the
-                # JSON encoding.. perhaps it would be better?
-                if isinstance(val, float):
-                    if math.isnan(val):
-                        val = None
+                    # is returned value is float, check if it's NaN
+                    # if it's NaN we return None, since we can't handle the JSON
+                    # response with NaN.. we could also deal with this at the
+                    # JSON encoding.. perhaps it would be better?
+                    if isinstance(val, float):
+                        if math.isnan(val):
+                            val = None
 
-                return (val, True)
+                    return (val, True)
 
-            except:
-                pass
+                except:
+                    pass
 
         return (None, False)
 
@@ -187,14 +191,15 @@ class FormModel(object):
 
         for props in self.getFieldProperties(field_id):
 
-            try:
-                val = self._eval(
-                           props.getDefault(), {"data": data, "model": self},
-                           Registry.funcs)
-                return (val, True)
+            if props.getDefault() is not None:
+                try:
+                    val = self._eval(
+                               props.getDefault(), {"data": data, "model": self},
+                               Registry.funcs)
+                    return (val, True)
 
-            except:
-                pass
+                except:
+                    pass
 
         return (None, False)
 
@@ -210,13 +215,14 @@ class FormModel(object):
 
         for props in self.getFieldProperties(field_id):
 
-            try:
-                if not self._eval(
-                        props.getConstraint(), {"data": data, "model": self},
-                        Registry.funcs):
-                    meets = False
-            except:
-                pass
+            if props.getConstraint() is not None:
+                try:
+                    if not self._eval(
+                            props.getConstraint(), {"data": data, "model": self},
+                            Registry.funcs):
+                        meets = False
+                except:
+                    pass
 
         return meets
 
