@@ -230,8 +230,7 @@ class Select(Control):
                 args = self.vocab_args.split(",")
 
             if callable(vocab):
-                # vocab_options = vocab(*args, **kwargs)
-                vocab_options = vocab(*args)
+                vocab_options = vocab(*args, request=request)
 
             vocab_options.extend(self.options)
             json['options'] = vocab_options
@@ -293,7 +292,7 @@ class Select(Control):
                 return opt.label
 
         # sometimes the value is a dict with an id and label
-        
+
         val = value
         if isinstance(val, dict) and 'label' in val:
             val = val['label']

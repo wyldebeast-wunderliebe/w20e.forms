@@ -165,7 +165,7 @@ class FormView(RenderableContainer):
         return self.getRenderable(page_id)
 
     def render(self, form, errors=None, status='', data=None,
-               context=None, **opts):
+               context=None, request=None, **opts):
 
         """ Render all (front, content and back). Calling code should
         take care of the case where there is nothing to render..."""
@@ -211,7 +211,7 @@ class FormView(RenderableContainer):
 
         for item in renderables:
             self.renderer.render(form, item, out, errors=errors,
-                                 data=data, context=context)
+                                 data=data, context=context, request=request)
 
         self.renderer.renderBackMatter(form, out, errors, **opts)
 

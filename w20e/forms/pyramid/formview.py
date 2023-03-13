@@ -50,7 +50,7 @@ class formview(object):
 
         rendered = self.form.view.render(
             self.form, errors=errors, status=status,
-            data=params, context=self.context, **opts)
+            data=params, context=self.context, request=self.request, **opts)
         rendered = str(rendered, "utf-8")
         # remove empty lines
         filtered = '\n'.join([l for l in rendered.splitlines() if l.strip()])
