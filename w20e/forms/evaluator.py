@@ -1,7 +1,7 @@
 """
 Evaluate the given expression
 Either use the default python eval() method to evaluate the expression
-or use javascript (pyduktape)
+or use javascript (js2py)
 """
 
 import js2py
