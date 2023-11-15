@@ -1,4 +1,4 @@
-from builtins import object
+
 from w20e.forms.interfaces import IRenderable
 from zope.interface import implementer
 from w20e.forms.registry import Registry

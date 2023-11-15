@@ -1,4 +1,4 @@
-from builtins import str
+
 from Products.Five.browser import BrowserView
 from w20e.forms.xml.factory import XMLFormFactory
 from xml.dom.minidom import Document

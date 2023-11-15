@@ -1,4 +1,3 @@
-from __future__ import print_function
 from setuptools import setup, find_packages
 import os
 from distutils.core import Command

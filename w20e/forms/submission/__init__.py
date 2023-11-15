@@ -1,6 +1,4 @@
 """ Being there """
-from __future__ import absolute_import
-
 from w20e.forms.registry import Registry
 from .attrstorage import AttrStorage
 from .attrsstorage import AttrsStorage

@@ -1,4 +1,3 @@
-from __future__ import absolute_import
 from .submission import SubmissionBase
 from w20e.forms.formdata import FormData
 from w20e.forms.data.field import Field

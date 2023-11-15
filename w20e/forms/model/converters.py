@@ -2,8 +2,8 @@
 Any datatype converters that are not yet standard python should go here...
 """
 
-from builtins import str
-from past.builtins import basestring
+
+
 from datetime import datetime, date
 import dateutil.parser
 from w20e.forms.registry import Registry
@@ -11,7 +11,7 @@ from w20e.forms.registry import Registry
 
 def to_date(value, format=None):
 
-    if isinstance(value, basestring):
+    if isinstance(value, str):
         # return empty string is empty string was passed in..
         if not (value and value.strip()):
             return ''
@@ -28,7 +28,7 @@ def to_date(value, format=None):
 
 def to_datetime(value, format=None):
 
-    if isinstance(value, basestring):
+    if isinstance(value, str):
         # return empty string is empty string was passed in..
         if not (value and value.strip()):
             return ''

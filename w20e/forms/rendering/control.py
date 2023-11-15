@@ -1,7 +1,6 @@
-from __future__ import absolute_import
-from builtins import str
-from builtins import range
-from builtins import object
+
+
+
 from zope.interface import implementer
 from w20e.forms.interfaces import IControl
 from .renderables import Renderable

@@ -1,7 +1,5 @@
-from __future__ import print_function
-from __future__ import absolute_import
-from builtins import str
-from builtins import object
+
+
 from .templates import get_template
 from w20e.forms.rendering.interfaces import IControlRenderer
 from zope.interface import implementer

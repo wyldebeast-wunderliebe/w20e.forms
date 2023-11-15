@@ -1,4 +1,3 @@
-from __future__ import absolute_import
 from BTrees.OOBTree import OOBTree
 from ZODB.blob import Blob
 from .blob import TheBlob

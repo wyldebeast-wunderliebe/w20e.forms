@@ -1,7 +1,5 @@
-from __future__ import print_function
-from __future__ import absolute_import
-from builtins import str
-from builtins import object
+
+
 from zope.interface import implementer
 
 from .templates import get_template

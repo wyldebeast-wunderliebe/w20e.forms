@@ -1,4 +1,4 @@
-from builtins import object
+
 class ATCTBaseObject(object):
 
     """ Base class for using w20e.forms as editing front-end for your

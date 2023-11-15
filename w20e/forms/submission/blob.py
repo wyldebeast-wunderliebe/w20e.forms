@@ -1,4 +1,4 @@
-from builtins import object
+
 import zlib
 from ZODB.blob import Blob as Blob
 from copy import deepcopy

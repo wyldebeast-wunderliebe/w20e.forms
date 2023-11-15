@@ -1,5 +1,5 @@
-from builtins import str
-from builtins import object
+
+
 from xml.dom.minidom import Document
 
 from w20e.forms.form import FormValidationError

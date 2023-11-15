@@ -1,6 +1,6 @@
-from builtins import str
-from past.builtins import basestring
-from builtins import object
+
+
+
 from lxml import etree
 import base64
 
@@ -132,7 +132,7 @@ class XMLSerializer(object):
     def _set_value(self, field, value):
 
         try:
-            if not isinstance(value, basestring):
+            if not isinstance(value, str):
                 value = str(value)
             field.set("value", value)
         except:

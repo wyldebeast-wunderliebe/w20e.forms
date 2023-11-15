@@ -1,4 +1,4 @@
-from builtins import object
+
 from w20e.forms.submission.interfaces import ISubmission
 from zope.interface import implementer
 

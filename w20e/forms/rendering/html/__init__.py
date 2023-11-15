@@ -1,5 +1,4 @@
 """ Register renderers """
-from __future__ import absolute_import
 
 from w20e.forms.registry import Registry
 from .select import SelectRenderer

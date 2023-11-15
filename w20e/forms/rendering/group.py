@@ -1,4 +1,3 @@
-from __future__ import absolute_import
 from zope.interface import implementer
 from w20e.forms.interfaces import IControlGroup
 from w20e.forms.formview import RenderableContainer

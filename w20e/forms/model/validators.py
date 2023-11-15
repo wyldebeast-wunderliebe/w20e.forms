@@ -2,7 +2,7 @@
 Any datatype validators should go here...
 """
 
-from builtins import object
+
 from datetime import datetime
 from io import IOBase
 

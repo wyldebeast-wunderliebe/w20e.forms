@@ -1,6 +1,6 @@
 """ Factory class to generate forms from XML """
 
-from builtins import object
+
 from lxml import etree
 from w20e.forms.formdata import FormData
 from w20e.forms.formview import FormView

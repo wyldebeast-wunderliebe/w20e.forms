@@ -1,5 +1,4 @@
 """ Being there """
-from __future__ import absolute_import
 
 from .control import *
 #from group import Group

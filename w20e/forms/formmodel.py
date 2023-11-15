@@ -1,6 +1,5 @@
-from __future__ import absolute_import
-from past.builtins import basestring
-from builtins import object
+
+
 from collections import OrderedDict
 from .model.fieldproperties import FieldProperties
 from .model import converters, validators
@@ -45,7 +44,7 @@ class FormModel(object):
 
         self._props[prop.id] = prop
         binds = prop.bind
-        if isinstance(binds, basestring):
+        if isinstance(binds, str):
             binds = [binds]
         for binding in binds:
 
