@@ -10,17 +10,17 @@ from logging import getLogger
 import re
 
 
-#threadLocal = threading.local()
+# threadLocal = threading.local()
 LOGGER = getLogger("w20e.form")
 
 
 def eval_python(expression, _globals, _locals=None):
-    """ evaluate the expression in python """
+    """evaluate the expression in python"""
     return eval(expression, _globals, _locals)
 
 
 def eval_javascript(expression, _globals, _locals=None):
-    """ try to import pyduktape and eval the expression  """
+    """try to import pyduktape and eval the expression"""
 
     result = None
 
@@ -76,8 +76,8 @@ def eval_javascript(expression, _globals, _locals=None):
     # update: there seems to be a memory leak fix out but it seems that
     # keeping the context alive is much faster.
     # js2py is another library which works, but it's much slower
-    #context = getattr(threadLocal, "context", None)
-    #if context is None:
+    # context = getattr(threadLocal, "context", None)
+    # if context is None:
     #    context = pyduktape.DuktapeContext()
     #    threadLocal.context = context
     context = pyduktape.DuktapeContext()
@@ -86,7 +86,7 @@ def eval_javascript(expression, _globals, _locals=None):
     # for those cases just convert them to a string and hope for the best..
     safe_data = {}
     JS_MAX_NUM = 9007199254740991  # math.pow(2, 53) -1
-    for (k, v) in _globals["data"].as_dict().items():
+    for k, v in _globals["data"].as_dict().items():
         if isinstance(v, int) and not -JS_MAX_NUM < v < JS_MAX_NUM:
             safe_data[k] = str(v)
         else:
@@ -107,21 +107,28 @@ def eval_javascript(expression, _globals, _locals=None):
 
     # convert the statement to an expression or the other way around :)
     expression = expression.replace('"', "'")  # TODO: danger, not good..
-    expression = 'new Function("with(this) { return ' + expression + ' }")()'
+    fixed_expression = 'new Function("with(this) { return ' + expression + ' }")()'
 
-    try:
-        result = context.eval_js(expression)
-    except pyduktape.JSError as err:
+    for expr in [expression, fixed_expression]:
+        try:
+            result = context.eval_js(expr)
+            error = None
+            break
+        except pyduktape.JSError as err:
+            result = None
+            error = err
+
+    if error:
         LOGGER.warning("error evaluating js expression: {}".format(expression))
-        LOGGER.warning(err)
-        result = None
+        LOGGER.warning(error)
 
-    ## clean up globals (since it's being reused in threadlocal)
-    ## there is no way to unset a global variable so just set all to null
-    #for k, v in list(_globals.items()):
+    # clean up globals (since it's being reused in threadlocal)
+    # there is no way to unset a global variable so just set all to null
+
+    # for k, v in list(_globals.items()):
     #    context.set_globals(k=None)
 
-    #if _locals:
+    # if _locals:
     #    for k, v in list(_locals.items()):
     #        context.set_globals(k=None)
 
