@@ -1,16 +1,14 @@
 """
 Evaluate the given expression
 Either use the default python eval() method to evaluate the expression
-or use javascript (pyduktape)
+or use javascript
 """
 
-import pyduktape
-import threading
+import javascript
 from logging import getLogger
 import re
 
 
-# threadLocal = threading.local()
 LOGGER = getLogger("w20e.form")
 
 
@@ -20,7 +18,7 @@ def eval_python(expression, _globals, _locals=None):
 
 
 def eval_javascript(expression, _globals, _locals=None):
-    """try to import pyduktape and eval the expression"""
+    """try to eval the expression with javascript"""
 
     result = None
 
@@ -68,20 +66,6 @@ def eval_javascript(expression, _globals, _locals=None):
     if match:
         return _globals["data"][match.group(1)]
 
-    # there's a memory leak when a duktapecontext is removed from the scope.
-    # the garbagecollection doesn't work as expected.
-    # workaround is to have one duktapecontext per thread
-    # (we can't have 1 global, since pyduktape will raise a
-    # DuktapeThreadError, so we get around this using a threadlocal)
-    # update: there seems to be a memory leak fix out but it seems that
-    # keeping the context alive is much faster.
-    # js2py is another library which works, but it's much slower
-    # context = getattr(threadLocal, "context", None)
-    # if context is None:
-    #    context = pyduktape.DuktapeContext()
-    #    threadLocal.context = context
-    context = pyduktape.DuktapeContext()
-
     # in some edge cases a number is larger then javascript's max number
     # for those cases just convert them to a string and hope for the best..
     safe_data = {}
@@ -93,43 +77,16 @@ def eval_javascript(expression, _globals, _locals=None):
             safe_data[k] = v
     _globals["data"] = safe_data
 
-    context.set_globals(**_globals)
+    eval_context = {}
+    eval_context.update(_globals)
+    eval_context.update(_locals)
 
-    # pyduktape doesn's have locals so insert it into the globals instead
-    if _locals:
-        context.set_globals(**_locals)
+    maskedEval = javascript.require('./masked-eval.js')
 
-    # not that the expression sometimes comes in as unicode. pyduktape
-    # doesn't seem t like this, so make it a bytestring instead
-    # if isinstance(expression, unicode):
-    #     expression = expression.encode('utf-8')
-    # update: pyduktape 0.6 does the encoding of unicode now
-
-    # convert the statement to an expression or the other way around :)
-    expression = expression.replace('"', "'")  # TODO: danger, not good..
-    fixed_expression = 'new Function("with(this) { return ' + expression + ' }")()'
-
-    for expr in [expression, fixed_expression]:
-        try:
-            result = context.eval_js(expr)
-            error = None
-            break
-        except pyduktape.JSError as err:
-            result = None
-            error = err
-
-    if error:
+    try:
+        result = maskedEval.evaluateExpression(expression, eval_context)
+    except javascript.JavaScriptError as err:
         LOGGER.warning("error evaluating js expression: {}".format(expression))
-        LOGGER.warning(error)
-
-    # clean up globals (since it's being reused in threadlocal)
-    # there is no way to unset a global variable so just set all to null
-
-    # for k, v in list(_globals.items()):
-    #    context.set_globals(k=None)
-
-    # if _locals:
-    #    for k, v in list(_locals.items()):
-    #        context.set_globals(k=None)
+        LOGGER.warning(err)
 
     return result
