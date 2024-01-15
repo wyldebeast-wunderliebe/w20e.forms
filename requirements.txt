@@ -4,4 +4,3 @@ lxml
 zope.interface
 python-dateutil
 Chameleon
-javascript
