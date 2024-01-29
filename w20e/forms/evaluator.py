@@ -1,13 +1,13 @@
 """
 Evaluate the given expression
 Either use the default python eval() method to evaluate the expression
-or use javascript
+or use javascript (pyduktape)
 """
 
-import javascript
-from logging import getLogger
 import re
+from logging import getLogger
 
+import pyduktape2 as pyduktape
 
 LOGGER = getLogger("w20e.form")
 
@@ -18,7 +18,7 @@ def eval_python(expression, _globals, _locals=None):
 
 
 def eval_javascript(expression, _globals, _locals=None):
-    """try to eval the expression with javascript"""
+    """try to import pyduktape and eval the expression"""
 
     result = None
 
@@ -66,6 +66,8 @@ def eval_javascript(expression, _globals, _locals=None):
     if match:
         return _globals["data"][match.group(1)]
 
+    context = pyduktape.DuktapeContext()
+
     # in some edge cases a number is larger then javascript's max number
     # for those cases just convert them to a string and hope for the best..
     safe_data = {}
@@ -77,16 +79,21 @@ def eval_javascript(expression, _globals, _locals=None):
             safe_data[k] = v
     _globals["data"] = safe_data
 
-    eval_context = {}
-    eval_context.update(_globals)
-    eval_context.update(_locals)
+    context.set_globals(**_globals)
 
-    maskedEval = javascript.require('./masked-eval.js')
+    # pyduktape doesn's have locals so insert it into the globals instead
+    if _locals:
+        context.set_globals(**_locals)
+
+    # convert the statement to an expression or the other way around :)
+    expression = expression.replace('"', "'")
+    expression = 'new Function("with(this) { return ' + expression + ' }")()'
 
     try:
-        result = maskedEval.evaluateExpression(expression, eval_context)
-    except javascript.JavaScriptError as err:
+        result = context.eval_js(expression)
+    except pyduktape.JSError as err:
         LOGGER.warning("error evaluating js expression: {}".format(expression))
         LOGGER.warning(err)
+        result = None
 
     return result
