@@ -4,7 +4,7 @@ import re
 from w20e.forms.registry import Registry
 
 # Expression for variable subsitution in labels and hints
-VAREXP = re.compile('\$\{[^\}]+\}')
+VAREXP = re.compile(r'\$\{[^\}]+\}')
 
 
 def cache(func):

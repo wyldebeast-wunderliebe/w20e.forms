@@ -36,18 +36,18 @@ class EmailSubmission(SubmissionBase):
 
         # Special treatment for from... Check if it refers to a form field
         #
-        if re.match("\$\{.+\}", self.send_from):
+        if re.match(r"\$\{.+\}", self.send_from):
             try:
-                var = re.match("\$\{(.+)\}", self.send_from).groups()[0]
+                var = re.match(r"\$\{(.+)\}", self.send_from).groups()[0]
                 self.send_from = form.getFieldValue(var)
             except:
                 pass
 
         # Special treatment for reply_to... Check if it refers to a form field
         #
-        if re.match("\$\{.+\}", self.reply_to):
+        if re.match(r"\$\{.+\}", self.reply_to):
             try:
-                var = re.match("\$\{(.+)\}", self.reply_to).groups()[0]
+                var = re.match(r"\$\{(.+)\}", self.reply_to).groups()[0]
                 self.reply_to = form.getFieldValue(var)
             except:
                 pass
