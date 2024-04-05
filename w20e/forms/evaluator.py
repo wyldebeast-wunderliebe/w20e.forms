@@ -87,6 +87,9 @@ def eval_javascript(expression, _globals, _locals=None):
 
     # convert the statement to an expression or the other way around :)
     expression = expression.replace('"', "'")
+    # this version of pyduktape doesn't seem to like newlines
+    expression = expression.replace("\n", "")
+
     expression = 'new Function("with(this) { return ' + expression + ' }")()'
 
     try:
