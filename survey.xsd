@@ -1,0 +1,284 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <!-- Define the survey element with the id attribute -->
+  <xs:element name="survey">
+    <xs:complexType>
+      <xs:choice maxOccurs="unbounded">
+        <xs:element name="data" minOccurs="1" maxOccurs="1">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:any processContents="lax" maxOccurs="unbounded"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="model" minOccurs="1" maxOccurs="1">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="properties" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:choice minOccurs="0" maxOccurs="unbounded">
+                      <xs:element name="bind" type="xs:string"/>
+                      <xs:element name="calculate" type="xs:string"/>
+                      <xs:element name="datatype" type="xs:string"/>
+                      <xs:element name="required" type="xs:string"/>
+                      <xs:element name="default" type="xs:string"/>
+                      <xs:element name="relevant" type="xs:string"/>
+                      <xs:element name="constraint" type="xs:string"/>
+                    </xs:choice>
+                  </xs:sequence>
+                  <xs:attribute name="id" type="xs:string"/>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+            <xs:attribute name="expressionlanguage" type="xs:string" use="required"/>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="view" minOccurs="1" maxOccurs="1">
+          <xs:complexType>
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+              <xs:element ref="optionset"/>
+              <xs:element ref="group"/>
+              <xs:element ref="searchtree"/>
+              <xs:element ref="input"/>
+              <xs:element ref="hidden"/>
+              <xs:element ref="text"/>
+              <xs:element ref="richtext"/>
+              <xs:element ref="select"/>
+              <xs:element ref="date"/>
+              <xs:element ref="range"/>
+              <xs:element ref="currency"/>
+              <xs:element ref="submit"/>
+            </xs:choice>
+          </xs:complexType>
+        </xs:element>
+
+        <xs:element name="submission" minOccurs="0">
+          <xs:complexType>
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+              <xs:group ref="labelHintHelpGroup" minOccurs="0" maxOccurs="1"/>
+              <xs:group ref="propertyGroup"/>
+            </xs:choice>
+            <xs:attributeGroup ref="commonAttributes"/>
+            <xs:attribute name="type" type="xs:string"/>
+          </xs:complexType>
+        </xs:element>
+
+        <xs:element name="extdata" minOccurs="0" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+              <xs:group ref="propertyGroup"/>
+            </xs:choice>
+          </xs:complexType>
+        </xs:element>
+
+        <xs:element name="extvocabs" minOccurs="0" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+              <xs:group ref="propertyGroup"/>
+            </xs:choice>
+          </xs:complexType>
+        </xs:element>
+
+      </xs:choice>
+
+      <!-- Allow id attribute on the survey element -->
+      <xs:attribute name="id" type="xs:string" use="required"/>
+
+    </xs:complexType>
+  </xs:element>
+
+  <xs:attributeGroup name="commonAttributes">
+    <xs:attribute name="id" type="xs:string"/>
+    <xs:attribute name="bind" type="xs:string"/>
+    <xs:attribute name="msgid" type="xs:string"/>
+  </xs:attributeGroup>
+
+  <xs:group name="labelHintHelpGroup">
+    <xs:choice>
+      <xs:element name="label" minOccurs="0" maxOccurs="1">
+        <xs:complexType>
+          <xs:simpleContent>
+            <xs:extension base="xs:string">
+              <xs:attribute name="id" type="xs:string"/>
+            </xs:extension>
+          </xs:simpleContent>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="hint" type="xs:string" minOccurs="0" maxOccurs="1"/>
+      <xs:element name="help" type="xs:string" minOccurs="0" maxOccurs="1"/>
+      <xs:element name="alert" type="xs:string" minOccurs="0" maxOccurs="1"/>
+    </xs:choice>
+  </xs:group>
+
+  <xs:group name="propertyGroup">
+    <xs:choice>
+      <xs:element name="property">
+        <xs:complexType>
+          <xs:simpleContent>
+            <xs:extension base="xs:string">
+              <xs:attribute name="name" type="xs:string" use="required" />
+            </xs:extension>
+          </xs:simpleContent>
+        </xs:complexType>
+      </xs:element>
+    </xs:choice>
+  </xs:group>
+
+  <xs:element name="option">
+    <xs:complexType mixed="true">
+      <xs:sequence>
+        <xs:element name="label" type="xs:string" minOccurs="0"/>
+      </xs:sequence>
+      <xs:attribute name="value" type="xs:string" use="required"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="optionset">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="option" maxOccurs="unbounded"/>
+      </xs:sequence>
+      <xs:attribute name="id" type="xs:string" use="required"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="searchtree">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:group ref="propertyGroup"/>
+        <xs:group ref="labelHintHelpGroup"/>
+      </xs:choice>
+      <xs:attributeGroup ref="commonAttributes"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="select">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:group ref="propertyGroup"/>
+        <xs:group ref="labelHintHelpGroup"/>
+        <xs:element ref="option" />
+      </xs:choice>
+      <xs:attributeGroup ref="commonAttributes"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="input">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:group ref="labelHintHelpGroup" minOccurs="0" maxOccurs="1"/>
+        <xs:group ref="propertyGroup"/>
+      </xs:choice>
+      <xs:attributeGroup ref="commonAttributes"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="submit">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:group ref="labelHintHelpGroup" minOccurs="0" maxOccurs="1"/>
+        <xs:group ref="propertyGroup"/>
+      </xs:choice>
+      <xs:attributeGroup ref="commonAttributes"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="currency">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:group ref="propertyGroup"/>
+        <xs:group ref="labelHintHelpGroup"/>
+      </xs:choice>
+      <xs:attributeGroup ref="commonAttributes"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="range">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:group ref="propertyGroup"/>
+        <xs:group ref="labelHintHelpGroup"/>
+        <xs:element ref="option" />
+      </xs:choice>
+      <xs:attributeGroup ref="commonAttributes"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="checkbox">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:group ref="propertyGroup"/>
+        <xs:group ref="labelHintHelpGroup"/>
+      </xs:choice>
+      <xs:attributeGroup ref="commonAttributes"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="date">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:group ref="propertyGroup"/>
+        <xs:group ref="labelHintHelpGroup"/>
+      </xs:choice>
+      <xs:attributeGroup ref="commonAttributes"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="hidden">
+    <xs:complexType>
+      <xs:attributeGroup ref="commonAttributes"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="text">
+    <xs:complexType mixed="true">
+      <xs:sequence>
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+          <xs:group ref="propertyGroup"/>
+          <xs:group ref="labelHintHelpGroup"/>
+          <xs:element name="option" />
+        </xs:choice>
+      </xs:sequence>
+      <xs:attributeGroup ref="commonAttributes"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="richtext">
+    <xs:complexType mixed="true">
+      <xs:sequence>
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+          <xs:group ref="propertyGroup"/>
+          <xs:group ref="labelHintHelpGroup"/>
+          <xs:element name="option" />
+        </xs:choice>
+      </xs:sequence>
+      <xs:attributeGroup ref="commonAttributes"/>
+    </xs:complexType>
+  </xs:element>
+
+
+  <xs:element name="group">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:group ref="labelHintHelpGroup" minOccurs="0" maxOccurs="1"/>
+        <xs:group ref="propertyGroup"/>
+        <xs:element ref="group"/>
+        <xs:element ref="checkbox"/>
+        <xs:element ref="searchtree"/>
+        <xs:element ref="input"/>
+        <xs:element ref="hidden"/>
+        <xs:element ref="text"/>
+        <xs:element ref="richtext"/>
+        <xs:element ref="select"/>
+        <xs:element ref="date"/>
+        <xs:element ref="range"/>
+        <xs:element ref="currency"/>
+        <xs:element ref="submit"/>
+      </xs:choice>
+      <xs:attribute name="layout" type="xs:string"/>
+      <xs:attributeGroup ref="commonAttributes"/>
+    </xs:complexType>
+  </xs:element>
+
+</xs:schema>

@@ -1,4 +1,4 @@
-from BTrees.OOBTree import OOBTree
+from BTrees.OOBTree import OOBTree  # type: ignore
 from ZODB.blob import Blob
 from .blob import TheBlob
 from .submission import SubmissionBase
@@ -10,16 +10,14 @@ DATA_ATTR_NAME = "_w20e_forms_data"
 
 
 class AttrStorage(SubmissionBase):
-
-    """ Submission handler that submits data to content type. The data
+    """Submission handler that submits data to content type. The data
     will be set as dict onto the given attribute name.
     """
 
     type = "attr"
 
     def __init__(self, **props):
-
-        """ AttrStorage uses simple attribute storage to store the
+        """AttrStorage uses simple attribute storage to store the
         whole data container on the context.
         """
 
@@ -38,29 +36,30 @@ class AttrStorage(SubmissionBase):
         return getattr(context, self.attr_name)
 
     def _store_blob(self, storage, field):
-        """ store in blob storage """
+        """store in blob storage"""
 
         # handle null data, don't use blob storage..
-        if not field.value or not field.value['data']:
+        if not field.value or not field.value["data"]:
             storage[field.id] = None
         else:
             # only if we get raw filedata store it in a blob..
-            #if it's already a blob,it hasn't changed, so no need to store
-            if isinstance(field.value['data'], bytes):
+            # if it's already a blob,it hasn't changed, so no need to store
+            if isinstance(field.value["data"], bytes):
                 # we have data, store as Blob
                 compress = field.id in self._use_compression_for
-                container = storage.get(field.id) or \
-                        {'name': None, 'data': TheBlob(compress=compress)}
-                container['name'] = field.value['name']
-                container['data'].set(field.value['data'])
+                container = storage.get(field.id) or {
+                    "name": None,
+                    "data": TheBlob(compress=compress),
+                }
+                container["name"] = field.value["name"]
+                container["data"].set(field.value["data"])
                 storage[field.id] = container
 
     def _retrieve_blob(self, context, storage, field_id):
         data = storage.get(field_id)
 
         # check for non-blob storage file, and migrate on-the-fly if necessary
-        if data and (isinstance(data['data'], bytes) or
-                isinstance(data['data'], Blob)):
+        if data and (isinstance(data["data"], bytes) or isinstance(data["data"], Blob)):
             self._migrate_blob(storage, field_id)
             context._p_changed = 1  # trigger update
             data = storage.get(field_id)
@@ -68,8 +67,8 @@ class AttrStorage(SubmissionBase):
         if data:
 
             container = {}
-            container['name'] = data['name']
-            container['data'] = data['data']
+            container["name"] = data["name"]
+            container["data"] = data["data"]
 
             return container
 
@@ -78,14 +77,13 @@ class AttrStorage(SubmissionBase):
         if self.use_blobstorage:
             for props in form.model.getFieldProperties(field_id):
                 datatype = props.getDatatype()
-                if datatype and datatype == 'file':
+                if datatype and datatype == "file":
                     store_blob = True
                     break
         return store_blob
 
     def submit(self, form, context, *args):
-
-        """ Submit data. This involves storing it onto the content
+        """Submit data. This involves storing it onto the content
         type. The submit call should provide the context as first
         param.
         """
@@ -103,30 +101,30 @@ class AttrStorage(SubmissionBase):
                 storage[field.id] = field.value
 
             try:
-                del(context._v_data)
+                del context._v_data
             except:
                 pass
 
             context._p_changed = 1
 
     def _migrate_blob(self, storage, field_id):
-        """ migrate simple attrstorage files to blobstorage """
+        """migrate simple attrstorage files to blobstorage"""
         field = Field(field_id, storage.get(field_id))
 
         compress = field.id in self._use_compression_for
 
-        container = {'name': None, 'data': TheBlob(compress=compress)}
-        container['name'] = field.value['name']
+        container = {"name": None, "data": TheBlob(compress=compress)}
+        container["name"] = field.value["name"]
 
-        oldval = field.value['data']
+        oldval = field.value["data"]
         if isinstance(oldval, Blob):
-            oldval = oldval.open('r').read()
-        container['data'].set(oldval)
+            oldval = oldval.open("r").read()
+        container["data"].set(oldval)
 
         storage[field.id] = container
 
     def retrieve(self, form, context, *args):
-        """ Restore data. """
+        """Restore data."""
 
         storage = self._get_storage(context)
 
@@ -136,8 +134,9 @@ class AttrStorage(SubmissionBase):
 
             store_blob = self._use_blobstorage(form, field_id)
             if store_blob:
-                data.addField(Field(field_id, self._retrieve_blob(context, storage,
-                    field_id)))
+                data.addField(
+                    Field(field_id, self._retrieve_blob(context, storage, field_id))
+                )
             else:
                 data.addField(Field(field_id, storage.get(field_id)))
 
