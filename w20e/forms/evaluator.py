@@ -10,4 +10,4 @@ def eval_python(expression, _globals, _locals=None):
 
 def eval_javascript(expression, _globals, _locals=None):
     """Evaluate a JavaScript expression using quickjs"""
-    return pyduktape_eval_javascript(expression, _globals, _locals=None)
+    return pyduktape_eval_javascript(expression, _globals, _locals)
